@@ -3,9 +3,13 @@ import { DataFlywheel } from "@/components/DataFlywheel";
 import { Header } from "@/components/Header";
 import { ProjectLibrary } from "@/components/ProjectLibrary";
 import { SystemMap } from "@/components/SystemMap";
-import { capabilities, featuredProjects, projects } from "@/content/projects";
+import { capabilities, projects } from "@/content/projects";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
+
+const featuredProjects = ["data-platform", "service-agent", "collator", "lumen-ink"]
+  .map((slug) => projects.find((project) => project.slug === slug))
+  .filter((project): project is (typeof projects)[number] => Boolean(project));
 
 export default function Home() {
   return (
@@ -18,7 +22,7 @@ export default function Home() {
           <p className="eyebrow">AI / AGENT PRODUCT MANAGER · TECHNICAL BUILDER</p>
           <h1>把复杂业务，做成可上线、可评估的 AI 产品。</h1>
           <p className="hero-lead">
-            我是陈嘉伟。曾在 TP-Link 管理复杂软硬件项目组合，现作为 3 人全职创业团队的创始人兼 AI 产品负责人，完成数据中台、Agent、RAG、多模态产品与模型微调等 9 个项目。
+            我是陈嘉伟。曾在 TP-Link 管理复杂软硬件项目组合，现作为 3 人全职创业团队的创始人兼 AI 产品负责人，围绕数据中台、Service Agent、Collator 与光砚构建 4 个核心产品，并以 5 个支撑模块完成业务闭环。
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="#featured">查看重点案例 <span>↓</span></a>
@@ -40,16 +44,16 @@ export default function Home() {
             <Image src="/projects/lumen-ink/01.webp" alt="光砚 AI 图像编辑工作台" fill priority sizes="300px" />
             <span>03 · MULTIMODAL</span>
           </a>
-          <a className="hero-panel hero-panel-bottom" href="/projects/lora-finetuning">
-            <Image src="/projects/lora-finetuning/04.png" alt="LoRA 本地推理架构" fill priority sizes="320px" />
-            <span>09 · MODEL TRAINING</span>
+          <a className="hero-panel hero-panel-bottom" href="/projects/collator">
+            <Image src="/projects/collator/01.webp" alt="Collator 数据摄入 Agent" fill priority sizes="320px" />
+            <span>05 · DATA AGENT</span>
           </a>
         </div>
 
         <div className="hero-metrics">
-          <div><strong>9</strong><span>AI 产品与工程案例</span></div>
+          <div><strong>4</strong><span>核心 AI 产品</span></div>
+          <div><strong>5</strong><span>业务支撑模块</span></div>
           <div><strong>17 / 12</strong><span>数据表 / 自动化规则</span></div>
-          <div><strong>2</strong><span>QLoRA 微调基座</span></div>
           <div><strong>282 / 80+</strong><span>SKU / 峰值并行项目</span></div>
         </div>
       </section>
@@ -71,9 +75,9 @@ export default function Home() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">FEATURED CASE STUDIES</p>
-            <h2>三个案例，证明三个关键能力。</h2>
+            <h2>四个案例，证明四项关键能力。</h2>
           </div>
-          <p>不把 9 个项目等权堆叠。重点案例分别证明 Agent 可靠性、数据与流程设计、多模态产品化能力。</p>
+          <p>数据中台、Service Agent、Collator 与光砚分别证明业务系统设计、Agent 可靠性、数据智能和多模态产品化能力；其余五个模块作为系统支撑保留在完整项目库，并随验证进度持续迭代。</p>
         </div>
 
         <div className="featured-list">
@@ -111,7 +115,7 @@ export default function Home() {
           <div className="section-heading system-heading">
             <div>
               <p className="eyebrow">CROSS-PROJECT ARCHITECTURE</p>
-              <h2>9 个项目不是孤岛，而是一套五层产品系统。</h2>
+              <h2>4 个核心产品 + 5 个支撑模块，组成一套五层 AI 产品系统。</h2>
             </div>
             <p>客户触点负责体验与留资，智能服务处理咨询和数据摄入，数据中台统一业务流转，增长引擎反哺内容，模型层提供本地训练与推理。</p>
           </div>
@@ -142,7 +146,7 @@ export default function Home() {
             <p className="eyebrow">ALL PROJECTS</p>
             <h2>完整项目库</h2>
           </div>
-          <p>按岗位需要筛选 Agent、数据、多模态、用户端、增长与模型训练案例。每个详情页都说明角色、决策、证据、取舍与下一步。</p>
+          <p>按岗位需要筛选 Agent、数据、多模态、用户端、增长与模型训练案例。重点项目优先补强在线体验与评测证据，支撑模块保留当前可信状态并持续更新。</p>
         </div>
         <ProjectLibrary projects={projects} />
         <p className="metric-note">指标说明：标注为“内部估算 / 业务估算”的数值来自小样本测试或运营观察，未作为经过大样本验证的业务结论。</p>
@@ -162,7 +166,7 @@ export default function Home() {
                 <h3>泽怀摄影工作室｜创始人兼 AI 产品负责人</h3>
                 <p>从 0 到 1 构建五层 AI Native 产品矩阵，负责产品战略、业务建模、MVP 验证、技术方案与上线协同。</p>
                 <ul>
-                  <li>9 个 AI 产品与工程项目</li>
+                  <li>4 个核心 AI 产品 + 5 个业务支撑模块</li>
                   <li>12 个关键业务节点、17 张数据表、12 条自动化</li>
                   <li>Agent、RAG、多模态与 QLoRA 端到端实践</li>
                 </ul>

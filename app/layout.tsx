@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: "陈嘉伟｜AI / Agent 产品经理作品集",
     template: "%s｜陈嘉伟 AI 产品作品集",
   },
-  description: "AI 应用与 Agent 产品经理作品集：数据中台、RAG、客服 Agent、多模态产品、微信产品与 QLoRA 模型微调。",
+  description: "AI 应用与 Agent 产品经理作品集：4 个核心 AI 产品与 5 个支撑模块，覆盖数据中台、RAG、数据 Agent、多模态产品与模型微调。",
   keywords: ["AI 产品经理", "Agent 产品经理", "RAG", "AI 应用", "数据产品", "多模态", "QLoRA", "陈嘉伟"],
   authors: [{ name: "陈嘉伟", url: "https://www.jaelchen.com" }],
   creator: "陈嘉伟",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "陈嘉伟｜AI / Agent 产品经理作品集",
-    description: "9 个真实 AI 产品与工程案例：Agent、RAG、数据、多模态与模型微调。",
+    description: "4 个核心 AI 产品 + 5 个支撑模块：Agent、数据智能、多模态与 AI Native 业务系统。",
     images: ["/og.jpg"],
   },
 };
