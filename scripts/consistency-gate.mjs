@@ -1,4 +1,4 @@
-// PORTFOLIO CONSISTENCY GATE
+﻿// PORTFOLIO CONSISTENCY GATE
 // 最小自动检查:不调用 build,独立运行
 // 用法: node scripts/consistency-gate.mjs
 
@@ -178,6 +178,19 @@ const oldSlugsStillPresent = oldSlugs.filter((slug) => {
   return regex.test(projectsSource);
 });
 check("data-platform/collator/feishu-portal slug 已移除", oldSlugsStillPresent.length === 0, oldSlugsStillPresent.length > 0 ? `仍存在: ${oldSlugsStillPresent.join(", ")}` : "");
+
+// === 检查 16: visible experiment count 与 Hero experimentCount 一致 ===
+console.log("检查 16: visible experiment count 检查");
+const featuredCountInSource = (projectsSource.match(/featured:\s*true/g) || []).length;
+const archivedCountInSource = (projectsSource.match(/archived:\s*true/g) || []).length;
+const totalSlugDefinitions = (projectsSource.match(/^\s+slug:\s*"/gm) || []).length;
+const visibleExperimentCount = totalSlugDefinitions - featuredCountInSource - archivedCountInSource;
+const usesDynamicExperimentCount = pageSource.includes("experimentProjects.length") && pageSource.includes("{experimentCount}");
+check(
+  `experimentCount 动态计算且 visible experiments = ${visibleExperimentCount}`,
+  usesDynamicExperimentCount && visibleExperimentCount >= 0,
+  `featured: ${featuredCountInSource}, archived: ${archivedCountInSource}, total: ${totalSlugDefinitions}, visible: ${visibleExperimentCount}`
+);
 
 // === 汇总 ===
 console.log("\n=== 汇总 ===");

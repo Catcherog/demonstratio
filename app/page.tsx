@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { DataFlywheel } from "@/components/DataFlywheel";
 import { Header } from "@/components/Header";
 import { ProjectLibrary } from "@/components/ProjectLibrary";
@@ -19,7 +19,7 @@ export default function Home() {
         <div className="hero-copy">
           <div className="availability"><span /> OPEN TO AI PRODUCT OPPORTUNITIES</div>
           <p className="eyebrow">AI / AGENT PRODUCT MANAGER · TECHNICAL BUILDER</p>
-          <h1>AI Agent 产品经理,专注把复杂业务流程转化为可治理、可协同、可交付的 AI 系统。</h1>
+          <h1>AI Agent 产品经理,把复杂业务做成可治理、可协同、可交付的 AI 系统。</h1>
           <p className="hero-lead">
             我是陈嘉伟。曾在 TP-Link 管理复杂软硬件项目组合,现作为 3 人全职创业团队的创始人兼 AI 产品负责人,围绕业务建模、Agent 编排、数据治理、人工复核、多端产品与云端交付构建 AI 产品矩阵。
           </p>
@@ -57,42 +57,7 @@ export default function Home() {
         <div className="hero-metrics">
           <div><strong>{featuredCount}</strong><span>Featured Case Studies</span></div>
           <div><strong>{experimentCount}</strong><span>Selected Experiments</span></div>
-          <div><strong>17 / 12</strong><span>数据表 / 自动化(历史基线)</span></div>
           <div><strong>282 / 80+</strong><span>SKU / 峰值并行项目</span></div>
-        </div>
-      </section>
-
-      <section className="proof-section">
-        <div className="section-shell proof-grid">
-          {capabilities.map((capability, index) => (
-            <article className="proof-card" key={capability.title}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h2>{capability.title}</h2>
-              <p>{capability.body}</p>
-              <small>{capability.evidence}</small>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="capability-chain-section" id="capability">
-        <div className="section-shell">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">CAPABILITY FRAMEWORK</p>
-              <h2>从业务问题到可交付的 AI 系统,一条完整能力链。</h2>
-            </div>
-            <p>不把 LLM 直接等同于产品。先定义业务对象、风险和人工边界,再把可确定的规则、检索和工具调用放入工作流,最后用可复现证据验证输入、决策、写入和反馈闭环。</p>
-          </div>
-          <div className="capability-chain">
-            {capabilityChain.map((step, index) => (
-              <div className="chain-step" key={step}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{step}</strong>
-                {index < capabilityChain.length - 1 && <span className="chain-arrow" aria-hidden="true">→</span>}
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -138,6 +103,40 @@ export default function Home() {
               <span className="featured-number">{String(index + 1).padStart(2, "0")}</span>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="proof-section">
+        <div className="section-shell proof-grid">
+          {capabilities.map((capability, index) => (
+            <article className="proof-card" key={capability.title}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h2>{capability.title}</h2>
+              <p>{capability.body}</p>
+              <small>{capability.evidence}</small>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="capability-chain-section" id="capability">
+        <div className="section-shell">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">CAPABILITY FRAMEWORK</p>
+              <h2>从业务问题到可交付的 AI 系统,一条完整能力链。</h2>
+            </div>
+            <p>不把 LLM 直接等同于产品。先定义业务对象、风险和人工边界,再把可确定的规则、检索和工具调用放入工作流,最后用可复现证据验证输入、决策、写入和反馈闭环。</p>
+          </div>
+          <div className="capability-chain">
+            {capabilityChain.map((step, index) => (
+              <div className="chain-step" key={step}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{step}</strong>
+                {index < capabilityChain.length - 1 && <span className="chain-arrow" aria-hidden="true">→</span>}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

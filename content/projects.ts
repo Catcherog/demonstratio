@@ -1,4 +1,4 @@
-export type ProjectCategory =
+﻿export type ProjectCategory =
   | "Agent / RAG"
   | "Data / Automation"
   | "Multimodal"
@@ -84,8 +84,8 @@ export const projects: Project[] = [
     title: "飞书 AI 业务数据平台",
     subtitle: "把聊天记录、截图、表单和人工录入转化为可治理的飞书业务数据",
     summary:
-      "面向中小型业务团队的 AI 业务数据平台,通过智能录入、Candidate 候选生成、SOP 治理规则、人工复核与 dry-run 写入,把非结构化输入转化为可治理的飞书业务数据,并通过自动化通知和智能机器人降低录入与协作成本。",
-    status: "Portfolio MVP｜核心链路已实现,最终集成收尾中",
+      "面向中小型业务团队的 AI 业务数据平台,通过智能录入、Candidate 候选生成、SOP 治理规则、人工复核与 dry-run 写入,把非结构化输入转化为可治理的飞书业务数据。自动化通知与机器人作为执行层能力,当前处于协议设计与受控验证阶段,未主张已实现降本效果。",
+    status: "Portfolio MVP｜核心 dry-run 链路已验证,生产集成收尾中",
     demoType: "local-only",
     role: "产品负责人 / 数据模型设计 / 治理规则 / MVP 开发",
     team: "3 人创业团队",
@@ -97,7 +97,7 @@ export const projects: Project[] = [
     metrics: [
       { value: "5 层", label: "平台模块架构" },
       { value: "6/6", label: "dry-run 集成门禁" },
-      { value: "17", label: "张业务表(历史基线)", note: "旧版底座" },
+      { value: "17 / 12", label: "数据表 / 自动化(历史基线)", note: "旧版底座" },
       { value: "504+91", label: "Collator + SOP 单元测试" },
     ],
     tags: ["数据平台", "治理规则", "人工复核", "Agent 摄入"],
@@ -156,7 +156,7 @@ export const projects: Project[] = [
       "文本摄入链路验证",
     ],
     inProgressCapabilities: [
-      "真实飞书 API 写入(待配置凭据)",
+      "受控 live-write 复验、凭据治理与上线开关",
       "Portal 公开部署(待 Preview)",
       "机器人真实部署(协议设计阶段)",
     ],
@@ -178,7 +178,7 @@ export const projects: Project[] = [
       { area: "用户与业务需求", detail: "定义 17 张业务表模型与 12 条自动化规则,识别 5 个业务域" },
       { area: "产品架构", detail: "设计五层平台架构与双入口治理(Collator + SOP)" },
       { area: "Agent / 数据流", detail: "Candidate V1 合同设计与 MockOcrEngine 适配器" },
-      { area: "工程协作", detail: "3 人团队协作,负责数据模型、治理规则与 Portal MVP 开发" },
+      { area: "工程协作", detail: "3 人创业团队协作,本人负责数据模型、治理规则与 Portal MVP 开发;使用 Trae、Cursor 等 AI 编码工具加速原型实现,业务决策、治理规则设计与代码审查由本人完成" },
       { area: "测试与验收", detail: "6/6 集成门禁设计与验证,Collator 504 + SOP 91 单元测试" },
       { area: "迭代决策", detail: "dry-run 优先策略,Mock OCR 换取零风险演示" },
     ],
@@ -190,7 +190,7 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 10 }, (_, i) => `/projects/data-platform/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "mixed",
-    link: { label: "本地运行说明", href: "#contact", note: "Prototype 阶段,暂无公开演示链接" },
+    link: { label: "本地原型｜联系申请", href: "#contact", note: "Prototype 阶段,暂无公开演示链接" },
   },
   {
     slug: "service-agent",
@@ -292,7 +292,7 @@ export const projects: Project[] = [
       { area: "用户与业务需求", detail: "定义 18 类咨询场景与敏感边界" },
       { area: "产品架构", detail: "LangGraph 节点/边设计与风险路由策略" },
       { area: "Agent / 数据流", detail: "RAG 检索链路与三级置信度分流" },
-      { area: "工程协作", detail: "3 人团队协作,负责 Agent 架构与评估方案" },
+      { area: "工程协作", detail: "3 人创业团队协作,本人负责 Agent 架构与评估方案;使用 Trae、Cursor 等 AI 编码工具辅助编码,产品决策、风险策略与质量验收由本人主导" },
       { area: "测试与验收", detail: "28 个测试文件与端到端验证" },
       { area: "迭代决策", detail: "质量闸门优先于全自动,人工确认作为知识更新闸门" },
     ],
@@ -304,7 +304,7 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 7 }, (_, i) => `/projects/service-agent/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
-    link: { label: "查看案例｜演示维护中", href: "#contact", note: "chat.jael.com 当前连接关闭,演示维护中" },
+    link: { label: "演示维护中｜联系申请", href: "#contact", note: "chat.jael.com 当前连接关闭,演示维护中" },
   },
   {
     slug: "lumen-ink",
@@ -321,8 +321,9 @@ export const projects: Project[] = [
     team: "个人主导,团队业务验证",
     period: "2026.05 - 至今",
     featured: true,
+    provisional: true,
     evidenceLabel:
-      "线上 lumen-ink.vercel.app 要求密码,采用受控访问方式。CloudBase NoSQL 持久化处于最终验收,当前提供受控演示,不主张开放公开访问。",
+      "现有受控演示:lumen-ink.vercel.app 密码保护,申请体验。NoSQL 升级状态:CloudBase 持久化处于最终验收(FIX-R9),readyForPreview=false,未达到公开访问标准。",
     metrics: [
       { value: "4", label: "类模型 Provider" },
       { value: "6", label: "类专业工具" },
@@ -406,7 +407,7 @@ export const projects: Project[] = [
       { area: "用户与业务需求", detail: "高端摄影修图体验与内部标准化工具需求" },
       { area: "产品架构", detail: "Provider 工厂与适配器设计,六段式提示词结构" },
       { area: "Agent / 数据流", detail: "任务调度、异步状态与持久化链路" },
-      { area: "工程协作", detail: "个人主导,团队业务验证" },
+      { area: "工程协作", detail: "个人主导产品与架构,团队提供业务验证;使用 Trae、Cursor 等 AI 编码工具实现 MVP,模型选型、Provider 抽象与持久化审计由本人设计" },
       { area: "测试与验收", detail: "46 个测试文件与高风险持久化审计" },
       { area: "迭代决策", detail: "受控演示策略,NoSQL 持久化分级验收" },
     ],
@@ -417,7 +418,7 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 5 }, (_, i) => `/projects/lumen-ink/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
-    link: { label: "受控演示｜申请体验", href: "https://lumen-ink.vercel.app/", note: "由于演示会产生模型调用成本,当前采用受控访问方式" },
+    link: { label: "受控演示｜申请体验", href: "https://lumen-ink.vercel.app/", note: "演示会产生模型调用成本,当前采用受控访问方式" },
   },
   {
     slug: "wechat-bot",
