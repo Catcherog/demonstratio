@@ -17,6 +17,24 @@ export type ArchitectureStep = {
   detail: string;
 };
 
+export type DemoType = "public" | "controlled" | "local-only" | "unavailable";
+
+export type WorkflowStep = {
+  label: string;
+  detail: string;
+};
+
+export type EvidenceLink = {
+  label: string;
+  type: "screenshot" | "test" | "api" | "architecture" | "data" | "deploy";
+  ref: string;
+};
+
+export type ContributionArea = {
+  area: string;
+  detail: string;
+};
+
 export type Project = {
   slug: string;
   index: string;
@@ -26,20 +44,31 @@ export type Project = {
   subtitle: string;
   summary: string;
   status: string;
+  demoType?: DemoType;
   role: string;
   team: string;
   period: string;
   featured?: boolean;
+  archived?: boolean;
+  provisional?: boolean;
   evidenceLabel?: string;
   metrics: ProjectMetric[];
   tags: string[];
   stack: string[];
   problem: string[];
+  productStrategy?: string[];
   decisions: string[];
   outcomes: string[];
   architecture: ArchitectureStep[];
+  keyWorkflow?: WorkflowStep[];
   tradeoffs: string[];
   nextSteps: string[];
+  verifiedCapabilities?: string[];
+  inProgressCapabilities?: string[];
+  plannedCapabilities?: string[];
+  evidenceLinks?: EvidenceLink[];
+  myContribution?: ContributionArea[];
+  lastVerifiedAt?: string;
   relationships: { slug: string; label: string; detail: string }[];
   images: string[];
   imageMode?: "desktop" | "mobile" | "mixed";
@@ -111,53 +140,117 @@ export const projects: Project[] = [
     index: "02",
     category: "Agent / RAG",
     categoryLabel: "RAG · AGENT · AI SERVICE",
-    title: "Service Agent",
-    subtitle: "AI 优先应答，低置信度问题进入人工质量闸门",
+    title: "Studio Customer Service",
+    subtitle: "影像工作室 AI 辅助客服 Agent",
     summary:
-      "面向高端摄影咨询，设计查询改写、检索、重排序、置信度分流、人工复核与知识回流，重点解决准确性、边界控制和持续更新。",
-    status: "业务验证中",
+      "面向影像工作室咨询与运营场景的 Agentic Workflow，通过 LangGraph 8 节点 11 边工作流编排知识检索、意图/风险判断、答案生成、质量检查、人工接管与反馈飞轮，以 fail-closed 策略控制高风险承诺。",
+    status: "作品集 Demo｜演示维护中",
+    demoType: "unavailable",
     role: "产品定义 / Agent 架构 / 评估方案 / MVP 开发",
     team: "3 人创业团队",
     period: "2026.04 - 至今",
     featured: true,
-    evidenceLabel: "以下准确率与自动应答率为内部小样本估算，待固定评测集与线上数据验证。",
+    provisional: true,
+    evidenceLabel:
+      "公开演示域名 chat.jael.com 当前连接关闭，演示维护中。自动应答率与准确率为内部小样本估算，待固定评测集与线上数据验证。497 tests 为 2026-07-23 pytest 全量回归证据，非准确率指标。",
     metrics: [
-      { value: "18", label: "类咨询场景" },
-      { value: "3 级", label: "置信度分流" },
-      { value: "90%+", label: "检索准确率", note: "内部估算" },
-      { value: "50%+", label: "基础咨询自动应答", note: "内部估算" },
+      { value: "8 / 11", label: "LangGraph 节点 / 边" },
+      { value: "497", label: "pytest 全量回归", note: "2026-07-23 证据" },
+      { value: "R0–R3", label: "风险分级 fail-closed" },
+      { value: "f98b1f5", label: "代码闭合 SHA" },
     ],
-    tags: ["Agent", "RAG", "Human-in-the-loop"],
-    stack: ["Python", "LangGraph", "Dify", "LangSmith", "SentenceTransformer", "CloudBase", "COS", "GLM"],
+    tags: ["Agent", "LangGraph", "RAG", "Human-in-the-loop", "fail-closed"],
+    stack: ["Python", "LangGraph", "Flask", "Next.js", "ChromaDB", "飞书知识库", "OpenAI-compatible LLM interface"],
     problem: [
-      "价格、档期、拍摄流程与敏感边界容错率低，纯大模型容易编造；静态 FAQ 又无法覆盖自然语言表达。",
+      "客服培训成本高，话术一致性难保证；价格、档期与拍摄流程的敏感边界容错率低，纯大模型容易编造或作出高风险承诺。",
       "客服知识持续变化，若没有审核和回流机制，检索库会快速过期或被低质量对话污染。",
     ],
+    productStrategy: [
+      "产品目标：用受控 Agent 工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。",
+      "产品边界：当前为作品集 Demo，公开演示维护中，不主张生产 SLO，不声明生产上线或生产试点。",
+      "方案选择：采用 LangGraph 确定性节点与 LLM 节点组合工作流，LLM 通过可配置的 OpenAI 兼容接口接入，未配置 Key 时回退本地模板匹配。",
+      "暂不做：不追求无条件自动回复，不把内部小样本估算写成生产指标，不公开展示具体 LLM 型号。",
+    ],
     decisions: [
-      "定义 18 类咨询场景与明确的可答、需确认、必须转人工边界，先设计风险策略再设计对话。",
-      "采用查询改写、候选检索与重排序链路，并通过三级置信度决定直接建议、人工复核或兜底转人工。",
-      "把人工确认作为知识更新的质量闸门，优质会话才进入飞书主源、检索库和 JSON 镜像。",
+      "定义 18 类咨询场景与 R0–R3 风险分级，先设计风险策略与 fail-closed 边界，再设计对话流程；高风险与低置信度路径直接转人工接管。",
+      "采用查询改写、ChromaDB 向量召回与候选重排序链路，并通过三级置信度决定直接建议、人工复核或兜底转人工。",
+      "知识与规则分离：飞书知识库作为权威主源，ChromaDB 仅承担语义检索，本地 JSON 镜像提供可解释副本，避免单一向量库成为不可解释的知识黑箱。",
+      "LLM 生成与模板回退双路径：LLM 通过可配置的 OpenAI 兼容接口接入，未配置 LLM_API_KEY 时回退本地模板匹配，保证服务可用性。",
+      "把人工确认作为知识更新的质量闸门，优质会话才进入飞书主源、检索库和 JSON 镜像，形成反馈飞轮。",
     ],
     outcomes: [
-      "完成从需求定义、知识组织、Agent 编排到 PC 客服辅助界面的端到端验证。",
-      "内部小样本估算检索准确率 90%+，基础重复咨询自动应答 50%+；指标已明确标注为估算。",
-      "形成“对话使用 - 归档清洗 - 人工确认 - 知识同步 - 检索增强”的可持续闭环。",
+      "完成从需求定义、知识组织、LangGraph 8 节点 11 边编排到 PC 客服辅助界面的端到端 MVP。",
+      "LangGraph 工作流、RAG 检索、风险分流、fail-closed 人工接管与反馈飞轮均有代码证据。",
+      "497 tests 全量回归通过（2026-07-23 pytest 证据），0 failed；28 个测试文件、819 tracked 文件支持当前架构。",
+      "三项生产写入安全门禁保持关闭：PRODUCTION_PILOT_ALLOWED=false、EXTERNAL_WRITE_ACTIONS_ALLOWED=false、STORE_MESSAGE_CONTENT=false；Demo 限流 30/min，多轮 history 边界 6 条。",
+      "代码闭合 SHA f98b1f5，SCS-MANUAL-012 LLM 配置闭合（OCI revision 固定 + base image digest + 脚本清理）。",
     ],
     architecture: [
-      { label: "场景路由", detail: "18 类意图、敏感边界与人工接管条件" },
+      { label: "场景路由", detail: "18 类意图、R0–R3 风险分级与人工接管条件" },
       { label: "查询理解", detail: "对话上下文、查询改写与关键词补全" },
-      { label: "检索增强", detail: "向量召回、候选重排序与引用上下文" },
-      { label: "质量闸门", detail: "高分建议、中分复核、低分转人工" },
+      { label: "检索增强", detail: "ChromaDB 向量召回、候选重排序与引用上下文" },
+      { label: "质量闸门", detail: "高分建议、中分复核、低分/高风险 fail-closed 转人工" },
       { label: "知识飞轮", detail: "归档、清洗、人工确认和多端同步" },
+    ],
+    keyWorkflow: [
+      { label: "N1 意图与风险路由", detail: "用户咨询 → 18 类场景识别 → R0–R3 风险分级" },
+      { label: "N2 查询改写", detail: "对话上下文 + 关键词补全 → 检索查询" },
+      { label: "N3 知识检索", detail: "ChromaDB 向量召回 → 候选文档" },
+      { label: "N4 候选重排序", detail: "重排序 + 引用上下文构建" },
+      { label: "N5 答案生成", detail: "可配置 OpenAI 兼容 LLM 接口生成；未配置 Key 时回退模板匹配" },
+      { label: "N6 质量闸门", detail: "三级置信度分流：高分直接建议 / 中分人工复核 / 低分或高风险 fail-closed" },
+      { label: "N7 人工接管", detail: "fail-closed 兜底：低置信度、高风险承诺与敏感边界统一转人工" },
+      { label: "N8 反馈飞轮", detail: "归档 → 清洗 → 人工确认 → 飞书主源 / ChromaDB / JSON 镜像同步" },
     ],
     tradeoffs: [
       "不追求无条件自动回复，牺牲部分自动化率以换取价格、档期与敏感场景的可靠性。",
       "保留飞书权威主源和本地 JSON 镜像，避免单一向量库成为不可解释的知识黑箱。",
+      "LLM 生成与模板回退双路径，牺牲部分回答质量以换取服务可用性（未配置 Key 时仍可运行）。",
     ],
     nextSteps: [
-      "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率、转人工率与知识过期率。",
+      "恢复公开演示域名健康检查，或明确标注演示维护中。",
+      "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率与转人工率。",
       "在真实流量中做分阶段灰度，校准置信度阈值并记录误答成本。",
     ],
+    verifiedCapabilities: [
+      "LangGraph 8 节点 11 边工作流编排",
+      "RAG 知识检索（ChromaDB 向量召回 + 重排序）",
+      "意图识别与 R0–R3 风险分级",
+      "fail-closed 人工接管路径",
+      "反馈飞轮闭环（归档→清洗→人工确认→知识同步）",
+      "LLM 生成与模板回退双路径",
+      "Web/API 端到端 MVP",
+      "497 tests 全量回归通过（2026-07-23）",
+      "三项生产写入安全门禁保持关闭",
+    ],
+    inProgressCapabilities: [
+      "公开演示恢复（chat.jael.com 连接关闭）",
+      "冻结评测集建立",
+      "STATUS 文档同步至 SCS-MANUAL-012",
+    ],
+    plannedCapabilities: [
+      "真实流量灰度上线",
+      "指标评测（召回率/采纳率/转人工率）",
+      "知识过期率监控",
+    ],
+    evidenceLinks: [
+      { label: "LangGraph 工作流流程图", type: "architecture", ref: "SCS-001" },
+      { label: "客服聊天页面", type: "screenshot", ref: "SCS-002" },
+      { label: "人工接管案例", type: "screenshot", ref: "SCS-003" },
+      { label: "知识检索 API 证据", type: "api", ref: "SCS-004" },
+      { label: "28 个测试文件 / 497 tests", type: "test", ref: "SCS-005" },
+      { label: "反馈飞轮闭环代码", type: "api", ref: "SCS-006" },
+      { label: "Demo Disclosure（演示维护中）", type: "deploy", ref: "SCS-007" },
+    ],
+    myContribution: [
+      { area: "用户与业务需求", detail: "影像工作室咨询与运营场景调研，定义 18 类咨询场景与 R0–R3 风险分级" },
+      { area: "产品架构", detail: "LangGraph 8 节点 11 边工作流编排、风险路由与 fail-closed 策略设计" },
+      { area: "Agent / 数据流", detail: "RAG 检索链路、三级置信度分流、反馈飞轮与知识更新闸门" },
+      { area: "工程协作", detail: "3 人团队协作，Flask API + Next Web + ChromaDB + 飞书知识库，负责 Agent 架构与评估方案" },
+      { area: "测试与验收", detail: "497 tests 全量回归、SCS-MANUAL-012 LLM 配置闭合、三项生产写入安全门禁验证" },
+      { area: "迭代决策", detail: "公网 Demo 与生产写动作分离（fail-closed + 安全开关始终 false）" },
+    ],
+    lastVerifiedAt: "2026-07-23T00:00:00Z",
     relationships: [
       { slug: "wechat-bot", label: "微信公众号机器人", detail: "机器人负责通道接入和会话归档，Agent 负责知识与质量。" },
       { slug: "lora-finetuning", label: "LoRA 微调", detail: "微调模型作为本地推理与云端 API 的备选后端。" },
@@ -165,6 +258,7 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 7 }, (_, i) => `/projects/service-agent/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
+    link: { label: "查看案例｜演示维护中", href: "#contact", note: "chat.jael.com 当前连接关闭，演示维护中" },
   },
   {
     slug: "lumen-ink",
