@@ -27,6 +27,11 @@ export const metadata: Metadata = {
     description: "4 个核心 AI 产品 + 5 个支撑模块：Agent、数据智能、多模态与 AI Native 业务系统。",
     images: ["/og.jpg"],
   },
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

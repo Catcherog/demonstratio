@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import { DataFlywheel } from "@/components/DataFlywheel";
 import { Header } from "@/components/Header";
 import { ProjectLibrary } from "@/components/ProjectLibrary";
@@ -237,7 +237,6 @@ export default function Home() {
           <div className="contact-actions">
             <a href="mailto:Jael_Chen@foxmail.com"><span>邮箱</span><strong>Jael_Chen@foxmail.com</strong><Arrow /></a>
             <a href="https://github.com/Catcherog" target="_blank" rel="noreferrer"><span>GitHub</span><strong>Catcherog</strong><Arrow /></a>
-            <a href="/resume/chen-jiawei-ai-agent-cn-one-page.pdf" target="_blank" rel="noreferrer"><span>简历(临时入口)</span><strong>PDF</strong><Arrow /></a>
           </div>
         </div>
         <div className="section-shell footer-bottom"><span>© 2026 陈嘉伟</span><a href="#top">返回顶部 ↑</a></div>
