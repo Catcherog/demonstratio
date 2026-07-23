@@ -581,6 +581,66 @@ export const projects: Project[] = [
     ],
     imageMode: "desktop",
   },
+  {
+    slug: "feishu-portal",
+    index: "10",
+    category: "Data / Automation",
+    categoryLabel: "INTEGRATION PORTAL · GOVERNANCE MVP",
+    title: "飞书智能业务数据中台 Portal",
+    subtitle: "截图录入 → 候选结构化 → 治理校验 → 人工确认 → dry-run 写入",
+    summary:
+      "以 Collator + SOP 双入口治理架构为基础，构建可视化 Portal MVP，把截图智能录入、Candidate 合同校验、业务规则复核和人工确认组合成可演示的端到端闭环。",
+    status: "Prototype · dry-run",
+    role: "产品架构 / 合同设计 / Portal 开发",
+    team: "个人主导",
+    period: "2026.07 - 至今",
+    evidenceLabel: "当前为 Prototype 阶段，所有写入均为 dry-run，不接触生产飞书业务表。集成 Gate 6 场景在本地通过。",
+    metrics: [
+      { value: "6/6", label: "集成 Gate 场景通过" },
+      { value: "7", label: "个截图 API 端点" },
+      { value: "2", label: "个治理入口 (PRE/POST)" },
+      { value: "0", label: "生产写入副作用" },
+    ],
+    tags: ["集成 Portal", "双入口治理", "dry-run", "Prototype"],
+    stack: ["Next.js 16", "React 19", "TypeScript", "Tailwind", "Zustand", "Fastify", "Node.js", "Vitest", "Zod"],
+    problem: [
+      "Collator 和 SOP 各自具备完整的 HTTP 合同和治理逻辑，但缺少一个把上传、候选预览、治理结果和人工确认串成可视化流程的入口。",
+      "直接连接生产飞书业务表进行演示风险过高，需要在真实 HTTP 链路和 dry-run writer 之间建立可信切换边界。",
+    ],
+    decisions: [
+      "采用 Collator → SOP → dry-run writer 的真实 HTTP 链路，保证治理规则和合同校验是真实执行的，只有最终写入是 dry-run。",
+      "Portal 显著标注当前模式（Demo / Real API / Live Mode），通过顶部 Disclosure 横幅和颜色编码避免模式混淆。",
+      "集成 Gate 脚本设计 6 个场景：正常客片、正常样片、缺关联、类型未知、幂等确认、SOP 拒绝后无副作用，全部输出机器可读 JSON 证据。",
+    ],
+    outcomes: [
+      "完成 Portal 上传、候选预览、证据查看、人工修正、确认写入和转复核 6 段可视化流程。",
+      "集成 Gate 6/6 场景 PASS，包含 fail-closed（SOP BLOCKED → 无写入副作用）和幂等（重复 confirm 返回相同 completed_at）验证。",
+      "collator 504 单元测试 + typecheck 通过；SOP 91 单元测试通过；Portal build 成功。",
+    ],
+    architecture: [
+      { label: "Portal 层", detail: "Next.js App Router + Zustand + mock/real API 双模式" },
+      { label: "Collator 层", detail: "Fastify :8787 + 7 个截图 API + MockOcrEngine" },
+      { label: "SOP 治理层", detail: "Node http :3001 + PRE_WRITE + BR-01~06 业务规则" },
+      { label: "写入层", detail: "dry-run writer（不接触生产飞书表）" },
+      { label: "证据层", detail: "integration-gate-evidence.json + 日志 + 截图" },
+    ],
+    tradeoffs: [
+      "Prototype 阶段使用 MockOcrEngine 返回固定预设文本，不接入真实 OCR，换取可重复演示和零凭据风险。",
+      "Portal 未初始化为独立 git 仓库，当前以目录形式存在；后续如需独立部署可拆分。",
+    ],
+    nextSteps: [
+      "接入真实 OCR 引擎和飞书生产凭据，在受控环境验证 live write 路径。",
+      "建立固定评测集，统计 OCR 字段准确率、治理拦截率和人工修改率。",
+      "将 Portal 拆分为独立仓库并部署 Preview，形成可分享的演示链接。",
+    ],
+    relationships: [
+      { slug: "collator", label: "Collator", detail: "Portal 直接调用 Collator HTTP API 完成截图摄入和治理。" },
+      { slug: "data-platform", label: "数据中台", detail: "dry-run writer 的目标表结构对齐数据中台 17 张业务表。" },
+    ],
+    images: [],
+    imageMode: "desktop",
+    link: { label: "Prototype 说明", href: "#contact", note: "本地运行，暂无公开演示链接" },
+  },
 ];
 
 export const categories: (ProjectCategory | "全部")[] = [
