@@ -40,6 +40,32 @@ export default async function ProjectPage({ params }: Props) {
   const next = projects[(currentIndex + 1) % projects.length];
   const totalCount = projects.length;
 
+  // 动态计算实际渲染的章节，生成连续编号（避免条件章节导致跳号）
+  const visibleSections = [
+    { id: "overview", render: true },
+    { id: "problem", render: true },
+    { id: "strategy", render: Boolean(project.productStrategy) },
+    { id: "architecture", render: true },
+    { id: "workflow", render: Boolean(project.keyWorkflow) },
+    { id: "decisions", render: true },
+    { id: "evidence", render: true },
+    { id: "capability", render: true },
+    { id: "contribution", render: Boolean(project.myContribution) },
+    { id: "gallery", render: true },
+    { id: "tradeoffs", render: true },
+    { id: "relationships", render: true },
+  ].filter((s) => s.render);
+
+  const sectionNum = (id: string) => {
+    const idx = visibleSections.findIndex((s) => s.id === id);
+    return String(idx + 1).padStart(2, "0");
+  };
+
+  // SCS 工作流特有：检测是否使用 N 前缀节点标签（仅 SCS 的 keyWorkflow 使用 N1-N8）
+  const hasNamedNodes = Boolean(
+    project.keyWorkflow?.some((step) => /^N\d+\s/.test(step.label)),
+  );
+
   return (
     <main id="top" className="case-page">
       <Header />
@@ -82,7 +108,7 @@ export default async function ProjectPage({ params }: Props) {
       </section>
 
       <section className="case-overview section-shell">
-        <div className="case-section-title"><span>01</span><div><p className="eyebrow">OVERVIEW</p><h2>项目概览。</h2></div></div>
+        <div className="case-section-title"><span>{sectionNum("overview")}</span><div><p className="eyebrow">OVERVIEW</p><h2>项目概览。</h2></div></div>
         <div className="case-two-column">
           <div className="case-panel">
             <h3>项目一句话</h3>
@@ -103,7 +129,7 @@ export default async function ProjectPage({ params }: Props) {
       </section>
 
       <section className="case-overview section-shell">
-        <div className="case-section-title"><span>02</span><div><p className="eyebrow">PROBLEM</p><h2>业务问题与痛点。</h2></div></div>
+        <div className="case-section-title"><span>{sectionNum("problem")}</span><div><p className="eyebrow">PROBLEM</p><h2>业务问题与痛点。</h2></div></div>
         <div className="case-two-column">
           <div className="case-panel">
             <h3>原业务流程</h3>
@@ -118,7 +144,7 @@ export default async function ProjectPage({ params }: Props) {
 
       {project.productStrategy && (
         <section className="case-overview section-shell">
-          <div className="case-section-title"><span>03</span><div><p className="eyebrow">PRODUCT STRATEGY</p><h2>产品策略与边界。</h2></div></div>
+          <div className="case-section-title"><span>{sectionNum("strategy")}</span><div><p className="eyebrow">PRODUCT STRATEGY</p><h2>产品策略与边界。</h2></div></div>
           <div className="decision-grid">
             {project.productStrategy.map((strategy, index) => (
               <article key={strategy}><span>0{index + 1}</span><p>{strategy}</p></article>
@@ -128,7 +154,7 @@ export default async function ProjectPage({ params }: Props) {
       )}
 
       <section className="case-architecture section-shell">
-        <div className="case-section-title"><span>04</span><div><p className="eyebrow">SYSTEM ARCHITECTURE</p><h2>系统架构。</h2></div></div>
+        <div className="case-section-title"><span>{sectionNum("architecture")}</span><div><p className="eyebrow">SYSTEM ARCHITECTURE</p><h2>系统架构。</h2></div></div>
         <div className="architecture-flow">
           {project.architecture.map((step, index) => (
             <article key={step.label}>
@@ -145,23 +171,41 @@ export default async function ProjectPage({ params }: Props) {
       </section>
 
       {project.keyWorkflow && (
-        <section className="case-architecture section-shell">
-          <div className="case-section-title"><span>05</span><div><p className="eyebrow">KEY WORKFLOW</p><h2>关键用户路径。</h2></div></div>
-          <div className="architecture-flow">
-            {project.keyWorkflow.map((step, index) => (
-              <article key={step.label}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <h3>{step.label}</h3>
-                <p>{step.detail}</p>
-              </article>
-            ))}
+        <section className="case-workflow-section section-shell">
+          <div className="case-section-title"><span>{sectionNum("workflow")}</span><div><p className="eyebrow">{hasNamedNodes ? "AGENT WORKFLOW" : "KEY WORKFLOW"}</p><h2>{hasNamedNodes ? "受控工作流编排。" : "关键用户路径。"}</h2></div></div>
+          <div className="workflow-flow">
+            {project.keyWorkflow.map((step) => {
+              const isFailClosed = step.label.includes("人工接管");
+              const isFeedback = step.label.includes("反馈飞轮");
+              const itemClass = isFailClosed ? "wf-fail-closed" : isFeedback ? "wf-feedback" : "";
+              const heading = hasNamedNodes ? step.label.replace(/^N\d+\s/, "") : step.label;
+              return (
+                <article key={step.label} className={itemClass}>
+                  <span className="wf-node-tag">{step.label}</span>
+                  <h3>{heading}</h3>
+                  <p>{step.detail}</p>
+                </article>
+              );
+            })}
           </div>
+          {hasNamedNodes && (
+            <div className="workflow-meta">
+              <div>
+                <strong>FAIL-CLOSED 人工接管路径</strong>
+                <p>N6 质量闸门低置信度、高风险承诺与敏感边界统一进入 N7 人工接管,不在公网 Demo 中自动回复,确保价格、档期等敏感场景不产生不可控承诺。</p>
+              </div>
+              <div>
+                <strong>反馈飞轮闭环</strong>
+                <p>N8 将归档会话经清洗与人工确认后写回飞书主源、ChromaDB 与本地 JSON 镜像,形成可解释的知识更新链路,避免单一向量库成为不可解释的知识黑箱。</p>
+              </div>
+            </div>
+          )}
         </section>
       )}
 
       <section className="case-dark-section">
         <div className="section-shell">
-          <div className="case-section-title case-title-light"><span>06</span><div><p className="eyebrow">KEY PRODUCT DECISIONS</p><h2>关键决策,不只是功能列表。</h2></div></div>
+          <div className="case-section-title case-title-light"><span>{sectionNum("decisions")}</span><div><p className="eyebrow">KEY PRODUCT DECISIONS</p><h2>关键决策,不只是功能列表。</h2></div></div>
           <div className="decision-grid">
             {project.decisions.map((decision, index) => (
               <article key={decision}><span>0{index + 1}</span><p>{decision}</p></article>
@@ -172,7 +216,7 @@ export default async function ProjectPage({ params }: Props) {
 
       <section className="case-evidence-section">
         <div className="section-shell">
-          <div className="case-section-title"><span>07</span><div><p className="eyebrow">EVIDENCE</p><h2>展示证据,也说明证据边界。</h2></div></div>
+          <div className="case-section-title"><span>{sectionNum("evidence")}</span><div><p className="eyebrow">EVIDENCE</p><h2>展示证据,也说明证据边界。</h2></div></div>
           <div className="outcome-list">
             {project.outcomes.map((outcome, index) => (
               <article key={outcome}><span>{String(index + 1).padStart(2, "0")}</span><p>{outcome}</p></article>
@@ -189,24 +233,24 @@ export default async function ProjectPage({ params }: Props) {
             </div>
           )}
           {project.evidenceLabel && <div className="evidence-warning"><strong>指标边界</strong><p>{project.evidenceLabel}</p></div>}
+          {project.lastVerifiedAt && (
+            <p className="case-verified-meta">最后验证时间:{project.lastVerifiedAt}</p>
+          )}
         </div>
       </section>
 
       <section className="case-gallery-section section-shell">
-        <div className="case-section-title"><span>08</span><div><p className="eyebrow">CURRENT VERSION & ROADMAP</p><h2>当前版本与路线图。</h2></div></div>
+        <div className="case-section-title"><span>{sectionNum("capability")}</span><div><p className="eyebrow">CURRENT VERSION & ROADMAP</p><h2>当前版本与路线图。</h2></div></div>
         <StatusBadge
           verified={project.verifiedCapabilities}
           inProgress={project.inProgressCapabilities}
           planned={project.plannedCapabilities}
         />
-        {project.lastVerifiedAt && (
-          <p className="last-verified">最后验证时间:{project.lastVerifiedAt}</p>
-        )}
       </section>
 
       {project.myContribution && (
-        <section className="case-reflection section-shell">
-          <div className="case-section-title"><span>09</span><div><p className="eyebrow">MY CONTRIBUTION</p><h2>我的贡献。</h2></div></div>
+        <section className="case-contribution-section section-shell">
+          <div className="case-section-title"><span>{sectionNum("contribution")}</span><div><p className="eyebrow">MY CONTRIBUTION</p><h2>我的贡献。</h2></div></div>
           <div className="contribution-grid">
             {project.myContribution.map((contribution) => (
               <article key={contribution.area}>
@@ -219,12 +263,12 @@ export default async function ProjectPage({ params }: Props) {
       )}
 
       <section className="case-gallery-section section-shell">
-        <div className="case-section-title"><span>10</span><div><p className="eyebrow">PRODUCT EVIDENCE</p><h2>界面、流程与实现证据。</h2></div></div>
+        <div className="case-section-title"><span>{sectionNum("gallery")}</span><div><p className="eyebrow">PRODUCT EVIDENCE</p><h2>界面、流程与实现证据。</h2></div></div>
         <ProjectGallery title={project.title} images={project.images} mode={project.imageMode} />
       </section>
 
       <section className="case-reflection section-shell">
-        <div className="case-section-title"><span>11</span><div><p className="eyebrow">TRADE-OFFS & NEXT</p><h2>取舍、风险和下一步。</h2></div></div>
+        <div className="case-section-title"><span>{sectionNum("tradeoffs")}</span><div><p className="eyebrow">TRADE-OFFS & NEXT</p><h2>取舍、风险和下一步。</h2></div></div>
         <div className="case-two-column">
           <div className="case-panel">
             <h3>关键取舍</h3>
@@ -239,7 +283,7 @@ export default async function ProjectPage({ params }: Props) {
 
       <section className="relationship-section">
         <div className="section-shell">
-          <div className="case-section-title case-title-light"><span>12</span><div><p className="eyebrow">CROSS-PROJECT RELATIONSHIPS</p><h2>它如何进入完整产品系统。</h2></div></div>
+          <div className="case-section-title case-title-light"><span>{sectionNum("relationships")}</span><div><p className="eyebrow">CROSS-PROJECT RELATIONSHIPS</p><h2>它如何进入完整产品系统。</h2></div></div>
           <div className="relationship-grid">
             {project.relationships.map((relation) => (
               <a href={`/projects/${relation.slug}`} key={relation.slug}>
@@ -264,7 +308,6 @@ export default async function ProjectPage({ params }: Props) {
           <h2>正在寻找 AI 应用 / Agent 产品经理机会。</h2>
           <div>
             <a className="button button-primary" href="mailto:Jael_Chen@foxmail.com">联系我 <Arrow /></a>
-            <a className="button button-ghost" href="/resume/chen-jiawei-ai-agent-cn-one-page.pdf" target="_blank" rel="noreferrer">下载简历(临时入口) <Arrow /></a>
           </div>
         </div>
       </section>

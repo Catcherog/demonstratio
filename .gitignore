@@ -5,3 +5,9 @@ out
 .vercel
 .DS_Store
 tsconfig.tsbuildinfo
+
+# SCS image audit - temporary files
+public/projects/service-agent/.original-backup/
+public/projects/service-agent/*_v2.png
+public/projects/service-agent/*.png
+public/scs-audit*.html
