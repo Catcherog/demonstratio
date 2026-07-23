@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    return [
+      { source: "/projects/data-platform", destination: "/projects/feishu-platform", permanent: true },
+      { source: "/projects/collator", destination: "/projects/feishu-platform", permanent: true },
+      { source: "/projects/feishu-portal", destination: "/projects/feishu-platform", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

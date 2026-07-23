@@ -1,16 +1,19 @@
 # Jael Chen AI Product Portfolio
 
-面向 AI 应用 / Agent 产品经理求职的 Next.js 16 作品集升级版。
+面向 AI 应用 / Agent 产品经理求职的 Next.js 16 作品集。
 
-## 主要改动
+## 结构
 
-- 首页由“项目平铺”改为岗位定位、三项能力证据、三个旗舰案例、五层产品架构、数据飞轮、完整项目库和经历时间线。
-- 新增第 9 个 LoRA 客服 Agent 微调案例，包含 1.5B / 7B 训练曲线与本地推理架构证据。
-- 9 个项目拆分为 `/projects/[slug]` 独立路由，统一展示问题、职责、决策、架构、证据、取舍和下一步。
-- 微信机器人知识检索已按实际情况修正为 JSON 关键词检索（jieba + 字符 bigram 兜底）。
-- 估算指标在页面中显式标注，避免将小样本观察写成确定业务结论。
-- 修复移动端 Lightbox 导航并支持左右滑动。
-- 加入中文一页、中文两页和英文 PDF 简历下载。
+- 首页:岗位定位、能力框架、Featured Case Studies、Selected Experiments、经历时间线。
+- 三个主案例:飞书 AI 业务数据平台、Service Agent、光砚。
+- 实验与辅助能力:微信机器人、内容调研、品牌官网、LoRA 微调、微信小程序。
+- 项目详情页统一 9 节模板:Overview / Problem / Product Strategy / System Architecture / Key Workflow / Key Product Decisions / Evidence / Current Version and Roadmap / My Contribution。
+
+## 设计原则
+
+- Target-state-first:产品愿景按最终设想表达,当前版本和证据按真实状态表达。
+- Evidence-labeled:已验证、收尾中、后续计划分层展示,不混为一谈。
+- 不使用未经证明的绝对业务指标。
 
 ## 本地运行
 
@@ -19,12 +22,23 @@ npm install
 npm run dev
 ```
 
-生产检查：
+## 门禁检查
+
+三项门禁分别运行:
 
 ```bash
-npm run lint
-npm run build
+npm run lint            # TypeScript 类型检查
+npm run check:portfolio # 内容一致性检查(不调用 build)
+npm run build           # Next.js 构建
 ```
+
+## 历史路由
+
+以下旧路由永久重定向到 `/projects/feishu-platform`:
+
+- `/projects/data-platform`
+- `/projects/collator`
+- `/projects/feishu-portal`
 
 ## 部署
 

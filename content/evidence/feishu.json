@@ -1,0 +1,93 @@
+[
+  {
+    "evidenceId": "FEISHU-001",
+    "title": "集成 Gate 6/6 场景通过",
+    "project": "feishu-platform",
+    "capability": "智能处理层",
+    "evidenceType": "test",
+    "filePath": "lark/scripts/integration-gate-evidence.json",
+    "gitSha": "1e5e5ad",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-22T17:33:41Z"
+  },
+  {
+    "evidenceId": "FEISHU-002",
+    "title": "Portal 浏览器证据(6 张脱敏截图)",
+    "project": "feishu-platform",
+    "capability": "智能录入层",
+    "evidenceType": "screenshot",
+    "filePath": "lark/evidence/portal-browser/",
+    "gitSha": "d78f8b6",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": "lark/evidence/portal-browser/",
+    "lastVerified": "2026-07-22T00:00:00Z"
+  },
+  {
+    "evidenceId": "FEISHU-003",
+    "title": "Collator 504 单元测试 + typecheck 通过",
+    "project": "feishu-platform",
+    "capability": "智能处理层",
+    "evidenceType": "test",
+    "filePath": "lark/collator/",
+    "gitSha": "1e5e5ad",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-22T00:00:00Z"
+  },
+  {
+    "evidenceId": "FEISHU-004",
+    "title": "SOP 91 单元测试通过",
+    "project": "feishu-platform",
+    "capability": "治理层",
+    "evidenceType": "test",
+    "filePath": "lark/SOP/",
+    "gitSha": "d5e08de",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-22T00:00:00Z"
+  },
+  {
+    "evidenceId": "FEISHU-005",
+    "title": "Candidate V1 合同(Zod 校验)",
+    "project": "feishu-platform",
+    "capability": "智能处理层",
+    "evidenceType": "api",
+    "filePath": "lark/collator/src/contracts/",
+    "gitSha": "1e5e5ad",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-22T00:00:00Z"
+  },
+  {
+    "evidenceId": "FEISHU-006",
+    "title": "五层平台架构图",
+    "project": "feishu-platform",
+    "capability": "系统架构",
+    "evidenceType": "architecture",
+    "filePath": "lark/docs/portfolio-release/PORTFOLIO_RELEASE.md",
+    "gitSha": "1e5e5ad",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-22T00:00:00Z"
+  },
+  {
+    "evidenceId": "FEISHU-007",
+    "title": "dry-run 审计日志与事务快照",
+    "project": "feishu-platform",
+    "capability": "数据层",
+    "evidenceType": "data",
+    "filePath": "lark/scripts/integration-gate-evidence.json",
+    "gitSha": "1e5e5ad",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-22T17:33:41Z"
+  }
+]

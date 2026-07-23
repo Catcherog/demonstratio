@@ -1,0 +1,93 @@
+[
+  {
+    "evidenceId": "SCS-001",
+    "title": "LangGraph 工作流流程图",
+    "project": "service-agent",
+    "capability": "Agent 编排",
+    "evidenceType": "architecture",
+    "filePath": "Monorepo/service agent/src/langgraph/",
+    "gitSha": "f98b1f5",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-23T00:00:00Z"
+  },
+  {
+    "evidenceId": "SCS-002",
+    "title": "客服聊天页面",
+    "project": "service-agent",
+    "capability": "前端入口",
+    "evidenceType": "screenshot",
+    "filePath": "Monorepo/service agent/web/",
+    "gitSha": "f98b1f5",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-23T00:00:00Z"
+  },
+  {
+    "evidenceId": "SCS-003",
+    "title": "人工接管案例",
+    "project": "service-agent",
+    "capability": "人工节点",
+    "evidenceType": "screenshot",
+    "filePath": "Monorepo/service agent/web/",
+    "gitSha": "f98b1f5",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-23T00:00:00Z"
+  },
+  {
+    "evidenceId": "SCS-004",
+    "title": "知识检索 API 证据",
+    "project": "service-agent",
+    "capability": "RAG",
+    "evidenceType": "api",
+    "filePath": "Monorepo/service agent/src/",
+    "gitSha": "f98b1f5",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-23T00:00:00Z"
+  },
+  {
+    "evidenceId": "SCS-005",
+    "title": "28 个测试文件",
+    "project": "service-agent",
+    "capability": "测试与验收",
+    "evidenceType": "test",
+    "filePath": "Monorepo/service agent/tests/",
+    "gitSha": "f98b1f5",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-23T00:00:00Z"
+  },
+  {
+    "evidenceId": "SCS-006",
+    "title": "反馈飞轮闭环代码",
+    "project": "service-agent",
+    "capability": "反馈闭环",
+    "evidenceType": "api",
+    "filePath": "Monorepo/service agent/src/",
+    "gitSha": "f98b1f5",
+    "verificationStatus": "VERIFIED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-23T00:00:00Z"
+  },
+  {
+    "evidenceId": "SCS-007",
+    "title": "Demo Disclosure:chat.jael.com 连接关闭,演示维护中",
+    "project": "service-agent",
+    "capability": "部署入口",
+    "evidenceType": "deploy",
+    "filePath": "Monorepo/service agent/docs/portfolio/SCS-PUBLIC-EVIDENCE-PACK.md",
+    "gitSha": "f98b1f5",
+    "verificationStatus": "CONTRADICTED",
+    "publicSafe": true,
+    "screenshotPath": null,
+    "lastVerified": "2026-07-23T00:00:00Z"
+  }
+]
