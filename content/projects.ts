@@ -269,12 +269,14 @@ export const projects: Project[] = [
     subtitle: "把修图专家经验抽象为可操作的参数、流程与模型能力",
     summary:
       "统一接入多类图像模型，将专业人像修图中的特征保留、光影、镜头与风格要求产品化，降低客户体验和团队复用门槛。",
-    status: "可在线体验",
+    status: "Controlled Demo｜前端公开访问,后端受控",
+    demoType: "controlled",
     role: "产品负责人 / 交互设计 / 全栈 MVP",
     team: "个人主导，团队业务验证",
     period: "2026.05 - 至今",
     featured: true,
-    evidenceLabel: "转化相关结果来自早期业务观察，当前网站不以未经充分验证的提升倍数作为主证据。",
+    evidenceLabel:
+      "前端公开访问:lumen-ink.vercel.app,用户自带模型 API Key。NoSQL 升级状态:CloudBase 持久化处于最终验收(FIX-R9),readyForPreview=false,后端仍为受控验证。",
     metrics: [
       { value: "4", label: "类模型 Provider" },
       { value: "6", label: "类专业工具" },
@@ -318,7 +320,12 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 5 }, (_, i) => `/projects/lumen-ink/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
-    link: { label: "访问光砚", href: "https://lumen-ink.vercel.app/", note: "体验需自行配置模型 API Key" },
+    lastVerifiedAt: "2026-07-26T00:00:00Z",
+    link: {
+      label: "访问光砚",
+      href: "https://lumen-ink.vercel.app/",
+      note: "前端公开访问,用户自带模型 API Key;CloudBase 持久化层仍处于受控验证阶段。",
+    },
   },
   {
     slug: "wechat-bot",
@@ -387,7 +394,8 @@ export const projects: Project[] = [
     subtitle: "把聊天、图片、语音与文档转成可校验的业务数据",
     summary:
       "以感知、理解、执行三层 Agent 处理多源非结构化输入，通过四步清洗、五重约束与人工确认，将资料稳定写入数据中台。",
-    status: "MVP 验证完成",
+    status: "Controlled Demo｜测试环境真实链路",
+    demoType: "controlled",
     role: "产品架构 / Schema 设计 / MVP 开发",
     team: "个人主导",
     period: "2026.03 - 2026.06",
@@ -434,6 +442,12 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 5 }, (_, i) => `/projects/collator/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
+    lastVerifiedAt: "2026-07-26T05:30:00Z",
+    link: {
+      label: "体验飞书 AI 数据中台",
+      href: "https://portal-seven-jade-47.vercel.app",
+      note: "演示连接隔离的飞书测试 Base;包含真实 OCR、人工确认、治理和测试写入,不连接生产业务数据。",
+    },
   },
   {
     slug: "content-research",
