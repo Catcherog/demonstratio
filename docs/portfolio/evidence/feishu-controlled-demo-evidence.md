@@ -4,6 +4,7 @@
 > **生成时间**: 2026-07-26
 > **执行者**: Trae
 > **状态**: B1-B4 PASS / B5 PASS（Portal 已部署）
+> **文件完整性标注**: reconstructed after accidental cleanup (2026-07-26), revalidated against current repository state. SHA256: e38a6220d5bff1a27b1f3f814eb0296906f796210f78cb376fd4147d9c941ab1, Size: 12070 bytes.
 
 ---
 

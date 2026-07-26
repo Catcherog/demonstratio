@@ -9,6 +9,7 @@
 > **公网入口**：https://lumen-ink.vercel.app/
 > **实现 SHA**：499717b（任务文档基线 ✓）
 > **Closure SHA**：ecd4973
+> **文件完整性标注**: reconstructed after accidental cleanup (2026-07-26), revalidated against current repository state. SHA256: 0907f612b78d87b6fce311f0a347e6a005ae8f3994807af1bd6926e292b09779, Size: 15910 bytes.
 
 ---
 

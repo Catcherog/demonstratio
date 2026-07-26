@@ -1,0 +1,35 @@
+fix(portfolio): apply GPT review feedback — conditional pass corrections
+
+修正内容（基于 GPT 裁决 CONDITIONAL_PASS 的 5 项小修）：
+
+1. SCS 状态措辞统一：
+   - status: "作品集 Demo｜演示维护中" → "Case Ready｜在线演示维护中"
+   - 不再归入 Demo Ready（chat.jael.com NXDOMAIN，不可体验）
+   - CTA 不再直接引导至 NXDOMAIN 失效域名：
+     label: "查看案例｜演示维护中" → "查看案例"
+     note 明确说明"chat.jael.com 当前连接关闭，可查看案例详情或联系了解受控演示"
+   - evidenceLabel 同步更新，明确"在线演示维护中"和 NXDOMAIN 三源验证
+
+2. Lumen 状态措辞调整：
+   - status: "前端公开访问,后端受控" → "前端公开访问，后端能力受控"
+   - evidenceLabel + link.note 显式说明功能边界：
+     "当前可查看产品界面与交互流程；涉及持久化的后端操作暂未开放（Vercel env 配置阻塞中，PERSISTENCE_BACKEND 待修复为 cloudbase-nosql）"
+
+3. Feishu/Lumen evidence 文件添加 reconstructed 标注：
+   - 文件头注明"reconstructed after accidental cleanup (2026-07-26)"
+   - 标注 SHA256 和 Size 供后续核对
+
+4. 04.webp 视觉审查 HTML 重建：
+   - 原 HTML 在 Lane D workspace 清理时误删
+   - 重建版基于当前仓库的 04.webp 生成
+   - 元数据层已机器验证 PASS（无 EXIF/XMP/ICC 隐藏元数据）
+   - 12 项视觉审查清单待用户人工完成
+
+5. 修正分支语义超报：
+   - 原 Commit 1 描述"unify three primary cases to DEMO_READY states"存在语义超报
+   - 实际状态：Feishu ✅ Demo Ready / Lumen ⚠️ Partial / SCS ❌ 不属于可体验 Demo Ready
+   - 本 Commit 不修改原 Commit，但通过本说明澄清语义
+
+门禁：tsc --noEmit PASS + next build PASS
+
+Refs: PORTFOLIO-THREE-DEMO-READY-01 / Lane D / GPT Review CONDITIONAL_PASS

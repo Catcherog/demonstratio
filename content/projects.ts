@@ -144,7 +144,7 @@ export const projects: Project[] = [
     subtitle: "影像工作室 AI 辅助客服 Agent",
     summary:
       "面向影像工作室咨询与运营场景的 Agentic Workflow，通过 LangGraph 8 节点 11 边工作流编排知识检索、意图/风险判断、答案生成、质量检查、人工接管与反馈飞轮，以 fail-closed 策略控制高风险承诺。",
-    status: "作品集 Demo｜演示维护中",
+    status: "Case Ready｜在线演示维护中",
     demoType: "unavailable",
     role: "产品定义 / Agent 架构 / 评估方案 / MVP 开发",
     team: "3 人创业团队",
@@ -152,7 +152,7 @@ export const projects: Project[] = [
     featured: true,
     provisional: true,
     evidenceLabel:
-      "公开演示域名 chat.jael.com 当前连接关闭，演示维护中。自动应答率与准确率为内部小样本估算，待固定评测集与线上数据验证。497 tests 为 2026-07-23 pytest 全量回归证据，非准确率指标。",
+      "在线演示维护中：chat.jael.com 当前连接关闭（NXDOMAIN，三源验证）。案例为完整作品集展示，自动应答率与准确率为内部小样本估算，待固定评测集与线上数据验证。497 tests 为 2026-07-23 pytest 全量回归证据，非准确率指标。",
     metrics: [
       { value: "8 / 11", label: "LangGraph 节点 / 边" },
       { value: "497", label: "pytest 全量回归", note: "2026-07-23 证据" },
@@ -258,7 +258,7 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 7 }, (_, i) => `/projects/service-agent/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
-    link: { label: "查看案例｜演示维护中", href: "#contact", note: "chat.jael.com 当前连接关闭，演示维护中" },
+    link: { label: "查看案例", href: "#contact", note: "在线演示维护中：chat.jael.com 当前连接关闭，可查看案例详情或联系了解受控演示" },
   },
   {
     slug: "lumen-ink",
@@ -269,14 +269,14 @@ export const projects: Project[] = [
     subtitle: "把修图专家经验抽象为可操作的参数、流程与模型能力",
     summary:
       "统一接入多类图像模型，将专业人像修图中的特征保留、光影、镜头与风格要求产品化，降低客户体验和团队复用门槛。",
-    status: "Controlled Demo｜前端公开访问,后端受控",
+    status: "Controlled Demo｜前端公开访问，后端能力受控",
     demoType: "controlled",
     role: "产品负责人 / 交互设计 / 全栈 MVP",
     team: "个人主导，团队业务验证",
     period: "2026.05 - 至今",
     featured: true,
     evidenceLabel:
-      "前端公开访问:lumen-ink.vercel.app,用户自带模型 API Key。NoSQL 升级状态:CloudBase 持久化处于最终验收(FIX-R9),readyForPreview=false,后端仍为受控验证。",
+      "前端公开访问:lumen-ink.vercel.app,用户自带模型 API Key。当前可查看产品界面与交互流程；涉及持久化的后端操作暂未开放（Vercel env 配置阻塞中，PERSISTENCE_BACKEND 待修复为 cloudbase-nosql）。NoSQL 升级状态:CloudBase 持久化处于最终验收(FIX-R9),readyForPreview=false,后端仍为受控验证。",
     metrics: [
       { value: "4", label: "类模型 Provider" },
       { value: "6", label: "类专业工具" },
@@ -324,7 +324,7 @@ export const projects: Project[] = [
     link: {
       label: "访问光砚",
       href: "https://lumen-ink.vercel.app/",
-      note: "前端公开访问,用户自带模型 API Key;CloudBase 持久化层仍处于受控验证阶段。",
+      note: "前端公开访问，用户自带模型 API Key；当前可查看产品界面与交互流程，涉及持久化的后端操作暂未开放（Vercel env 配置阻塞中）。",
     },
   },
   {

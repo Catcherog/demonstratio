@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>04.webp 视觉审查 — SCS 案例图（重建版）</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      background: #fafafa;
+      color: #333;
+    }
+    h1 { border-bottom: 2px solid #0066cc; padding-bottom: 8px; }
+    h2 { margin-top: 32px; border-left: 4px solid #0066cc; padding-left: 12px; }
+    .meta-table, .checklist {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+    .meta-table th, .meta-table td, .checklist th, .checklist td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .meta-table th, .checklist th {
+      background: #f0f4f8;
+      font-weight: 600;
+    }
+    .checklist td:first-child { width: 40px; text-align: center; font-weight: 600; }
+    .checklist td:nth-child(2) { width: 80px; }
+    .pass { color: #2e7d32; }
+    .pending { color: #f57c00; }
+    .image-frame {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 12px;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .image-frame img { max-width: 100%; height: auto; border: 1px solid #eee; }
+    .image-meta {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+      font-family: monospace;
+    }
+    .note {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 12px 16px;
+      margin: 16px 0;
+    }
+    .reconstructed {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #ddd;
+      font-size: 12px;
+      color: #999;
+    }
+    .viewport-note {
+      background: #f5f5f5;
+      padding: 8px 12px;
+      margin: 8px 0;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>04.webp 视觉审查 — SCS 案例图</h1>
+
+  <div class="reconstructed">
+    <strong>重建标注</strong>：本审查文件为 2026-07-26 重建版本。
+    原始 04-webp-visual-review.html 在 Lane D workspace 清理时被误删，本文件基于当前仓库的 04.webp 重新生成。
+    元数据层已机器验证 PASS，视觉审查清单项需用户人工完成。
+  </div>
+
+  <div class="note">
+    <strong>审查方式</strong>：
+    <ol>
+      <li>下方嵌入的 04.webp 图片</li>
+      <li>按 12 项清单逐项检查</li>
+      <li>对每项标注 PASS / NEEDS_REVIEW / FAIL</li>
+      <li>如发现敏感信息或异常裁切，立即停止审查并通知</li>
+    </ol>
+    <strong>审查完成后</strong>：将审查结果（每项状态 + 备注）告知主会话，由主会话写入 evidence。
+  </div>
+
+  <h2>1. 文件元数据（机器验证 · 已 PASS）</h2>
+  <table class="meta-table">
+    <tr><th>项</th><th>值</th></tr>
+    <tr><td>文件路径</td><td><code>public/projects/service-agent/04.webp</code></td></tr>
+    <tr><td>SHA256</td><td><code>ef712470352c00e2322f1d769faa047e76dd0540ff3eceea333bdb9f218f63d8</code></td></tr>
+    <tr><td>Size (bytes)</td><td>126838</td></tr>
+    <tr><td>Format</td><td>WEBP</td></tr>
+    <tr><td>Dimensions</td><td>1707 × 1191</td></tr>
+    <tr><td>Mode</td><td>RGB</td></tr>
+    <tr><td>Magic (hex)</td><td><code>52494646</code>（RIFF，WebP 标准）</td></tr>
+    <tr><td>EXIF</td><td class="pass">未检测到（len=0）✓</td></tr>
+    <tr><td>XMP</td><td class="pass">未检测到（len=0）✓</td></tr>
+    <tr><td>ICC Profile</td><td class="pass">未检测到（len=0）✓</td></tr>
+    <tr><td>Other info keys</td><td class="pass">无 ✓</td></tr>
+  </table>
+  <p><strong>元数据结论</strong>：<span class="pass">✅ PASS</span> — 无 EXIF/XMP/ICC 隐藏元数据，文件为纯像素数据。</p>
+
+  <h2>2. 图片预览</h2>
+  <div class="image-frame">
+    <img src="../../public/projects/service-agent/04.webp" alt="04.webp — SCS 案例架构图">
+    <div class="image-meta">
+      04.webp · 1707×1191 · 126838 bytes · SHA256: ef712470352c00e2...
+    </div>
+  </div>
+
+  <div class="viewport-note">
+    <strong>视口提示</strong>：建议在 1440px 桌面端和 375px 移动端两个档位下检查渲染。
+    桌面端预期正常显示；移动端可能存在横向溢出（与登录页同样的 scrollWidth=832px 问题）。
+  </div>
+
+  <h2>3. 12 项视觉审查清单</h2>
+  <table class="checklist">
+    <tr><th>#</th><th>状态</th><th>检查项</th><th>备注</th></tr>
+    <tr><td>1</td><td>⏳ PENDING</td><td>图片内容与 SCS 案例主题一致（架构图/流程图）</td><td>预期为 LangGraph 8 节点 11 边工作流或类似架构图</td></tr>
+    <tr><td>2</td><td>⏳ PENDING</td><td>无客户真实姓名、电话、邮箱泄露</td><td>—</td></tr>
+    <tr><td>3</td><td>⏳ PENDING</td><td>无订单编号、合同编号、付款信息</td><td>—</td></tr>
+    <tr><td>4</td><td>⏳ PENDING</td><td>无飞书内部链接、私有知识库 URL</td><td>—</td></tr>
+    <tr><td>5</td><td>⏳ PENDING</td><td>无 CloudBase Secret / API Key / 凭据字符串</td><td>—</td></tr>
+    <tr><td>6</td><td>⏳ PENDING</td><td>无 LLM API Key / OpenAI Key / 内部模型标识</td><td>—</td></tr>
+    <tr><td>7</td><td>⏳ PENDING</td><td>无内部 IP、内网域名、服务器路径</td><td>—</td></tr>
+    <tr><td>8</td><td>⏳ PENDING</td><td>无测试数据截图（record_id、真实业务数据）</td><td>—</td></tr>
+    <tr><td>9</td><td>⏳ PENDING</td><td>图片清晰度足够（文字可读，无模糊）</td><td>1707×1191 在桌面端应可读</td></tr>
+    <tr><td>10</td><td>⏳ PENDING</td><td>无异常裁切、变形、黑边</td><td>—</td></tr>
+    <tr><td>11</td><td>⏳ PENDING</td><td>移动端渲染（375px）无严重溢出</td><td>允许轻微横向滚动，但主体应可见</td></tr>
+    <tr><td>12</td><td>⏳ PENDING</td><td>图片在 SCS 案例页中的位置与上下文匹配</td><td>对照 <code>app/projects/[slug]/page.tsx</code></td></tr>
+  </table>
+
+  <h2>4. 审查结论模板</h2>
+  <div class="note">
+    审查完成后，请填写以下结论并通知主会话：
+    <pre>
+04.webp 视觉审查结论：
+- 通过项数：X / 12
+- 需复核项：[列出 #]
+- 失败项：[列出 # + 详细描述]
+- 最终结论：PASS / NEEDS_FIX / FAIL
+- 处理建议：[如有]
+    </pre>
+  </div>
+
+  <div class="footer">
+    <strong>文件信息</strong>：<br>
+    路径：<code>docs/portfolio/evidence/04-webp-visual-review.html</code><br>
+    重建时间：2026-07-26<br>
+    基于文件：<code>public/projects/service-agent/04.webp</code>（SHA256: ef712470352c00e2...）<br>
+    审查状态：<span class="pending">PENDING_USER_REVIEW</span>（待用户人工完成 12 项清单）
+  </div>
+
+</body>
+</html>
