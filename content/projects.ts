@@ -73,6 +73,7 @@ export type Project = {
   images: string[];
   imageMode?: "desktop" | "mobile" | "mixed";
   link?: { label: string; href: string; note?: string };
+  fallbackLink?: { label: string; href: string; note?: string };
 };
 
 export const projects: Project[] = [
@@ -80,12 +81,12 @@ export const projects: Project[] = [
     slug: "data-platform",
     index: "01",
     category: "Data / Automation",
-    categoryLabel: "DATA PLATFORM · MOBILE OPS",
-    title: "数据中台底座 + 移动作业 APP",
+    categoryLabel: "FEISHU AI DATA PLATFORM · MOBILE OPS",
+    title: "飞书 AI 业务数据平台",
     subtitle: "把非标摄影交付拆成可追踪、可协作的标准流程",
     summary:
-      "围绕获客、咨询、拍摄、后期、交付与复盘，建立统一业务数据模型、自动化规则与移动作业入口，作为 9 个项目的运营底座。",
-    status: "已投入业务使用",
+      "围绕获客、咨询、拍摄、后期、交付与复盘，建立统一业务数据模型、自动化规则与移动作业入口；Collator 作为飞书子系统处理非结构化资料摄入。",
+    status: "Portfolio Pilot｜真实测试 Base E2E 已验证，正式业务 Pilot 与通知自动化待启用",
     role: "产品负责人 / 数据模型设计 / MVP 开发",
     team: "3 人创业团队",
     period: "2026.02 - 至今",
@@ -108,9 +109,9 @@ export const projects: Project[] = [
       "移动端优先覆盖现场高频动作，加入离线缓存和待同步队列，而非复刻完整后台。",
     ],
     outcomes: [
-      "17 张表与 12 条自动化覆盖客户全生命周期和拍摄全流程，上线以来未出现流程性漏单。",
-      "完成 111 条历史数据迁移，迁移失败为 0；新人上手周期由 2-3 周缩短至 3-5 天。",
-      "为 Service Agent、Collator、内容调研、小程序与官网提供统一数据接口和流程触发点。",
+      "真实测试 Base 的端到端链路已验证：17 张表、12 条自动化覆盖客户全生命周期和拍摄全流程；正式业务 Pilot 与通知自动化仍待启用。",
+      "完成 111 条历史数据迁移；该迁移批次未记录失败。新人上手周期 2-3 周至 3-5 天为内部业务观察。",
+      "为 Service Agent、Collator（飞书子系统）、内容调研、小程序与官网提供统一数据接口和流程触发点。",
     ],
     architecture: [
       { label: "业务建模", detail: "12 个关键节点、5 个业务域与角色权限" },
@@ -134,6 +135,16 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 10 }, (_, i) => `/projects/data-platform/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "mixed",
+    link: {
+      label: "打开测试 Base 受控演示",
+      href: "https://portal-seven-jade-47.vercel.app",
+      note: "真实测试 Base E2E 已验证；不连接生产业务数据，正式业务 Pilot 与通知自动化待启用。",
+    },
+    fallbackLink: {
+      label: "查看平台证据",
+      href: "#evidence",
+      note: "若受控入口加载失败，请重试或查看页面内的架构、测试和状态证据。",
+    },
   },
   {
     slug: "service-agent",
@@ -144,7 +155,7 @@ export const projects: Project[] = [
     subtitle: "影像工作室 AI 辅助客服 Agent",
     summary:
       "面向影像工作室咨询与运营场景的 Agentic Workflow，通过 LangGraph 8 节点 11 边工作流编排知识检索、意图/风险判断、答案生成、质量检查、人工接管与反馈飞轮，以 fail-closed 策略控制高风险承诺。",
-    status: "Case Ready｜在线演示维护中",
+    status: "Case Ready｜维护中 / fallback",
     demoType: "unavailable",
     role: "产品定义 / Agent 架构 / 评估方案 / MVP 开发",
     team: "3 人创业团队",
@@ -152,11 +163,12 @@ export const projects: Project[] = [
     featured: true,
     provisional: true,
     evidenceLabel:
-      "在线演示维护中：chat.jael.com 当前连接关闭（NXDOMAIN，三源验证）。案例为完整作品集展示，自动应答率与准确率为内部小样本估算，待固定评测集与线上数据验证。497 tests 为 2026-07-23 pytest 全量回归证据，非准确率指标。",
+      "固定 90 样本离线路由正确率 75/90=83.33%；这不是生产准确率/回答总体准确率。公网 URL 本轮未核验，当前标注为维护中 / fallback：请查看受控案例证据或联系了解演示。497 tests 为 2026-07-23 pytest 全量回归证据，非准确率指标。",
     metrics: [
       { value: "8 / 11", label: "LangGraph 节点 / 边" },
       { value: "497", label: "pytest 全量回归", note: "2026-07-23 证据" },
       { value: "R0–R3", label: "风险分级 fail-closed" },
+      { value: "75/90=83.33%", label: "离线路由正确率", note: "不是生产准确率/回答总体准确率" },
       { value: "f98b1f5", label: "代码闭合 SHA" },
     ],
     tags: ["Agent", "LangGraph", "RAG", "Human-in-the-loop", "fail-closed"],
@@ -167,7 +179,7 @@ export const projects: Project[] = [
     ],
     productStrategy: [
       "产品目标：用受控 Agent 工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。",
-      "产品边界：当前为作品集 Demo，公开演示维护中，不主张生产 SLO，不声明生产上线或生产试点。",
+      "产品边界：当前为作品集 Demo，公网 URL 本轮未核验，维护中 / fallback；不主张生产 SLO，不声明生产上线或生产试点。",
       "方案选择：采用 LangGraph 确定性节点与 LLM 节点组合工作流，LLM 通过可配置的 OpenAI 兼容接口接入，未配置 Key 时回退本地模板匹配。",
       "暂不做：不追求无条件自动回复，不把内部小样本估算写成生产指标，不公开展示具体 LLM 型号。",
     ],
@@ -208,7 +220,7 @@ export const projects: Project[] = [
       "LLM 生成与模板回退双路径，牺牲部分回答质量以换取服务可用性（未配置 Key 时仍可运行）。",
     ],
     nextSteps: [
-      "恢复公开演示域名健康检查，或明确标注演示维护中。",
+      "恢复并核验公开演示域名健康检查；在此之前保留维护中 / fallback 标注。",
       "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率与转人工率。",
       "在真实流量中做分阶段灰度，校准置信度阈值并记录误答成本。",
     ],
@@ -224,7 +236,7 @@ export const projects: Project[] = [
       "三项生产写入安全门禁保持关闭",
     ],
     inProgressCapabilities: [
-      "公开演示恢复（chat.jael.com 连接关闭）",
+      "公开演示恢复与公网 URL 核验（维护中 / fallback）",
       "冻结评测集建立",
       "STATUS 文档同步至 SCS-MANUAL-012",
     ],
@@ -258,7 +270,8 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 7 }, (_, i) => `/projects/service-agent/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
-    link: { label: "查看案例", href: "#contact", note: "在线演示维护中：chat.jael.com 当前连接关闭，可查看案例详情或联系了解受控演示" },
+    link: { label: "查看受控案例证据", href: "#evidence", note: "公网 URL 本轮未核验，维护中 / fallback；此入口仅展示已记录的案例证据，不模拟实时服务。" },
+    fallbackLink: { label: "联系了解受控演示", href: "mailto:Jael_Chen@foxmail.com", note: "若页面内容加载失败或需要进一步确认，请重试或使用此备用入口；不承诺实时生产能力。" },
   },
   {
     slug: "lumen-ink",
@@ -269,14 +282,14 @@ export const projects: Project[] = [
     subtitle: "把修图专家经验抽象为可操作的参数、流程与模型能力",
     summary:
       "统一接入多类图像模型，将专业人像修图中的特征保留、光影、镜头与风格要求产品化，降低客户体验和团队复用门槛。",
-    status: "Controlled Demo｜前端公开访问，后端能力受控",
+    status: "Online Beta 候选/受限状态",
     demoType: "controlled",
     role: "产品负责人 / 交互设计 / 全栈 MVP",
     team: "个人主导，团队业务验证",
     period: "2026.05 - 至今",
     featured: true,
     evidenceLabel:
-      "前端公开访问:lumen-ink.vercel.app,用户自带模型 API Key。当前可查看产品界面与交互流程；涉及持久化的后端操作暂未开放（Vercel env 配置阻塞中，PERSISTENCE_BACKEND 待修复为 cloudbase-nosql）。NoSQL 升级状态:CloudBase 持久化处于最终验收(FIX-R9),readyForPreview=false,后端仍为受控验证。",
+      "Online Beta 候选/受限状态：已知入口 lumen-ink.vercel.app 仅供查看产品界面与交互流程，需 BYO key（用户自带模型 API Key）。涉及持久化的后端操作暂未开放；CloudBase 持久化仍处于受控验证，readyForPreview=false。",
     metrics: [
       { value: "4", label: "类模型 Provider" },
       { value: "6", label: "类专业工具" },
@@ -297,7 +310,7 @@ export const projects: Project[] = [
     outcomes: [
       "完成 GPT Image、GLM、Gemini、Seedream 等模型的统一接入和热切换验证。",
       "修脸、调色、液化、修复、消除、导出六类工具覆盖主要人像后期流程。",
-      "产品作为售前体验与内部标准化工具使用，降低客户理解 AI 交付的成本。",
+      "当前为 Online Beta 候选的受限体验：可用于界面与流程评审，不将其表述为已开放的持久化生产服务。",
     ],
     architecture: [
       { label: "需求结构化", detail: "六段式提示词与专业参数预设" },
@@ -311,7 +324,7 @@ export const projects: Project[] = [
       "优先统一高频能力，不追求完全抹平不同模型的专有参数，保留高级入口。",
     ],
     nextSteps: [
-      "建立同一任务跨 Provider 的质量、时延与成本评测面板。",
+      "建立同一任务跨 Provider 的质量、时延与成本评测面板，并在受限状态解除前维持 BYO key 边界。",
       "增加可复用风格包与人工审核标注，形成图像结果的业务评测集。",
     ],
     relationships: [
@@ -324,7 +337,12 @@ export const projects: Project[] = [
     link: {
       label: "访问光砚",
       href: "https://lumen-ink.vercel.app/",
-      note: "前端公开访问，用户自带模型 API Key；当前可查看产品界面与交互流程，涉及持久化的后端操作暂未开放（Vercel env 配置阻塞中）。",
+      note: "Online Beta 候选/受限状态，需 BYO key（用户自带模型 API Key）；当前仅可查看产品界面与交互流程，持久化后端操作未开放。",
+    },
+    fallbackLink: {
+      label: "查看受限状态与证据",
+      href: "#evidence",
+      note: "若已知入口加载失败，请重试或回到本页查看能力边界；页面不会伪造实时生成结果。",
     },
   },
   {
@@ -390,7 +408,7 @@ export const projects: Project[] = [
     index: "05",
     category: "Data / Automation",
     categoryLabel: "DATA AGENT · MULTIMODAL",
-    title: "Collator 数据摄入 Agent",
+    title: "Collator（飞书子系统）数据摄入 Agent",
     subtitle: "把聊天、图片、语音与文档转成可校验的业务数据",
     summary:
       "以感知、理解、执行三层 Agent 处理多源非结构化输入，通过四步清洗、五重约束与人工确认，将资料稳定写入数据中台。",

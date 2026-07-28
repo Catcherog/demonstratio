@@ -37,6 +37,23 @@ export default async function ProjectPage({ params }: Props) {
   const currentIndex = projects.findIndex((item) => item.slug === project.slug);
   const previous = projects[(currentIndex - 1 + projects.length) % projects.length];
   const next = projects[(currentIndex + 1) % projects.length];
+  const primaryDemo = project.link ?? {
+    label: "查看项目证据",
+    href: "#evidence",
+    note: "该项目未提供公网体验入口；请从已记录的证据和案例阅读开始。",
+  };
+  const fallbackDemo = project.fallbackLink ?? {
+    label: "联系了解受控演示",
+    href: "mailto:Jael_Chen@foxmail.com",
+    note: "若主入口加载失败、受限或需要进一步确认，请重试或使用此备用入口。",
+  };
+  const contributionAreas = project.myContribution ?? [
+    {
+      area: "产品负责人贡献",
+      detail: `负责 ${project.role}，将业务问题、产品决策、架构和验证证据整理为可复核的项目叙事。`,
+    },
+  ];
+  const evidenceBoundary = project.evidenceLabel ?? "当前展示为项目材料与页面内证据；未标注的效果不应推断为生产能力、实时服务或大样本业务结论。";
 
   return (
     <main id="top" className="case-page">
@@ -76,6 +93,23 @@ export default async function ProjectPage({ params }: Props) {
           ))}
         </div>
         {project.evidenceLabel && <p className="case-disclaimer">口径说明：{project.evidenceLabel}</p>}
+      </section>
+
+      <section className="case-demo section-shell" aria-labelledby="demo-heading">
+        <div className="case-section-title"><span>体验</span><div><p className="eyebrow">DEMO WINDOW</p><h2 id="demo-heading">主入口与备用路径。</h2></div></div>
+        <div className="demo-grid">
+          <article>
+            <span className="demo-label">PRIMARY DEMO · 主入口</span>
+            <a href={primaryDemo.href} target={primaryDemo.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">{primaryDemo.label} <Arrow /></a>
+            <p>{primaryDemo.note}</p>
+          </article>
+          <article>
+            <span className="demo-label">FALLBACK · 备用入口</span>
+            <a href={fallbackDemo.href} target={fallbackDemo.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">{fallbackDemo.label} <Arrow /></a>
+            <p>{fallbackDemo.note}</p>
+          </article>
+        </div>
+        <p className="demo-state">入口状态表达：加载中请等待；发生错误可重试；仍不可用时使用备用入口。本站不模拟或伪造实时服务能力。</p>
       </section>
 
       <section className="case-overview section-shell">
@@ -161,7 +195,7 @@ export default async function ProjectPage({ params }: Props) {
         </div>
       </section>
 
-      <section className="case-evidence-section">
+      <section className="case-evidence-section" id="evidence">
         <div className="section-shell">
           <div className="case-section-title"><span>05</span><div><p className="eyebrow">EVIDENCE & OUTCOMES</p><h2>展示证据，也说明证据边界。</h2></div></div>
           <div className="outcome-list">
@@ -180,7 +214,7 @@ export default async function ProjectPage({ params }: Props) {
               ))}
             </div>
           )}
-          {project.evidenceLabel && <div className="evidence-warning"><strong>指标边界</strong><p>{project.evidenceLabel}</p></div>}
+          <div className="evidence-warning"><strong>指标边界</strong><p>{evidenceBoundary}</p></div>
           {project.lastVerifiedAt && (
             <p className="case-verified-meta">最后验证时间：{project.lastVerifiedAt}</p>
           )}
@@ -192,21 +226,19 @@ export default async function ProjectPage({ params }: Props) {
         <ProjectGallery title={project.title} images={project.images} mode={project.imageMode} />
       </section>
 
-      {project.myContribution && project.myContribution.length > 0 && (
-        <section className="case-contribution-section">
-          <div className="section-shell">
-            <div className="case-section-title"><span>07</span><div><p className="eyebrow">MY CONTRIBUTION</p><h2>产品经理与工程协作贡献。</h2></div></div>
-            <div className="contribution-grid">
-              {project.myContribution.map((area) => (
-                <article key={area.area}>
-                  <strong>{area.area}</strong>
-                  <p>{area.detail}</p>
-                </article>
-              ))}
-            </div>
+      <section className="case-contribution-section">
+        <div className="section-shell">
+          <div className="case-section-title"><span>07</span><div><p className="eyebrow">MY CONTRIBUTION</p><h2>产品经理与工程协作贡献。</h2></div></div>
+          <div className="contribution-grid">
+            {contributionAreas.map((area) => (
+              <article key={area.area}>
+                <strong>{area.area}</strong>
+                <p>{area.detail}</p>
+              </article>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {((project.verifiedCapabilities && project.verifiedCapabilities.length > 0) ||
         (project.inProgressCapabilities && project.inProgressCapabilities.length > 0) ||
@@ -237,7 +269,7 @@ export default async function ProjectPage({ params }: Props) {
       )}
 
       <section className="case-reflection section-shell">
-        <div className="case-section-title"><span>09</span><div><p className="eyebrow">TRADE-OFFS & NEXT</p><h2>取舍、风险和下一步。</h2></div></div>
+        <div className="case-section-title"><span>09</span><div><p className="eyebrow">RISK GOVERNANCE, TRADE-OFFS & NEXT</p><h2>风险治理、取舍与下一步。</h2></div></div>
         <div className="case-two-column">
           <div className="case-panel">
             <h3>关键取舍</h3>

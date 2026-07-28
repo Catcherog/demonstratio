@@ -14,13 +14,13 @@ const layers = [
     projects: [
       ["02", "Service Agent", "service-agent"],
       ["04", "微信机器人", "wechat-bot"],
-      ["05", "Collator", "collator"],
+      ["05", "Collator（飞书子系统）", "collator"],
     ],
   },
   {
     label: "数据中台层",
     caption: "统一客户、项目、素材、内容与知识数据",
-    projects: [["01", "数据中台 + APP", "data-platform"]],
+    projects: [["01", "飞书 AI 业务数据平台", "data-platform"]],
   },
   {
     label: "增长引擎层",

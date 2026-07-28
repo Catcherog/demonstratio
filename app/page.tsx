@@ -7,7 +7,7 @@ import { capabilities, projects } from "@/content/projects";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
-const featuredProjects = ["data-platform", "service-agent", "collator", "lumen-ink"]
+const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is (typeof projects)[number] => Boolean(project));
 
@@ -19,10 +19,10 @@ export default function Home() {
       <section className="hero section-shell">
         <div className="hero-copy">
           <div className="availability"><span /> OPEN TO AI PRODUCT OPPORTUNITIES</div>
-          <p className="eyebrow">AI / AGENT PRODUCT MANAGER · TECHNICAL BUILDER</p>
+          <p className="eyebrow">AI / Agent 产品经理 · TECHNICAL BUILDER</p>
           <h1>把复杂业务，做成可上线、可评估的 AI 产品。</h1>
           <p className="hero-lead">
-            我是陈嘉伟。曾在 TP-Link 管理复杂软硬件项目组合，现作为 3 人全职创业团队的创始人兼 AI 产品负责人，围绕数据中台、Service Agent、Collator 与光砚构建 4 个核心产品，并以 5 个支撑模块完成业务闭环。
+            我是陈嘉伟。曾在 TP-Link 管理复杂软硬件项目组合，现作为 3 人全职创业团队的创始人兼 AI 产品负责人，围绕飞书 AI 业务数据平台、Service Agent 与光砚构建可验证的 AI 产品；Collator 作为飞书子系统处理非结构化数据摄入。
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="#featured">查看重点案例 <span>↓</span></a>
@@ -44,15 +44,15 @@ export default function Home() {
             <Image src="/projects/lumen-ink/01.webp" alt="光砚 AI 图像编辑工作台" fill priority sizes="300px" />
             <span>03 · MULTIMODAL</span>
           </a>
-          <a className="hero-panel hero-panel-bottom" href="/projects/collator">
-            <Image src="/projects/collator/01.webp" alt="Collator 数据摄入 Agent" fill priority sizes="320px" />
-            <span>05 · DATA AGENT</span>
+          <a className="hero-panel hero-panel-bottom" href="/projects/data-platform">
+            <Image src="/projects/data-platform/01.webp" alt="飞书 AI 业务数据平台" fill priority sizes="320px" />
+            <span>01 · FEISHU DATA PLATFORM</span>
           </a>
         </div>
 
         <div className="hero-metrics">
-          <div><strong>4</strong><span>核心 AI 产品</span></div>
-          <div><strong>5</strong><span>业务支撑模块</span></div>
+          <div><strong>3</strong><span>同优先级主案例</span></div>
+          <div><strong>1</strong><span>飞书子系统 · Collator</span></div>
           <div><strong>17 / 12</strong><span>数据表 / 自动化规则</span></div>
           <div><strong>282 / 80+</strong><span>SKU / 峰值并行项目</span></div>
         </div>
@@ -75,9 +75,9 @@ export default function Home() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">FEATURED CASE STUDIES</p>
-            <h2>四个案例，证明四项关键能力。</h2>
+            <h2>三个主案例，同优先级展示。</h2>
           </div>
-          <p>数据中台、Service Agent、Collator 与光砚分别证明业务系统设计、Agent 可靠性、数据智能和多模态产品化能力；其余五个模块作为系统支撑保留在完整项目库，并随验证进度持续迭代。</p>
+          <p>飞书 AI 业务数据平台、Service Agent 与光砚分别证明业务系统设计、Agent 可靠性与多模态产品化能力。Collator 是飞书数据平台的子系统，和其余项目一起保留在完整项目库，并随验证进度持续迭代。</p>
         </div>
 
         <div className="featured-list">
@@ -115,7 +115,7 @@ export default function Home() {
           <div className="section-heading system-heading">
             <div>
               <p className="eyebrow">CROSS-PROJECT ARCHITECTURE</p>
-              <h2>4 个核心产品 + 5 个支撑模块，组成一套五层 AI 产品系统。</h2>
+              <h2>3 个主案例 + 飞书子系统，组成一套五层 AI 产品系统。</h2>
             </div>
             <p>客户触点负责体验与留资，智能服务处理咨询和数据摄入，数据中台统一业务流转，增长引擎反哺内容，模型层提供本地训练与推理。</p>
           </div>
@@ -164,9 +164,9 @@ export default function Home() {
               <div className="timeline-content">
                 <span>全职创业 · 3 人团队</span>
                 <h3>泽怀摄影工作室｜创始人兼 AI 产品负责人</h3>
-                <p>从 0 到 1 构建五层 AI Native 产品矩阵，负责产品战略、业务建模、MVP 验证、技术方案与上线协同。</p>
+                <p>从 0 到 1 构建五层 AI Native 产品系统，负责产品战略、业务建模、MVP 验证、技术方案与上线协同。</p>
                 <ul>
-                  <li>4 个核心 AI 产品 + 5 个业务支撑模块</li>
+                  <li>3 个主案例 + Collator 飞书子系统 + 业务支撑模块</li>
                   <li>12 个关键业务节点、17 张数据表、12 条自动化</li>
                   <li>Agent、RAG、多模态与 QLoRA 端到端实践</li>
                 </ul>
