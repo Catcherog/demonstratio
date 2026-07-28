@@ -13,6 +13,7 @@ const layout = read("app/layout.tsx");
 const sitemap = read("app/sitemap.ts");
 const robots = read("app/robots.ts");
 const casePage = read("app/projects/[slug]/page.tsx");
+const header = read("components/Header.tsx");
 
 const featuredMatch = home.match(/const featuredProjects = \[([^\]]+)\]/s);
 assert(featuredMatch, "homepage must declare the featured-project order");
@@ -37,6 +38,9 @@ for (const resume of [
 assert(home.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "homepage resume CTA must target the canonical two-page resume");
 assert(!home.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "homepage must not advertise the superseded one-page resume");
 assert(!casePage.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "case pages must not advertise the superseded one-page resume");
+assert(!header.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "shared header must not advertise the superseded one-page resume");
+assert(header.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "shared header must target the canonical two-page resume");
+assert(header.includes("浏览案例库"), "shared navigation must use the case-library label");
 assert(!casePage.includes("全部 9 个项目"), "case navigation must not market a nine-project count");
 assert(!projects.includes('evidence: "9 个项目'), "capability evidence must not market a nine-project count");
 assert(layout.includes("3 个同优先级主案例"), "site metadata must describe the three equal-priority flagship cases");
