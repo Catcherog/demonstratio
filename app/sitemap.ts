@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/content/projects";
+import { featuredProjects } from "@/content/projects";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
-    ...projects.map((project) => ({
+    ...featuredProjects.map((project) => ({
       url: `https://www.jaelchen.com/projects/${project.slug}`,
       lastModified,
       changeFrequency: "monthly" as const,

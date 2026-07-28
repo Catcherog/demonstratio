@@ -1,3 +1,5 @@
+import publicClaimData from "./public-claims.json";
+
 export type ProjectCategory =
   | "Agent / RAG"
   | "Data / Automation"
@@ -7,14 +9,55 @@ export type ProjectCategory =
   | "Model Training";
 
 export type ProjectMetric = {
+  claimId?: string;
   value: string;
   label: string;
   note?: string;
+  evidenceRef?: string;
 };
+
+export type PublicMetricSurface = "hero" | "data-platform" | "service-agent" | "lumen-ink";
+
+export type BoundPublicMetric = Required<Pick<ProjectMetric, "claimId" | "value" | "label" | "evidenceRef">> &
+  Pick<ProjectMetric, "note">;
+
+type PublicMetricRecord = BoundPublicMetric & { surface: PublicMetricSurface };
+
+const boundPublicClaims = publicClaimData as PublicMetricRecord[];
+
+export function getPublicMetrics(surface: PublicMetricSurface): BoundPublicMetric[] {
+  return boundPublicClaims
+    .filter((claim) => claim.surface === surface)
+    .map(({ surface: _surface, ...metric }) => metric);
+}
 
 export type ArchitectureStep = {
   label: string;
   detail: string;
+};
+
+export type DemoType = "public" | "controlled" | "local-only" | "unavailable";
+
+export type WorkflowStep = {
+  label: string;
+  detail: string;
+};
+
+export type EvidenceLink = {
+  label: string;
+  type: "screenshot" | "test" | "api" | "architecture" | "data" | "deploy";
+  ref: string;
+};
+
+export type ContributionArea = {
+  area: string;
+  detail: string;
+};
+
+export type CaseModule = {
+  title: string;
+  eyebrow: string;
+  items: string[];
 };
 
 export type Project = {
@@ -26,24 +69,37 @@ export type Project = {
   subtitle: string;
   summary: string;
   status: string;
+  demoType?: DemoType;
   role: string;
   team: string;
   period: string;
   featured?: boolean;
+  archived?: boolean;
+  provisional?: boolean;
   evidenceLabel?: string;
   metrics: ProjectMetric[];
   tags: string[];
   stack: string[];
   problem: string[];
+  productStrategy?: string[];
+  caseModules?: CaseModule[];
   decisions: string[];
   outcomes: string[];
   architecture: ArchitectureStep[];
+  keyWorkflow?: WorkflowStep[];
   tradeoffs: string[];
   nextSteps: string[];
+  verifiedCapabilities?: string[];
+  inProgressCapabilities?: string[];
+  plannedCapabilities?: string[];
+  evidenceLinks?: EvidenceLink[];
+  myContribution?: ContributionArea[];
+  lastVerifiedAt?: string;
   relationships: { slug: string; label: string; detail: string }[];
   images: string[];
   imageMode?: "desktop" | "mobile" | "mixed";
   link?: { label: string; href: string; note?: string };
+  fallbackLink?: { label: string; href: string; note?: string };
 };
 
 export const projects: Project[] = [
@@ -51,22 +107,17 @@ export const projects: Project[] = [
     slug: "data-platform",
     index: "01",
     category: "Data / Automation",
-    categoryLabel: "DATA PLATFORM · MOBILE OPS",
-    title: "数据中台底座 + 移动作业 APP",
+    categoryLabel: "FEISHU AI DATA PLATFORM · MOBILE OPS",
+    title: "飞书 AI 业务数据平台",
     subtitle: "把非标摄影交付拆成可追踪、可协作的标准流程",
     summary:
-      "围绕获客、咨询、拍摄、后期、交付与复盘，建立统一业务数据模型、自动化规则与移动作业入口，作为 9 个项目的运营底座。",
-    status: "已投入业务使用",
+      "围绕获客、咨询、拍摄、后期、交付与复盘，建立统一业务数据模型、自动化规则与移动作业入口；Collator 作为飞书子系统处理非结构化资料摄入。",
+    status: "Portfolio Pilot｜真实测试 Base E2E 已验证，正式业务 Pilot 与通知自动化待启用",
     role: "产品负责人 / 数据模型设计 / MVP 开发",
     team: "3 人创业团队",
     period: "2026.02 - 至今",
     featured: true,
-    metrics: [
-      { value: "17", label: "张核心数据表" },
-      { value: "12", label: "条自动化规则" },
-      { value: "2-3周 → 3-5天", label: "新人上手周期" },
-      { value: "111 / 0", label: "历史迁移条目 / 失败" },
-    ],
+    metrics: getPublicMetrics("data-platform"),
     tags: ["数据产品", "流程自动化", "移动作业"],
     stack: ["飞书多维表", "Node.js", "React Native", "Expo", "CloudBase", "OCR", "ASR", "CLIP"],
     problem: [
@@ -74,19 +125,59 @@ export const projects: Project[] = [
       "摄影业务存在大量异常路径与现场作业场景，单纯增加表单无法解决弱网、权限和执行一致性问题。",
     ],
     decisions: [
-      "先拆解 12 个关键流转节点，再定义客户、项目、素材、内容与知识 5 个业务域，避免直接从表结构反推业务。",
+      "先拆解关键流转节点与业务域，再定义权限和状态边界，避免直接从表结构反推业务。",
       "以飞书多维表作为低成本数据底座，通过触发保护、状态机与角色权限控制批量误操作。",
       "移动端优先覆盖现场高频动作，加入离线缓存和待同步队列，而非复刻完整后台。",
     ],
+    caseModules: [
+      {
+        eyebrow: "FIVE-STEP E2E",
+        title: "五步真实测试链路",
+        items: [
+          "截图或文本样本进入 Collator 摄入入口，并保留来源上下文。",
+          "Tesseract OCR 提取候选文本，不把机器识别直接视为业务事实。",
+          "Candidate 记录进入人工确认；未经确认的数据不能越过治理门。",
+          "SOP Gate 输出 PASS、NEEDS_REVIEW 或 REJECT，并记录原因。",
+          "通过治理门的数据写入测试 Base；重复请求校验幂等，并按精确 ID 清理测试记录。",
+        ],
+      },
+      {
+        eyebrow: "BUSINESS RULES",
+        title: "三条核心业务规则",
+        items: [
+          "BR-01：原始输入与结构化结果必须保持可追溯关联。",
+          "BR-02：高风险或低置信度内容必须进入人工确认，禁止直写正式业务流。",
+          "BR-03：测试写入必须幂等、可审计、可精确清理；通知默认关闭。",
+        ],
+      },
+      {
+        eyebrow: "SOP GATE",
+        title: "PASS / NEEDS_REVIEW / REJECT",
+        items: [
+          "PASS：字段、枚举与业务规则均满足写入条件。",
+          "NEEDS_REVIEW：信息可用但存在低置信度或需人工补全。",
+          "REJECT：结构、权限或业务规则不满足要求，阻断写入并保留审计原因。",
+        ],
+      },
+      {
+        eyebrow: "AUTOMATION BOUNDARY",
+        title: "三类自动化，三种边界",
+        items: [
+          "AI 摄入自动化：测试 E2E 已验证，包括 OCR、候选生成与来源关联。",
+          "SOP 治理自动化：测试 E2E 已验证，包括三态 Gate、审计与拒绝路径。",
+          "飞书业务自动化：DESIGNED_NOT_DEPLOYED；正式 Pilot 与通知自动化未启用。",
+        ],
+      },
+    ],
     outcomes: [
-      "17 张表与 12 条自动化覆盖客户全生命周期和拍摄全流程，上线以来未出现流程性漏单。",
-      "完成 111 条历史数据迁移，迁移失败为 0；新人上手周期由 2-3 周缩短至 3-5 天。",
-      "为 Service Agent、Collator、内容调研、小程序与官网提供统一数据接口和流程触发点。",
+      "测试 Base 历史验收基线为 17 张表、12 条自动化；当前 V2 已验证真实测试 Base 的摄入、治理、写入、幂等、审计与精确清理链路，正式业务 Pilot 与通知自动化仍待启用。",
+      "真实测试链路已覆盖摄入、治理、写入、幂等、审计与精确清理；生产租户兼容性仍因只读授权缺失而保持 fail-closed。",
+      "为 Service Agent、Collator（飞书子系统）、内容调研、小程序与官网提供统一数据接口和流程触发点。",
     ],
     architecture: [
-      { label: "业务建模", detail: "12 个关键节点、5 个业务域与角色权限" },
-      { label: "数据底座", detail: "17 张多维表、状态机、枚举与唯一标识" },
-      { label: "自动化", detail: "12 条规则、触发保护与异常升级" },
+      { label: "业务建模", detail: "关键节点、业务域与角色权限" },
+      { label: "数据底座", detail: "历史测试基线、状态机、枚举与唯一标识" },
+      { label: "自动化", detail: "治理规则、触发保护与异常升级" },
       { label: "移动作业", detail: "角色化看板、离线缓存、待同步队列" },
       { label: "数据回流", detail: "交付结果、客户反馈与知识更新进入复盘" },
     ],
@@ -105,59 +196,156 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 10 }, (_, i) => `/projects/data-platform/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "mixed",
+    link: {
+      label: "打开测试 Base 受控演示",
+      href: "https://portal-seven-jade-47.vercel.app",
+      note: "真实测试 Base E2E 已验证；不连接生产业务数据，正式业务 Pilot 与通知自动化待启用。",
+    },
+    fallbackLink: {
+      label: "查看平台证据",
+      href: "#evidence",
+      note: "若受控入口加载失败，请重试或查看页面内的架构、测试和状态证据。",
+    },
   },
   {
     slug: "service-agent",
     index: "02",
     category: "Agent / RAG",
     categoryLabel: "RAG · AGENT · AI SERVICE",
-    title: "Service Agent",
-    subtitle: "AI 优先应答，低置信度问题进入人工质量闸门",
+    title: "Studio Customer Service",
+    subtitle: "影像工作室 AI 辅助客服 Agent",
     summary:
-      "面向高端摄影咨询，设计查询改写、检索、重排序、置信度分流、人工复核与知识回流，重点解决准确性、边界控制和持续更新。",
-    status: "业务验证中",
+      "面向影像工作室咨询与运营场景的 Agentic Workflow，通过 LangGraph 8 节点 11 边工作流编排知识检索、意图/风险判断、答案生成、质量检查、人工接管与反馈飞轮，以 fail-closed 策略控制高风险承诺。",
+    status: "Controlled Demo｜公网前端可访问，后端恢复中",
+    demoType: "controlled",
     role: "产品定义 / Agent 架构 / 评估方案 / MVP 开发",
     team: "3 人创业团队",
     period: "2026.04 - 至今",
     featured: true,
-    evidenceLabel: "以下准确率与自动应答率为内部小样本估算，待固定评测集与线上数据验证。",
-    metrics: [
-      { value: "18", label: "类咨询场景" },
-      { value: "3 级", label: "置信度分流" },
-      { value: "90%+", label: "检索准确率", note: "内部估算" },
-      { value: "50%+", label: "基础咨询自动应答", note: "内部估算" },
+    provisional: true,
+    evidenceLabel:
+      "固定 90 样本仅用于静态路由器审计。现有 runner 比较 must_handoff 布尔值，没有验证 expected_route，也没有执行完整 LangGraph、检索、生成或 HTTP 链路，因此不公布路由准确率、回答正确率或禁止承诺结果。公网前端可访问；当前后端未接通，提问会 fail-closed。589 tests 是工程回归证据，不是质量指标。",
+    metrics: getPublicMetrics("service-agent"),
+    caseModules: [
+      {
+        eyebrow: "B1 / B2 / B3",
+        title: "三个客服场景与当前状态",
+        items: [
+          "B1 标准咨询：本地工作流与回归已验证；公网后端未接通，不声明实时回答能力。",
+          "B2 价格、档期等敏感咨询：进入高风险分级与人工接管，公开 Demo 保持 fail-closed。",
+          "B3 未知或低置信度咨询：不猜测答案，转人工并记录后续知识治理入口。",
+        ],
+      },
+      {
+        eyebrow: "ERROR ANALYSIS",
+        title: "评测缺口与修复方向",
+        items: [
+          "现有 runner 只比较 expected 与 actual 的 must_handoff 布尔值，不能称为 route correctness。",
+          "I00 澄清路径没有实际执行，不能把硬编码布尔值作为澄清通过率。",
+          "禁止承诺扫描作用于存储的 canonical 文本，不是生成输出；需新增端到端生成与对抗回归后再公布。",
+        ],
+      },
+      {
+        eyebrow: "WECHAT EXTENSION",
+        title: "微信小程序扩展路线",
+        items: [
+          "通道适配：小程序消息先完成身份、会话与附件归一化。",
+          "Agent 调用：复用 Service Agent 的风险路由、检索、质量闸门与人工接管。",
+          "状态：DESIGNED_NOT_DEPLOYED；设计证据在 service-agent 的 docs/wechat-mini-program-extension.md，未宣称公网通道已接通。",
+        ],
+      },
     ],
-    tags: ["Agent", "RAG", "Human-in-the-loop"],
-    stack: ["Python", "LangGraph", "Dify", "LangSmith", "SentenceTransformer", "CloudBase", "COS", "GLM"],
+    tags: ["Agent", "LangGraph", "RAG", "Human-in-the-loop", "fail-closed"],
+    stack: ["Python", "LangGraph", "Flask", "Next.js", "ChromaDB", "飞书知识库", "OpenAI-compatible LLM interface"],
     problem: [
-      "价格、档期、拍摄流程与敏感边界容错率低，纯大模型容易编造；静态 FAQ 又无法覆盖自然语言表达。",
+      "客服培训成本高，话术一致性难保证；价格、档期与拍摄流程的敏感边界容错率低，纯大模型容易编造或作出高风险承诺。",
       "客服知识持续变化，若没有审核和回流机制，检索库会快速过期或被低质量对话污染。",
     ],
+    productStrategy: [
+      "产品目标：用受控 Agent 工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。",
+      "产品边界：当前为受控作品集 Demo，公网前端已核验，服务端未配置时返回 503 并安全转人工；不主张生产 SLO，不声明生产上线或生产试点。",
+      "方案选择：采用 LangGraph 确定性节点与 LLM 节点组合工作流，LLM 通过可配置的 OpenAI 兼容接口接入，未配置 Key 时回退本地模板匹配。",
+      "暂不做：不追求无条件自动回复，不把内部小样本估算写成生产指标，不公开展示具体 LLM 型号。",
+    ],
     decisions: [
-      "定义 18 类咨询场景与明确的可答、需确认、必须转人工边界，先设计风险策略再设计对话。",
-      "采用查询改写、候选检索与重排序链路，并通过三级置信度决定直接建议、人工复核或兜底转人工。",
-      "把人工确认作为知识更新的质量闸门，优质会话才进入飞书主源、检索库和 JSON 镜像。",
+      "定义 18 类咨询场景与 R0–R3 风险分级，先设计风险策略与 fail-closed 边界，再设计对话流程；高风险与低置信度路径直接转人工接管。",
+      "采用查询改写、ChromaDB 向量召回与候选重排序链路，并通过三级置信度决定直接建议、人工复核或兜底转人工。",
+      "知识与规则分离：飞书知识库作为权威主源，ChromaDB 仅承担语义检索，本地 JSON 镜像提供可解释副本，避免单一向量库成为不可解释的知识黑箱。",
+      "LLM 生成与模板回退双路径：LLM 通过可配置的 OpenAI 兼容接口接入，未配置 LLM_API_KEY 时回退本地模板匹配，保证服务可用性。",
+      "把人工确认作为知识更新的质量闸门，优质会话才进入飞书主源、检索库和 JSON 镜像，形成反馈飞轮。",
     ],
     outcomes: [
-      "完成从需求定义、知识组织、Agent 编排到 PC 客服辅助界面的端到端验证。",
-      "内部小样本估算检索准确率 90%+，基础重复咨询自动应答 50%+；指标已明确标注为估算。",
-      "形成“对话使用 - 归档清洗 - 人工确认 - 知识同步 - 检索增强”的可持续闭环。",
+      "完成从需求定义、知识组织、LangGraph 8 节点 11 边编排到 PC 客服辅助界面的端到端 MVP。",
+      "LangGraph 工作流、RAG 检索、风险分流、fail-closed 人工接管与反馈飞轮均有代码证据。",
+      "589 tests 全量回归通过（2026-07-28 pytest 证据）；该数字是工程回归结果，不代表回答准确率。",
+      "生产写入安全门禁保持关闭：PRODUCTION_PILOT_ALLOWED=false、EXTERNAL_WRITE_ACTIONS_ALLOWED=false、STORE_MESSAGE_CONTENT=false；Demo 限流与多轮 history 均有明确边界。",
+      "公网受控演示代码 SHA 2f212d1，Vercel Production 制品 dpl_5wv5idcTu4ALf4xgguQqHoFMwoxf；未配置后端时 /api/chat 返回 503。",
+      "固定 90 样本、报告与 runner 已冻结留档；因 runner 未验证 expected_route、澄清节点和生成输出，旧的准确率、I00 与禁止承诺结果已撤回公开使用。",
     ],
     architecture: [
-      { label: "场景路由", detail: "18 类意图、敏感边界与人工接管条件" },
+      { label: "场景路由", detail: "18 类意图、R0–R3 风险分级与人工接管条件" },
       { label: "查询理解", detail: "对话上下文、查询改写与关键词补全" },
-      { label: "检索增强", detail: "向量召回、候选重排序与引用上下文" },
-      { label: "质量闸门", detail: "高分建议、中分复核、低分转人工" },
+      { label: "检索增强", detail: "ChromaDB 向量召回、候选重排序与引用上下文" },
+      { label: "质量闸门", detail: "高分建议、中分复核、低分/高风险 fail-closed 转人工" },
       { label: "知识飞轮", detail: "归档、清洗、人工确认和多端同步" },
+    ],
+    keyWorkflow: [
+      { label: "N1 意图与风险路由", detail: "用户咨询 → 18 类场景识别 → R0–R3 风险分级" },
+      { label: "N2 查询改写", detail: "对话上下文 + 关键词补全 → 检索查询" },
+      { label: "N3 知识检索", detail: "ChromaDB 向量召回 → 候选文档" },
+      { label: "N4 候选重排序", detail: "重排序 + 引用上下文构建" },
+      { label: "N5 答案生成", detail: "可配置 OpenAI 兼容 LLM 接口生成；未配置 Key 时回退模板匹配" },
+      { label: "N6 质量闸门", detail: "三级置信度分流：高分直接建议 / 中分人工复核 / 低分或高风险 fail-closed" },
+      { label: "N7 人工接管", detail: "fail-closed 兜底：低置信度、高风险承诺与敏感边界统一转人工" },
+      { label: "N8 反馈飞轮", detail: "归档 → 清洗 → 人工确认 → 飞书主源 / ChromaDB / JSON 镜像同步" },
     ],
     tradeoffs: [
       "不追求无条件自动回复，牺牲部分自动化率以换取价格、档期与敏感场景的可靠性。",
       "保留飞书权威主源和本地 JSON 镜像，避免单一向量库成为不可解释的知识黑箱。",
+      "LLM 生成与模板回退双路径，牺牲部分回答质量以换取服务可用性（未配置 Key 时仍可运行）。",
     ],
     nextSteps: [
-      "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率、转人工率与知识过期率。",
+      "恢复真实后端并通过 /readyz、/api/chat 与安全门禁后，才把受控状态切换为 live。",
+      "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率与转人工率。",
       "在真实流量中做分阶段灰度，校准置信度阈值并记录误答成本。",
     ],
+    verifiedCapabilities: [
+      "LangGraph 8 节点 11 边工作流编排",
+      "RAG 知识检索（ChromaDB 向量召回 + 重排序）",
+      "意图识别与 R0–R3 风险分级",
+      "fail-closed 人工接管路径",
+      "反馈飞轮闭环（归档→清洗→人工确认→知识同步）",
+      "LLM 生成与模板回退双路径",
+      "Web/API 端到端 MVP",
+      "589 tests 全量回归通过（2026-07-28）",
+      "三项生产写入安全门禁保持关闭",
+    ],
+    inProgressCapabilities: [
+      "真实后端恢复与公网 /readyz 核验（前端维持受控状态）",
+      "重建端到端冻结评测：验证 expected_route、实际澄清节点与生成输出",
+      "STATUS 文档同步至 SCS-MANUAL-012",
+    ],
+    plannedCapabilities: [
+      "真实流量灰度上线",
+      "指标评测（召回率/采纳率/转人工率）",
+      "知识过期率监控",
+    ],
+    evidenceLinks: [
+      { label: "工作流、风险路由与反馈飞轮源码", type: "architecture", ref: "E-SCS-SOURCE" },
+      { label: "589 Python + 55 Web 回归", type: "test", ref: "E-SCS-TESTS" },
+      { label: "冻结 90 样本（仅作审计输入）", type: "data", ref: "E-SCS-EVAL-DATASET" },
+      { label: "评测 runner 语义审计", type: "api", ref: "E-SCS-EVAL-RUNNER" },
+      { label: "Controlled Demo 与 503 fail-closed", type: "deploy", ref: "E-SCS-PRODUCTION" },
+    ],
+    myContribution: [
+      { area: "用户与业务需求", detail: "影像工作室咨询与运营场景调研，定义 18 类咨询场景与 R0–R3 风险分级" },
+      { area: "产品架构", detail: "LangGraph 8 节点 11 边工作流编排、风险路由与 fail-closed 策略设计" },
+      { area: "Agent / 数据流", detail: "RAG 检索链路、三级置信度分流、反馈飞轮与知识更新闸门" },
+      { area: "工程协作", detail: "3 人团队协作，Flask API + Next Web + ChromaDB + 飞书知识库，负责 Agent 架构与评估方案" },
+      { area: "测试与验收", detail: "589 tests 全量回归、固定 90 样本 runner 语义审计、三项生产写入安全门禁验证" },
+      { area: "迭代决策", detail: "公网 Demo 与生产写动作分离（fail-closed + 安全开关始终 false）" },
+    ],
+    lastVerifiedAt: "2026-07-28T03:49:00Z",
     relationships: [
       { slug: "wechat-bot", label: "微信公众号机器人", detail: "机器人负责通道接入和会话归档，Agent 负责知识与质量。" },
       { slug: "lora-finetuning", label: "LoRA 微调", detail: "微调模型作为本地推理与云端 API 的备选后端。" },
@@ -165,6 +353,8 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 7 }, (_, i) => `/projects/service-agent/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
+    link: { label: "打开受控演示", href: "https://zehuai-customer-demo.vercel.app/", note: "公网前端已核验；当前后端未接通，页面会明确显示受控状态，提问 fail-closed，不代表实时生产能力。" },
+    fallbackLink: { label: "联系了解受控演示", href: "mailto:Jael_Chen@foxmail.com", note: "若页面内容加载失败或需要进一步确认，请重试或使用此备用入口；不承诺实时生产能力。" },
   },
   {
     slug: "lumen-ink",
@@ -175,18 +365,15 @@ export const projects: Project[] = [
     subtitle: "把修图专家经验抽象为可操作的参数、流程与模型能力",
     summary:
       "统一接入多类图像模型，将专业人像修图中的特征保留、光影、镜头与风格要求产品化，降低客户体验和团队复用门槛。",
-    status: "可在线体验",
+    status: "Controlled Demo｜后端健康已通过，核心编辑待实测",
+    demoType: "controlled",
     role: "产品负责人 / 交互设计 / 全栈 MVP",
     team: "个人主导，团队业务验证",
     period: "2026.05 - 至今",
     featured: true,
-    evidenceLabel: "转化相关结果来自早期业务观察，当前网站不以未经充分验证的提升倍数作为主证据。",
-    metrics: [
-      { value: "4", label: "类模型 Provider" },
-      { value: "6", label: "类专业工具" },
-      { value: "6 段", label: "结构化提示词" },
-      { value: "1 套", label: "统一模型抽象" },
-    ],
+    evidenceLabel:
+      "Controlled Demo：lumen-ink.vercel.app 根页与 /api/health 已核验为 200，未授权项目请求返回 401；Preview 只读探针 dbRead 1/1。仍需 BYO key（用户自带模型 API Key）完成真实核心编辑验收，因此不把它表述为已验证的在线编辑能力。",
+    metrics: getPublicMetrics("lumen-ink"),
     tags: ["多模态", "AI 创作", "模型抽象"],
     stack: ["React", "TypeScript", "Vite", "Express", "GPT Image", "GLM", "Gemini", "Seedream"],
     problem: [
@@ -201,7 +388,7 @@ export const projects: Project[] = [
     outcomes: [
       "完成 GPT Image、GLM、Gemini、Seedream 等模型的统一接入和热切换验证。",
       "修脸、调色、液化、修复、消除、导出六类工具覆盖主要人像后期流程。",
-      "产品作为售前体验与内部标准化工具使用，降低客户理解 AI 交付的成本。",
+      "当前为 Controlled Demo：可用于界面与流程评审，不将其表述为已开放的持久化或在线核心编辑服务。",
     ],
     architecture: [
       { label: "需求结构化", detail: "六段式提示词与专业参数预设" },
@@ -215,7 +402,7 @@ export const projects: Project[] = [
       "优先统一高频能力，不追求完全抹平不同模型的专有参数，保留高级入口。",
     ],
     nextSteps: [
-      "建立同一任务跨 Provider 的质量、时延与成本评测面板。",
+      "建立同一任务跨 Provider 的质量、时延与成本评测面板，并在受限状态解除前维持 BYO key 边界。",
       "增加可复用风格包与人工审核标注，形成图像结果的业务评测集。",
     ],
     relationships: [
@@ -224,7 +411,17 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 5 }, (_, i) => `/projects/lumen-ink/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
-    link: { label: "访问光砚", href: "https://lumen-ink.vercel.app/", note: "体验需自行配置模型 API Key" },
+    lastVerifiedAt: "2026-07-28T00:00:00Z",
+    link: {
+      label: "访问光砚",
+      href: "https://lumen-ink.vercel.app/",
+      note: "Controlled Demo，需 BYO key（用户自带模型 API Key）；根页与后端健康已核验，真实核心编辑仍待有效凭据实测。",
+    },
+    fallbackLink: {
+      label: "查看受限状态与证据",
+      href: "#evidence",
+      note: "若已知入口加载失败，请重试或回到本页查看能力边界；页面不会伪造实时生成结果。",
+    },
   },
   {
     slug: "wechat-bot",
@@ -289,11 +486,12 @@ export const projects: Project[] = [
     index: "05",
     category: "Data / Automation",
     categoryLabel: "DATA AGENT · MULTIMODAL",
-    title: "Collator 数据摄入 Agent",
+    title: "Collator（飞书子系统）数据摄入 Agent",
     subtitle: "把聊天、图片、语音与文档转成可校验的业务数据",
     summary:
       "以感知、理解、执行三层 Agent 处理多源非结构化输入，通过四步清洗、五重约束与人工确认，将资料稳定写入数据中台。",
-    status: "MVP 验证完成",
+    status: "Controlled Demo｜测试环境真实链路",
+    demoType: "controlled",
     role: "产品架构 / Schema 设计 / MVP 开发",
     team: "个人主导",
     period: "2026.03 - 2026.06",
@@ -340,6 +538,12 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 5 }, (_, i) => `/projects/collator/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
+    lastVerifiedAt: "2026-07-26T05:30:00Z",
+    link: {
+      label: "体验飞书 AI 数据中台",
+      href: "https://portal-seven-jade-47.vercel.app",
+      note: "演示连接隔离的飞书测试 Base;包含真实 OCR、人工确认、治理和测试写入,不连接生产业务数据。",
+    },
   },
   {
     slug: "content-research",
@@ -653,7 +857,7 @@ export const categories: (ProjectCategory | "全部")[] = [
   "Model Training",
 ];
 
-export const featuredProjects = ["service-agent", "data-platform", "lumen-ink"]
+export const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is Project => Boolean(project));
 
@@ -661,17 +865,17 @@ export const capabilities = [
   {
     title: "产品判断",
     body: "从业务链路、异常路径和成本约束出发定义 AI 场景，不从模型能力反推功能。",
-    evidence: "12 个业务节点 · 18 类咨询场景 · 5 层产品架构",
+    evidence: "业务节点 · 咨询场景 · 跨项目架构",
   },
   {
     title: "AI 系统设计",
     body: "覆盖 Agent、RAG、模型路由、知识治理、人工质量闸门与本地微调。",
-    evidence: "三级置信度 · QLoRA 双基座 · OpenAI 兼容服务",
+    evidence: "置信度分流 · 本地微调 · OpenAI 兼容服务",
   },
   {
     title: "端到端交付",
     body: "能完成需求、原型、开发验证、上线协同、评估设计与数据回流。",
-    evidence: "9 个项目 · 17 表 / 12 自动化 · Web / 小程序 / APP",
+    evidence: "3 个主案例 · 测试 Base 历史证据 · Web / 小程序 / APP",
   },
 ];
 
