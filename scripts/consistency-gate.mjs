@@ -51,8 +51,9 @@ assert(
 assert(projects.includes("75/90=83.33%"), "Service Agent must include the fixed offline routing result");
 assert(projects.includes("不是生产准确率/回答总体准确率"), "Service Agent result must carry its required accuracy boundary");
 assert(projects.includes("589 tests"), "Service Agent must expose the current full regression result");
-assert(projects.includes("维护中 / fallback"), "Service Agent must expose a maintenance fallback when its public URL is unverified");
-assert(projects.includes("Online Beta 候选/受限状态"), "Lumen must use the approved Online Beta candidate status");
+assert(projects.includes("Controlled Demo｜公网前端可访问，后端恢复中"), "Service Agent must expose the verified controlled-demo boundary");
+assert(projects.includes("https://zehuai-customer-demo.vercel.app/"), "Service Agent must expose its verified public entry");
+assert(projects.includes("Controlled Demo｜界面可访问，后端待恢复"), "Lumen must expose the current controlled-demo boundary");
 assert(projects.includes("BYO key"), "Lumen must disclose the BYO key requirement");
 assert(projects.includes("Collator（飞书子系统）"), "Collator must be framed as a Feishu subsystem");
 
