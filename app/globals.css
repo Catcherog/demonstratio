@@ -425,7 +425,7 @@ img { max-width: 100%; }
 .outcome-list { border-top: 1px solid var(--line-strong); }
 .outcome-list article { padding: 25px 0; display: grid; grid-template-columns: 60px 1fr; gap: 20px; border-bottom: 1px solid var(--line-strong); }
 .outcome-list span { color: var(--accent-dark); font-size: 10px; font-weight: 850; }
-.outcome-list p { max-width: 920px; margin: 0; font-size: 17px; line-height: 1.75; letter-spacing: -.01em; }
+.outcome-list p { max-width: 920px; margin: 0; font-size: 17px; line-height: 1.75; letter-spacing: -.01em; overflow-wrap: anywhere; }
 .evidence-warning { margin-top: 28px; padding: 22px; display: grid; grid-template-columns: 90px 1fr; gap: 20px; border: 1px solid #d4daf2; border-radius: 14px; background: #f7f8ff; }
 .evidence-warning strong { color: var(--accent-dark); font-size: 11px; }
 .evidence-warning p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
