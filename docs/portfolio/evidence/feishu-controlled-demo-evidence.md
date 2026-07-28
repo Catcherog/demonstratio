@@ -339,7 +339,7 @@ NO.1 日 常 妆  痰 北方 开光 AENf 履 ka 88r NO.2 精致 妆  约会 效 
 
 | 严禁项 | 遵守 |
 |--------|------|
-| 不使用生产 base_token MwGMbF0Q0alPc6s3jOccovvOnob | ✓ |
+| 不使用生产 base_token <REDACTED_BASE_IDENTIFIER> | ✓ |
 | 不在日志/截图/commit 中出现 App Secret 或真实 Base token | ✓ |
 | 不创建测试群、不向未知用户发送消息 | ✓（Flow 2 BLOCKED_EXTERNAL_NOTIFICATION_TARGET） |
 | 不主张生产全链路已上线 / ASR 已完成 / CLIP 已完成 / 零漏单 | ✓ |
