@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { ProjectGallery } from "@/components/ProjectGallery";
-import { getProject, projects } from "@/content/projects";
+import { featuredProjects, getProject } from "@/content/projects";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return featuredProjects.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
-  if (!project) return {};
+  if (!project?.featured) return {};
   return {
     title: `${project.title}｜陈嘉伟 AI 产品案例`,
     description: project.summary,
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${project.title}｜陈嘉伟 AI 产品案例`,
       description: project.summary,
-      url: `https://www.jaelchen.com/projects/${project.slug}`,
+      url: `https://jaelchen-portfolio-vercel-extracted.vercel.app/projects/${project.slug}`,
       images: [{ url: project.images[0], alt: `${project.title} 项目预览` }],
     },
   };
@@ -32,11 +32,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getProject(slug);
-  if (!project) notFound();
+  if (!project?.featured) notFound();
 
-  const currentIndex = projects.findIndex((item) => item.slug === project.slug);
-  const previous = projects[(currentIndex - 1 + projects.length) % projects.length];
-  const next = projects[(currentIndex + 1) % projects.length];
+  const currentIndex = featuredProjects.findIndex((item) => item.slug === project.slug);
+  const previous = featuredProjects[(currentIndex - 1 + featuredProjects.length) % featuredProjects.length];
+  const next = featuredProjects[(currentIndex + 1) % featuredProjects.length];
   const primaryDemo = project.link ?? {
     label: "查看项目证据",
     href: "#evidence",
@@ -88,12 +88,27 @@ export default async function ProjectPage({ params }: Props) {
             <div key={metric.label}>
               <strong>{metric.value}</strong>
               <span>{metric.label}</span>
-              {metric.note && <small>{metric.note}</small>}
+              {(metric.note || metric.evidenceRef) && <small>{[metric.note, metric.evidenceRef && `证据：${metric.evidenceRef}`].filter(Boolean).join(" · ")}</small>}
             </div>
           ))}
         </div>
         {project.evidenceLabel && <p className="case-disclaimer">口径说明：{project.evidenceLabel}</p>}
       </section>
+
+      {project.caseModules && (
+        <section className="case-overview section-shell" aria-label="案例专项模块">
+          <div className="case-section-title"><span>专项</span><div><p className="eyebrow">CASE-SPECIFIC EVIDENCE</p><h2>业务链路、规则与能力边界。</h2></div></div>
+          <div className="case-two-column">
+            {project.caseModules.map((module) => (
+              <article className="case-panel" key={module.title}>
+                <p className="eyebrow">{module.eyebrow}</p>
+                <h3>{module.title}</h3>
+                <ul>{module.items.map((item) => <li key={item}>{item}</li>)}</ul>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="case-demo section-shell" aria-labelledby="demo-heading">
         <div className="case-section-title"><span>体验</span><div><p className="eyebrow">DEMO WINDOW</p><h2 id="demo-heading">主入口与备用路径。</h2></div></div>
@@ -286,7 +301,7 @@ export default async function ProjectPage({ params }: Props) {
         <div className="section-shell">
           <div className="case-section-title case-title-light"><span>10</span><div><p className="eyebrow">CROSS-PROJECT RELATIONSHIPS</p><h2>它如何进入完整产品系统。</h2></div></div>
           <div className="relationship-grid">
-            {project.relationships.map((relation) => (
+            {project.relationships.filter((relation) => featuredProjects.some((item) => item.slug === relation.slug)).map((relation) => (
               <a href={`/projects/${relation.slug}`} key={relation.slug}>
                 <strong>{relation.label}</strong>
                 <p>{relation.detail}</p>

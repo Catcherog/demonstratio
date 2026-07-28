@@ -99,7 +99,7 @@ export default function Home() {
                 </dl>
                 <div className="featured-metrics">
                   {project.metrics.slice(0, 3).map((metric) => (
-                    <div key={metric.label}><strong>{metric.value}</strong><span>{metric.label}{metric.note ? ` · ${metric.note}` : ""}</span></div>
+                    <div key={metric.label}><strong>{metric.value}</strong><span>{metric.label}{metric.note ? ` · ${metric.note}` : ""}{metric.evidenceRef ? ` · ${metric.evidenceRef}` : ""}</span></div>
                   ))}
                 </div>
                 <a className="case-link" href={`/projects/${project.slug}`}>阅读完整案例 <Arrow /></a>
@@ -148,8 +148,8 @@ export default function Home() {
           </div>
           <p>按岗位需要筛选 Agent、数据、多模态、用户端、增长与模型训练案例。重点项目优先补强在线体验与评测证据，支撑模块保留当前可信状态并持续更新。</p>
         </div>
-        <ProjectLibrary projects={projects} />
-        <p className="metric-note">指标说明：标注为“内部估算 / 业务估算”的数值来自小样本测试或运营观察，未作为经过大样本验证的业务结论。</p>
+        <ProjectLibrary projects={featuredProjects} />
+        <p className="metric-note">公开案例库只展示三个同优先级主案例；支撑模块仅作为架构关系出现，不发布缺少 R1.3 证据绑定的量化结果。</p>
       </section>
 
       <section className="experience-section" id="experience">

@@ -1,11 +1,30 @@
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, extname, resolve } from "node:path";
 
 const root = process.cwd();
 const read = (relativePath) => readFileSync(resolve(root, relativePath), "utf8");
 const assert = (condition, message) => {
   if (!condition) throw new Error(`Portfolio consistency gate: ${message}`);
 };
+
+function findAuthorityDir() {
+  const candidates = [
+    resolve(root, "_portfolio_handoff/job-ready-r1.3"),
+    resolve(root, "../_portfolio_handoff/job-ready-r1.3"),
+    resolve(root, "../../_portfolio_handoff/job-ready-r1.3"),
+  ];
+  const found = candidates.find((candidate) => existsSync(resolve(candidate, "01-PUBLIC-SOURCE-OF-TRUTH.yaml")));
+  assert(found, "R1.3 authority package is missing");
+  return found;
+}
+
+const authorityDir = findAuthorityDir();
+const authority = (name) => readFileSync(resolve(authorityDir, name), "utf8");
+const source = JSON.parse(authority("01-PUBLIC-SOURCE-OF-TRUTH.yaml"));
+const matrix = authority("02-CLAIMS-EVIDENCE-MATRIX.md");
+const routes = authority("03-DEMO-ROUTES.md");
+const resumeCanonical = authority("04-RESUME-CANONICAL.md");
 
 const home = read("app/page.tsx");
 const projects = read("content/projects.ts");
@@ -14,68 +33,121 @@ const sitemap = read("app/sitemap.ts");
 const robots = read("app/robots.ts");
 const casePage = read("app/projects/[slug]/page.tsx");
 const header = read("components/Header.tsx");
+const resumeText = read("public/resume/chen-jiawei-ai-agent-cn-two-page.txt");
+const publicOrigin = source.website.public_url;
+const evidenceIds = new Set(Object.keys(source.evidence_catalog));
+const publicSurfaces = [home, projects, layout, sitemap, robots, casePage, resumeText, resumeCanonical].join("\n");
+
+assert(source.package.current_public_baseline === "R1.3", "authority package baseline must be R1.3");
+assert(source.package.job_readiness === "CHANGES_REQUIRED", "authority verdict mismatch");
+
+const matrixRefs = [...matrix.matchAll(/\bE-[A-Z0-9-]+\b/g)].map((match) => match[0]);
+for (const ref of new Set(matrixRefs)) {
+  assert(evidenceIds.has(ref), `matrix references undefined evidence ID ${ref}`);
+}
 
 const featuredMatch = home.match(/const featuredProjects = \[([^\]]+)\]/s);
-assert(featuredMatch, "homepage must declare the featured-project order");
+assert(featuredMatch, "homepage must declare the flagship order");
 const featuredSlugs = [...featuredMatch[1].matchAll(/"([^"]+)"/g)].map((match) => match[1]);
 assert(
   JSON.stringify(featuredSlugs) === JSON.stringify(["data-platform", "service-agent", "lumen-ink"]),
-  "the three flagship cases must be data platform, Service Agent, then Lumen only",
+  "public flagship order must be data platform, Service Agent, then Lumen",
 );
-assert(home.includes("三个主案例，同优先级展示。"), "homepage must state the three equal-priority flagship cases");
-assert(!home.includes("四个案例，证明四项关键能力"), "homepage must not market four flagship cases");
-assert(!home.includes("Collator 与光砚分别"), "homepage must not position Collator as a fourth flagship case");
-assert(home.includes("AI / Agent 产品经理"), "homepage must state the AI / Agent PM positioning");
-assert(home.includes("https://github.com/Catcherog"), "homepage must expose the GitHub CTA");
-assert(home.includes("mailto:Jael_Chen@foxmail.com"), "homepage must expose the email CTA");
+assert(home.includes("<ProjectLibrary projects={featuredProjects} />"), "public library must expose only the three evidence-bound flagship cases");
+assert(casePage.includes("return featuredProjects.map"), "static case routes must expose only flagship cases");
+assert(casePage.includes("if (!project?.featured) notFound()"), "non-flagship dynamic routes must fail closed");
+
+for (const [slug, status] of [
+  ["data-platform", source.public_cases.feishu_data_platform.status],
+  ["service-agent", source.public_cases.service_agent.status],
+  ["lumen-ink", source.public_cases.lumen.status],
+]) {
+  const start = projects.indexOf(`slug: "${slug}"`);
+  assert(start >= 0, `missing flagship project ${slug}`);
+  const next = projects.indexOf("\n  {\n    slug:", start + 1);
+  const segment = projects.slice(start, next < 0 ? projects.length : next);
+  assert(segment.includes(status), `${slug} status differs from authority package`);
+  const metricBlock = segment.match(/metrics:\s*\[([\s\S]*?)\n\s*\],/);
+  assert(metricBlock, `${slug} metrics block is missing`);
+  const metrics = [...metricBlock[1].matchAll(/\{([^{}]+)\}/g)].map((match) => match[1]);
+  assert(metrics.length > 0, `${slug} has no public metrics`);
+  for (const metric of metrics) {
+    const ref = metric.match(/evidenceRef:\s*"(E-[A-Z0-9-]+)"/)?.[1];
+    assert(ref, `${slug} public metric lacks an evidenceRef`);
+    assert(evidenceIds.has(ref), `${slug} public metric references undefined ${ref}`);
+  }
+}
+
+for (const ref of [...projects.matchAll(/ref:\s*"(E-[A-Z0-9-]+)"/g)].map((match) => match[1])) {
+  assert(evidenceIds.has(ref), `case page references undefined evidence ID ${ref}`);
+}
+
+for (const required of [
+  "五步真实测试链路",
+  "三条核心业务规则",
+  "PASS / NEEDS_REVIEW / REJECT",
+  "三类自动化，三种边界",
+  "B1 / B2 / B3",
+  "评测缺口与修复方向",
+  "微信小程序扩展路线",
+  "DESIGNED_NOT_DEPLOYED",
+]) {
+  assert(projects.includes(required), `required case module is missing: ${required}`);
+}
+
+for (const forbidden of [
+  "75/90=83.33%",
+  "75/90 = 83.33%",
+  "离线路由正确率",
+  "高风险错误放行 0",
+  "禁止承诺 0",
+  "I00 21/21",
+  "canonical-script adherence",
+  "生产回答准确率为",
+  "全量生产上线",
+  "chen-jiawei-ai-agent-cn-one-page.pdf",
+]) {
+  assert(!publicSurfaces.includes(forbidden), `unsupported or superseded public claim: ${forbidden}`);
+}
+
+assert(layout.includes(`metadataBase: new URL("${publicOrigin}")`), "metadata origin differs from verified platform URL");
+assert(layout.includes(`url: "${publicOrigin}"`), "OpenGraph origin differs from verified platform URL");
+assert(sitemap.includes(publicOrigin), "sitemap origin differs from verified platform URL");
+assert(robots.includes(`${publicOrigin}/sitemap.xml`), "robots sitemap differs from verified platform URL");
+assert(casePage.includes(`${publicOrigin}/projects/`), "case OpenGraph URL differs from verified platform URL");
+assert(source.resume.links.includes(publicOrigin), "resume authority links omit the verified platform URL");
+
+for (const claim of source.public_numeric_bindings) {
+  assert(evidenceIds.has(claim.evidence_ref), `numeric claim ${claim.id} references undefined evidence`);
+  assert(matrix.includes(claim.id), `numeric claim ${claim.id} is absent from the claims matrix`);
+  assert([publicSurfaces, matrix].join("\n").includes(claim.public_text), `bound public claim is absent: ${claim.id}`);
+}
 
 for (const resume of [
   "public/resume/chen-jiawei-ai-agent-cn-two-page.pdf",
+  "public/resume/chen-jiawei-ai-agent-cn-two-page.docx",
+  "public/resume/chen-jiawei-ai-agent-cn-two-page.txt",
   "public/resume/jiawei-chen-ai-agent-en.pdf",
 ]) {
   assert(existsSync(resolve(root, resume)), `resume asset missing: ${resume}`);
 }
-assert(home.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "homepage resume CTA must target the canonical two-page resume");
-assert(!home.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "homepage must not advertise the superseded one-page resume");
-assert(!casePage.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "case pages must not advertise the superseded one-page resume");
-assert(!header.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "shared header must not advertise the superseded one-page resume");
-assert(header.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "shared header must target the canonical two-page resume");
-assert(header.includes("浏览案例库"), "shared navigation must use the case-library label");
-assert(!casePage.includes("全部 9 个项目"), "case navigation must not market a nine-project count");
-assert(!projects.includes('evidence: "9 个项目'), "capability evidence must not market a nine-project count");
-assert(layout.includes("3 个同优先级主案例"), "site metadata must describe the three equal-priority flagship cases");
-assert(!layout.includes("4 个核心 AI 产品"), "site metadata must not market four flagship products");
-assert(home.includes("测试 Base 历史验收基线"), "homepage must qualify the 17-table / 12-automation claim");
-assert(projects.includes("测试 Base 历史验收基线"), "Feishu evidence must qualify the 17-table / 12-automation claim");
+assert(header.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "shared resume CTA must target the canonical two-page resume");
+assert(existsSync(resolve(root, "app/not-found.tsx")), "custom 404 page is missing");
 
-assert(
-  projects.includes("Portfolio Pilot｜真实测试 Base E2E 已验证，正式业务 Pilot 与通知自动化待启用"),
-  "Feishu status must use the approved conservative Portfolio Pilot language",
-);
-assert(projects.includes("75/90=83.33%"), "Service Agent must include the fixed offline routing result");
-assert(projects.includes("不是生产准确率/回答总体准确率"), "Service Agent result must carry its required accuracy boundary");
-assert(projects.includes("589 tests"), "Service Agent must expose the current full regression result");
-assert(projects.includes("Controlled Demo｜公网前端可访问，后端恢复中"), "Service Agent must expose the verified controlled-demo boundary");
-assert(projects.includes("https://zehuai-customer-demo.vercel.app/"), "Service Agent must expose its verified public entry");
-assert(projects.includes("Controlled Demo｜后端健康已通过，核心编辑待实测"), "Lumen must expose the current controlled-demo boundary");
-assert(projects.includes("BYO key"), "Lumen must disclose the BYO key requirement");
-assert(projects.includes("Collator（飞书子系统）"), "Collator must be framed as a Feishu subsystem");
-
-for (const slug of ["data-platform", "service-agent", "lumen-ink"]) {
-  assert(projects.includes(`slug: \"${slug}\"`), `missing flagship project: ${slug}`);
+const tracked = execFileSync("git", ["ls-files", "-z"], { cwd: root, encoding: "utf8" }).split("\0").filter(Boolean);
+const binaryExtensions = new Set([".pdf", ".docx", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".woff", ".woff2"]);
+const sensitivePatterns = [
+  /(?:base_token|app_token)\s+[`"']?[A-Za-z0-9_-]{16,}/i,
+  /(?:app_secret|client_secret|api_key)\s*[:=]\s*[`"']?[A-Za-z0-9_-]{12,}/i,
+];
+for (const file of tracked) {
+  if (binaryExtensions.has(extname(file).toLowerCase())) continue;
+  const absolute = resolve(root, file);
+  if (!existsSync(absolute)) continue;
+  const body = readFileSync(absolute, "utf8");
+  for (const pattern of sensitivePatterns) {
+    assert(!pattern.test(body), `tracked release file contains a literal sensitive identifier: ${file}`);
+  }
 }
 
-for (const forbidden of ["零数据丢失", "生产回答准确率为", "全量生产上线"]) {
-  assert(!projects.includes(forbidden), `forbidden unsupported claim: ${forbidden}`);
-}
-
-assert(layout.includes('metadataBase: new URL("https://www.jaelchen.com")'), "site metadata must set the canonical origin");
-assert(sitemap.includes("https://www.jaelchen.com"), "sitemap must include the canonical origin");
-assert(robots.includes("sitemap"), "robots must expose the sitemap");
-assert(existsSync(resolve(root, "app/not-found.tsx")), "site must provide a custom 404 page");
-assert(casePage.includes("const contributionAreas = project.myContribution ??"), "every project page must provide a user-contribution fallback");
-assert(casePage.includes("const evidenceBoundary = project.evidenceLabel ??"), "every project page must provide an evidence-boundary fallback");
-assert(casePage.includes("风险治理、取舍与下一步"), "every project page must explicitly include risk governance");
-assert(casePage.includes("PRIMARY DEMO · 主入口") && casePage.includes("FALLBACK · 备用入口"), "every project page must show primary and fallback demo paths");
-
-console.log("Portfolio consistency gate passed.");
+console.log(`Portfolio consistency gate passed: ${evidenceIds.size} evidence IDs, ${new Set(matrixRefs).size} matrix refs, ${tracked.length} tracked files scanned.`);

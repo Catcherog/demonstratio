@@ -27,6 +27,7 @@ from pypdf import PdfReader
 
 
 ROOT = Path(__file__).resolve().parents[2]
+PORTFOLIO_URL = "https://jaelchen-portfolio-vercel-extracted.vercel.app"
 OUT = ROOT / "public" / "resume"
 STEM = "chen-jiawei-ai-agent-cn-two-page"
 DOCX = OUT / f"{STEM}.docx"
@@ -40,7 +41,7 @@ LIGHT = "F2F2F2"
 
 
 CANONICAL_TEXT = """陈嘉伟 | AI / Agent 产品经理
-杭州 | 18874988048 | Jael_Chen@foxmail.com | jaelchen.com | GitHub: Catcherog
+杭州 | 18874988048 | Jael_Chen@foxmail.com | 作品集: https://jaelchen-portfolio-vercel-extracted.vercel.app | GitHub: Catcherog
 
 专业摘要
 具备复杂项目交付与 AI 产品实践经验，擅长把真实业务流程拆解为可验证的产品链路，覆盖数据治理、Agent 编排、多模态工具与人机协作边界。能够推进需求定义、原型验证、开发协同和迭代复盘，并明确区分验证、试点与生产状态。
@@ -62,8 +63,8 @@ CANONICAL_TEXT = """陈嘉伟 | AI / Agent 产品经理
 
 Service Agent | RAG 客服与知识飞轮
 使用 LangGraph 8 节点 11 边工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。
-589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本离线路由 75/90 = 83.33%。
-高风险错误放行 0、禁止承诺 0；上述结果不是生产准确率，也不是回答总体准确率。
+589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本保留为静态 runner 审计输入。
+现有 runner 未验证 expected_route、实际澄清节点或生成输出，因此不发布路由准确率、回答正确率或禁止承诺结果。
 Controlled Demo｜公网前端可访问，后端恢复中；未接通时安全转人工。
 
 光砚 Lumen | AI 图像编辑工作台
@@ -84,7 +85,7 @@ REQUIRED = [
     "AI / Agent 产品经理", "杭州", "282 个 SKU", "80+ 项目", "五条产品线",
     "追回 2 周", "五款产品提前 15 天", "飞书 AI 业务数据平台", "Service Agent",
     "光砚 Lumen", "测试 Base 历史验收基线", "不是 V2 自动化已上线证据", "589 tests",
-    "75/90 = 83.33%", "高风险错误放行 0", "禁止承诺 0", "不是生产准确率，也不是回答总体准确率",
+    "固定 90 样本保留为静态 runner 审计输入", "未验证 expected_route", "不发布路由准确率、回答正确率或禁止承诺结果",
     "Controlled Demo", "公网前端可访问", "未接通时安全转人工", "Provider 抽象", "项目 / 任务 / 结果持久化与恢复",
     "_id 更新缺陷已修复", "本地 client/server 回归与 build 通过",
     "后端健康已通过", "真实核心编辑待有效凭据实测", "BYO Key",
@@ -92,6 +93,7 @@ REQUIRED = [
 FORBIDDEN = [
     "出生年份", "浙江省杭州市", "2002 年", "90%+", "92% 准确率", "50%+ 自动应答",
     "成熟生产", "生产级", "14 PASS + 1 PARTIAL", "实际离线评测待执行", "目前为 Online Beta",
+    "75/90", "83.33%", "高风险错误放行 0", "禁止承诺 0",
 ]
 ORDER = ["飞书 AI 业务数据平台", "Service Agent", "光砚 Lumen"]
 
@@ -282,7 +284,7 @@ def build_docx(photo_source: Path) -> None:
     p.paragraph_format.line_spacing = 1.05
     r = p.add_run("杭州  |  18874988048  |  Jael_Chen@foxmail.com  |  ")
     set_run(r, 8.8)
-    add_hyperlink(p, "jaelchen.com", "https://jaelchen.com", 8.8)
+    add_hyperlink(p, "作品集", PORTFOLIO_URL, 8.8)
     r = p.add_run("  |  GitHub: ")
     set_run(r, 8.8)
     add_hyperlink(p, "Catcherog", "https://github.com/Catcherog", 8.8)
@@ -356,8 +358,8 @@ def build_docx(photo_source: Path) -> None:
     section_heading(doc, "04", "Service Agent", "RAG Service")
     add_project(doc, "Service Agent", "RAG 客服与知识飞轮", [
         ("目标：", "使用 LangGraph 8 节点 11 边工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。"),
-        ("验证：", "589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本离线路由 75/90 = 83.33%。"),
-        ("安全与评测边界：", "高风险错误放行 0、禁止承诺 0；上述结果不是生产准确率，也不是回答总体准确率。"),
+        ("验证：", "589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本保留为静态 runner 审计输入。"),
+        ("评测边界：", "现有 runner 未验证 expected_route、实际澄清节点或生成输出，因此不发布路由准确率、回答正确率或禁止承诺结果。"),
         ("公网状态：", "Controlled Demo｜公网前端可访问，后端恢复中；未接通时安全转人工。"),
     ])
     section_heading(doc, "05", "光砚 Lumen", "Multimodal Workspace")
@@ -433,8 +435,6 @@ def facts_check(text: str, expect_pass: bool) -> list[str]:
     positions = [text.find(x) for x in ORDER]
     if any(p < 0 for p in positions) or positions != sorted(positions):
         errors.append("三项目顺序必须是：飞书 → Service Agent → 光砚 Lumen")
-    if "83.33%" in text and "不是生产准确率，也不是回答总体准确率" not in text:
-        errors.append("83.33% 必须逐字声明：不是生产准确率，也不是回答总体准确率")
     if expect_pass and errors:
         raise AssertionError("；".join(errors))
     if not expect_pass and not errors:
@@ -455,10 +455,10 @@ def verify_final() -> None:
     facts_check(pdf_text, True)
     if not any("陈嘉伟" in (page.extract_text() or "") for page in reader.pages):
         raise AssertionError("PDF 中文文本不可提取")
-    if "https://jaelchen.com" not in docx_uris(DOCX):
-        raise AssertionError("DOCX 缺少 jaelchen.com 超链接")
-    if "https://jaelchen.com" not in pdf_uris(PDF):
-        raise AssertionError("PDF 缺少 jaelchen.com 超链接")
+    if PORTFOLIO_URL not in docx_uris(DOCX):
+        raise AssertionError("DOCX 缺少已验证作品集超链接")
+    if PORTFOLIO_URL not in pdf_uris(PDF):
+        raise AssertionError("PDF 缺少已验证作品集超链接")
     print(f"PASS pages=2 pdf_bytes={PDF.stat().st_size} docx_links={docx_uris(DOCX)} pdf_links={pdf_uris(PDF)}")
 
 

@@ -1,5 +1,5 @@
 陈嘉伟 | AI / Agent 产品经理
-杭州 | 18874988048 | Jael_Chen@foxmail.com | jaelchen.com | GitHub: Catcherog
+杭州 | 18874988048 | Jael_Chen@foxmail.com | 作品集: https://jaelchen-portfolio-vercel-extracted.vercel.app | GitHub: Catcherog
 
 专业摘要
 具备复杂项目交付与 AI 产品实践经验，擅长把真实业务流程拆解为可验证的产品链路，覆盖数据治理、Agent 编排、多模态工具与人机协作边界。能够推进需求定义、原型验证、开发协同和迭代复盘，并明确区分验证、试点与生产状态。
@@ -21,8 +21,8 @@
 
 Service Agent | RAG 客服与知识飞轮
 使用 LangGraph 8 节点 11 边工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。
-589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本离线路由 75/90 = 83.33%。
-高风险错误放行 0、禁止承诺 0；上述结果不是生产准确率，也不是回答总体准确率。
+589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本保留为静态 runner 审计输入。
+现有 runner 未验证 expected_route、实际澄清节点或生成输出，因此不发布路由准确率、回答正确率或禁止承诺结果。
 Controlled Demo｜公网前端可访问，后端恢复中；未接通时安全转人工。
 
 光砚 Lumen | AI 图像编辑工作台
