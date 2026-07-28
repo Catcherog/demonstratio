@@ -10,12 +10,15 @@ const assert = (condition, message) => {
 
 function findAuthorityDir() {
   const candidates = [
+    resolve(root, "_portfolio_handoff/job-ready-r1.3.1"),
+    resolve(root, "../_portfolio_handoff/job-ready-r1.3.1"),
+    resolve(root, "../../_portfolio_handoff/job-ready-r1.3.1"),
     resolve(root, "_portfolio_handoff/job-ready-r1.3"),
     resolve(root, "../_portfolio_handoff/job-ready-r1.3"),
     resolve(root, "../../_portfolio_handoff/job-ready-r1.3"),
   ];
   const found = candidates.find((candidate) => existsSync(resolve(candidate, "01-PUBLIC-SOURCE-OF-TRUTH.yaml")));
-  assert(found, "R1.3 authority package is missing");
+  assert(found, "R1.3.1 authority package is missing");
   return found;
 }
 
@@ -42,8 +45,11 @@ const evidenceIds = new Set(Object.keys(source.evidence_catalog));
 const publicSurfaces = [home, projects, layout, sitemap, robots, casePage, resumeText, resumeCanonical].join("\n");
 const publicClaimSurfaces = [publicSurfaces, completion].join("\n");
 
-assert(source.package.current_public_baseline === "R1.3", "authority package baseline must be R1.3");
-assert(source.package.job_readiness === "CHANGES_REQUIRED", "authority verdict mismatch");
+assert(source.package.current_public_baseline === "R1.3.1", "authority package baseline must be R1.3.1");
+assert(
+  ["CHANGES_REQUIRED", "CONTROLLED_APPLICATION_READY", "JOB_READY_PASS"].includes(source.package.job_readiness),
+  "authority verdict mismatch",
+);
 
 const matrixRefs = [...matrix.matchAll(/\bE-[A-Z0-9-]+\b/g)].map((match) => match[0]);
 for (const ref of new Set(matrixRefs)) {

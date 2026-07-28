@@ -27,7 +27,7 @@ from pypdf import PdfReader
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PORTFOLIO_URL = "https://jaelchen-portfolio-vercel-extracted.vercel.app"
+PORTFOLIO_URL = "https://www.jaelchen.com"
 OUT = ROOT / "public" / "resume"
 STEM = "chen-jiawei-ai-agent-cn-two-page"
 DOCX = OUT / f"{STEM}.docx"
@@ -41,7 +41,7 @@ LIGHT = "F2F2F2"
 
 
 CANONICAL_TEXT = """陈嘉伟 | AI / Agent 产品经理
-杭州 | 18874988048 | Jael_Chen@foxmail.com | 作品集: https://jaelchen-portfolio-vercel-extracted.vercel.app | GitHub: Catcherog
+杭州 | 18874988048 | Jael_Chen@foxmail.com | 作品集: https://www.jaelchen.com | GitHub: Catcherog
 
 专业摘要
 具备复杂项目交付与 AI 产品实践经验，擅长把真实业务流程拆解为可验证的产品链路，覆盖数据治理、Agent 编排、多模态工具与人机协作边界。能够推进需求定义、原型验证、开发协同和迭代复盘，并明确区分验证、试点与生产状态。

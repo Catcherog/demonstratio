@@ -117,7 +117,7 @@ def render(output: Path) -> None:
     r.text("陈嘉伟", M, r.y, 23, True); r.y -= 18
     r.text("AI / Agent 产品经理", M, r.y, 10.8, True); r.y -= 14
     r.text("杭州  |  18874988048  |  Jael_Chen@foxmail.com  |  作品集  |  GitHub: Catcherog", M, r.y, 8.55)
-    c.linkURL("https://jaelchen-portfolio-vercel-extracted.vercel.app", (M + 280, r.y - 2, M + 350, r.y + 10), relative=0)
+    c.linkURL("https://www.jaelchen.com", (M + 280, r.y - 2, M + 350, r.y + 10), relative=0)
     c.linkURL("https://github.com/Catcherog", (M + 415, r.y - 2, W - M, r.y + 10), relative=0)
     photo = Path(__file__).resolve().parents[2] / "public" / "resume" / "resume-portrait.png"
     if photo.exists():
