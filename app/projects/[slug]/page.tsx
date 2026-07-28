@@ -85,7 +85,7 @@ export default async function ProjectPage({ params }: Props) {
 
         <div className="case-metrics">
           {project.metrics.map((metric) => (
-            <div key={metric.label}>
+            <div key={metric.label} data-claim-id={metric.claimId} data-evidence-ref={metric.evidenceRef}>
               <strong>{metric.value}</strong>
               <span>{metric.label}</span>
               {(metric.note || metric.evidenceRef) && <small>{[metric.note, metric.evidenceRef && `证据：${metric.evidenceRef}`].filter(Boolean).join(" · ")}</small>}

@@ -275,8 +275,9 @@ img { max-width: 100%; }
 .layer-heading h3 { margin: 1px 0 5px; font-size: 16px; }
 .layer-heading p { margin: 0; color: #929bad; font-size: 11px; line-height: 1.55; }
 .layer-projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.layer-projects a { min-height: 78px; padding: 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 11px; align-items: center; border: 1px solid #363c4e; border-radius: 13px; background: #202533; transition: border-color .2s ease, transform .2s ease, background .2s ease; }
+.layer-projects > * { min-height: 78px; padding: 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 11px; align-items: center; border: 1px solid #363c4e; border-radius: 13px; background: #202533; transition: border-color .2s ease, transform .2s ease, background .2s ease; }
 .layer-projects a:hover { transform: translateY(-2px); border-color: #6776de; background: #242a3c; }
+.layer-projects .system-project-label { border-style: dashed; opacity: .72; }
 .layer-projects span { color: #8492f4; font-size: 10px; font-weight: 850; }
 .layer-projects strong { font-size: 13px; }
 .layer-projects i { color: #7d879b; font-style: normal; }

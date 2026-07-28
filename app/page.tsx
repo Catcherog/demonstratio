@@ -11,6 +11,13 @@ const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is (typeof projects)[number] => Boolean(project));
 
+const heroMetrics = [
+  { claimId: "PORTFOLIO-FLAGSHIP-COUNT", value: "3", label: "同优先级主案例", evidenceRef: "E-WEB-R13" },
+  { claimId: "PORTFOLIO-SUBSYSTEM-COUNT", value: "1", label: "飞书子系统 · Collator", evidenceRef: "E-FEISHU-SOURCES" },
+  { claimId: "FEISHU-HISTORICAL-BASELINE", value: "17 / 12", label: "测试 Base 历史验收基线 · 数据表 / 自动化", evidenceRef: "E-FEISHU-SCHEMA" },
+  { claimId: "WORK-PORTFOLIO-SUMMARY", value: "282 / 80+", label: "SKU / 峰值并行项目", evidenceRef: "E-WORK-HISTORY" },
+] as const;
+
 export default function Home() {
   return (
     <main id="top">
@@ -51,10 +58,11 @@ export default function Home() {
         </div>
 
         <div className="hero-metrics">
-          <div><strong>3</strong><span>同优先级主案例</span></div>
-          <div><strong>1</strong><span>飞书子系统 · Collator</span></div>
-          <div><strong>17 / 12</strong><span>测试 Base 历史验收基线 · 数据表 / 自动化</span></div>
-          <div><strong>282 / 80+</strong><span>SKU / 峰值并行项目</span></div>
+          {heroMetrics.map((metric) => (
+            <div key={metric.claimId} data-claim-id={metric.claimId} data-evidence-ref={metric.evidenceRef}>
+              <strong>{metric.value}</strong><span>{metric.label}</span>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -99,7 +107,7 @@ export default function Home() {
                 </dl>
                 <div className="featured-metrics">
                   {project.metrics.slice(0, 3).map((metric) => (
-                    <div key={metric.label}><strong>{metric.value}</strong><span>{metric.label}{metric.note ? ` · ${metric.note}` : ""}{metric.evidenceRef ? ` · ${metric.evidenceRef}` : ""}</span></div>
+                    <div key={metric.label} data-claim-id={metric.claimId} data-evidence-ref={metric.evidenceRef}><strong>{metric.value}</strong><span>{metric.label}{metric.note ? ` · ${metric.note}` : ""}{metric.evidenceRef ? ` · ${metric.evidenceRef}` : ""}</span></div>
                   ))}
                 </div>
                 <a className="case-link" href={`/projects/${project.slug}`}>阅读完整案例 <Arrow /></a>
@@ -167,7 +175,7 @@ export default function Home() {
                 <p>从 0 到 1 构建五层 AI Native 产品系统，负责产品战略、业务建模、MVP 验证、技术方案与上线协同。</p>
                 <ul>
                   <li>3 个主案例 + Collator 飞书子系统 + 业务支撑模块</li>
-                  <li>测试 Base 历史验收基线：12 个关键节点、17 张表、12 条自动化；V2 正式 Pilot 尚未启用</li>
+                  <li>测试 Base 历史验收基线：17 张表、12 条自动化；V2 正式 Pilot 尚未启用</li>
                   <li>Agent、RAG、多模态与 QLoRA 端到端实践</li>
                 </ul>
               </div>

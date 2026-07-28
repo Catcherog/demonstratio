@@ -34,6 +34,8 @@ const layers = [
   },
 ] as const;
 
+const publicProjectSlugs = new Set(["data-platform", "service-agent", "lumen-ink"]);
+
 export function SystemMap() {
   return (
     <div className="system-map" aria-label="五层 AI 产品架构">
@@ -45,13 +47,14 @@ export function SystemMap() {
             <div><h3>{layer.label}</h3><p>{layer.caption}</p></div>
           </div>
           <div className="layer-projects">
-            {layer.projects.map(([number, title, slug]) => (
-              <a href={`/projects/${slug}`} key={slug}>
-                <span>{number}</span>
-                <strong>{title}</strong>
-                <i aria-hidden="true">↗</i>
-              </a>
-            ))}
+            {layer.projects.map(([number, title, slug]) => {
+              const content = <><span>{number}</span><strong>{title}</strong><i aria-hidden="true">{publicProjectSlugs.has(slug) ? "↗" : "支撑"}</i></>;
+              return publicProjectSlugs.has(slug) ? (
+                <a href={`/projects/${slug}`} key={slug}>{content}</a>
+              ) : (
+                <div className="system-project-label" key={slug} aria-label={`${title}，架构支撑模块`}>{content}</div>
+              );
+            })}
           </div>
         </div>
       ))}

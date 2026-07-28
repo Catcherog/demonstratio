@@ -33,10 +33,13 @@ const sitemap = read("app/sitemap.ts");
 const robots = read("app/robots.ts");
 const casePage = read("app/projects/[slug]/page.tsx");
 const header = read("components/Header.tsx");
+const systemMap = read("components/SystemMap.tsx");
 const resumeText = read("public/resume/chen-jiawei-ai-agent-cn-two-page.txt");
+const completion = authority("PORTFOLIO-JOB-READY-CLOSURE-R1.3-CODEX-COMPLETION.md");
 const publicOrigin = source.website.public_url;
 const evidenceIds = new Set(Object.keys(source.evidence_catalog));
 const publicSurfaces = [home, projects, layout, sitemap, robots, casePage, resumeText, resumeCanonical].join("\n");
+const publicClaimSurfaces = [publicSurfaces, completion].join("\n");
 
 assert(source.package.current_public_baseline === "R1.3", "authority package baseline must be R1.3");
 assert(source.package.job_readiness === "CHANGES_REQUIRED", "authority verdict mismatch");
@@ -56,6 +59,14 @@ assert(
 assert(home.includes("<ProjectLibrary projects={featuredProjects} />"), "public library must expose only the three evidence-bound flagship cases");
 assert(casePage.includes("return featuredProjects.map"), "static case routes must expose only flagship cases");
 assert(casePage.includes("if (!project?.featured) notFound()"), "non-flagship dynamic routes must fail closed");
+const publicMapMatch = systemMap.match(/const publicProjectSlugs = new Set\(\[([^\]]+)\]\)/s);
+assert(publicMapMatch, "system map must declare its public project allowlist");
+const publicMapSlugs = [...publicMapMatch[1].matchAll(/"([^"]+)"/g)].map((match) => match[1]);
+assert(
+  JSON.stringify(publicMapSlugs) === JSON.stringify(featuredSlugs),
+  "system map links must be limited to the three public flagship routes",
+);
+assert(systemMap.includes('className="system-project-label"'), "support modules must render as non-link labels");
 
 for (const [slug, status] of [
   ["data-platform", source.public_cases.feishu_data_platform.status],
@@ -72,14 +83,15 @@ for (const [slug, status] of [
   const metrics = [...metricBlock[1].matchAll(/\{([^{}]+)\}/g)].map((match) => match[1]);
   assert(metrics.length > 0, `${slug} has no public metrics`);
   for (const metric of metrics) {
-    const ref = metric.match(/evidenceRef:\s*"(E-[A-Z0-9-]+)"/)?.[1];
+    const ref = metric.match(/evidenceRef:\s*"([^"]+)"/)?.[1];
     assert(ref, `${slug} public metric lacks an evidenceRef`);
     assert(evidenceIds.has(ref), `${slug} public metric references undefined ${ref}`);
   }
 }
 
-for (const ref of [...projects.matchAll(/ref:\s*"(E-[A-Z0-9-]+)"/g)].map((match) => match[1])) {
-  assert(evidenceIds.has(ref), `case page references undefined evidence ID ${ref}`);
+for (const ref of [...projects.matchAll(/(?:evidenceRef|ref):\s*"([^"]+)"/g)].map((match) => match[1])) {
+  if (/^(?:https?:|mailto:|#)/.test(ref)) continue;
+  assert(evidenceIds.has(ref), `case content references undefined evidence ID ${ref}`);
 }
 
 for (const required of [
@@ -117,10 +129,35 @@ assert(robots.includes(`${publicOrigin}/sitemap.xml`), "robots sitemap differs f
 assert(casePage.includes(`${publicOrigin}/projects/`), "case OpenGraph URL differs from verified platform URL");
 assert(source.resume.links.includes(publicOrigin), "resume authority links omit the verified platform URL");
 
+const bindingById = new Map(source.public_numeric_bindings.map((claim) => [claim.id, claim]));
+const structuredClaims = [];
+const structuredPattern = /\{\s*claimId:\s*"([^"]+)",\s*value:\s*"([^"]+)",\s*label:\s*"([^"]+)"(?:,\s*note:\s*"[^"]*")?,\s*evidenceRef:\s*"([^"]+)"\s*\}/g;
+for (const sourceText of [home, projects]) {
+  for (const match of sourceText.matchAll(structuredPattern)) {
+    structuredClaims.push({ id: match[1], value: match[2], label: match[3], evidenceRef: match[4] });
+  }
+}
+const structuredIds = new Set();
+for (const claim of structuredClaims) {
+  assert(!structuredIds.has(claim.id), `structured public claim ID is duplicated: ${claim.id}`);
+  structuredIds.add(claim.id);
+  const binding = bindingById.get(claim.id);
+  assert(binding, `structured public claim is absent from authority: ${claim.id}`);
+  assert(binding.metric_value === claim.value, `metric value differs from authority: ${claim.id}`);
+  assert(binding.metric_label === claim.label, `metric label differs from authority: ${claim.id}`);
+  assert(binding.evidence_ref === claim.evidenceRef, `metric evidence differs from authority: ${claim.id}`);
+  assert(evidenceIds.has(claim.evidenceRef), `structured public claim references undefined evidence: ${claim.id}`);
+  assert(matrix.includes(claim.id), `structured public claim is absent from the claims matrix: ${claim.id}`);
+}
+
 for (const claim of source.public_numeric_bindings) {
   assert(evidenceIds.has(claim.evidence_ref), `numeric claim ${claim.id} references undefined evidence`);
   assert(matrix.includes(claim.id), `numeric claim ${claim.id} is absent from the claims matrix`);
-  assert([publicSurfaces, matrix].join("\n").includes(claim.public_text), `bound public claim is absent: ${claim.id}`);
+  if (claim.metric_value !== undefined) {
+    assert(structuredIds.has(claim.id), `authority metric has no structured public claim: ${claim.id}`);
+  } else {
+    assert(publicClaimSurfaces.includes(claim.public_text), `bound public claim is absent from public surfaces: ${claim.id}`);
+  }
 }
 
 for (const resume of [
