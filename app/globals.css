@@ -1,21 +1,29 @@
 :root {
-  --bg: #f6f7fb;
-  --surface: #ffffff;
-  --surface-alt: #eef1ff;
-  --text: #171923;
-  --muted: #62697a;
-  --line: #dfe3ec;
-  --line-strong: #cbd2e2;
-  --accent: #5368e8;
-  --accent-dark: #3447bd;
-  --accent-soft: #e9edff;
-  --dark: #12151f;
-  --dark-2: #1a1e2a;
-  --dark-line: #343949;
-  --success: #2ab77b;
-  --max: 1180px;
-  --radius: 22px;
-  --shadow: 0 22px 70px rgba(31, 39, 75, .11);
+  --paper: #f2eee4;
+  --paper-2: #e9e2d7;
+  --paper-3: #faf7ef;
+  --ink: #1b181f;
+  --muted: #6f6872;
+  --lilac: #b9a7c1;
+  --lilac-soft: #ded3e2;
+  --deep: #65536d;
+  --action: #493c50;
+  --bg: var(--paper);
+  --surface: var(--paper-3);
+  --surface-alt: var(--paper-2);
+  --text: var(--ink);
+  --line: #d4ccc1;
+  --line-strong: #bfb3bd;
+  --accent: var(--deep);
+  --accent-dark: var(--action);
+  --accent-soft: var(--lilac-soft);
+  --dark: var(--ink);
+  --dark-2: #26212a;
+  --dark-line: #4a414e;
+  --success: #4d6e5b;
+  --max: 1220px;
+  --radius: 20px;
+  --shadow: 0 24px 70px rgba(54, 43, 59, .12);
 }
 
 * { box-sizing: border-box; }
@@ -31,7 +39,7 @@ body {
 a { color: inherit; text-decoration: none; }
 button { color: inherit; font: inherit; }
 img { max-width: 100%; }
-::selection { color: var(--text); background: #ccd4ff; }
+::selection { color: var(--text); background: var(--lilac); }
 
 .section-shell { width: min(var(--max), calc(100% - 48px)); margin-inline: auto; }
 .section-block { padding: 132px 0; }
@@ -111,7 +119,7 @@ img { max-width: 100%; }
   top: 6vh;
   width: 82vw;
   height: 82vw;
-  background: radial-gradient(circle, rgba(83, 104, 232, .13), transparent 66%);
+  background: radial-gradient(circle, rgba(185, 167, 193, .25), transparent 66%);
 }
 .availability {
   width: fit-content;
@@ -266,9 +274,9 @@ img { max-width: 100%; }
 
 .system-section { padding: 132px 0; color: white; background: var(--dark); }
 .system-heading > p { color: #adb4c4; }
-.system-section .eyebrow { color: #9ba8ff; }
+.system-section .eyebrow { color: var(--lilac); }
 .system-map { position: relative; display: flex; flex-direction: column; gap: 13px; }
-.system-spine { position: absolute; z-index: 0; left: 196px; top: 24px; bottom: 24px; width: 1px; background: linear-gradient(#6475ea, #343949); }
+.system-spine { position: absolute; z-index: 0; left: 196px; top: 24px; bottom: 24px; width: 1px; background: linear-gradient(var(--lilac), var(--dark-line)); }
 .system-layer { position: relative; z-index: 1; display: grid; grid-template-columns: 220px 1fr; gap: 30px; padding: 24px; border: 1px solid var(--dark-line); border-radius: 18px; background: var(--dark-2); }
 .layer-heading { display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start; }
 .layer-heading > span { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--accent); font-size: 9px; font-weight: 850; }
@@ -283,13 +291,13 @@ img { max-width: 100%; }
 .layer-projects i { color: #7d879b; font-style: normal; }
 
 .method-section { padding: 132px 0; overflow: hidden; color: white; background: #0c0f17; }
-.method-section .eyebrow { color: #9ba8ff; }
+.method-section .eyebrow { color: var(--lilac); }
 .method-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 80px; align-items: center; }
 .method-copy h2 { margin: 0; font-size: clamp(38px, 4vw, 57px); line-height: 1.11; letter-spacing: -.045em; }
 .method-lead { max-width: 600px; margin: 25px 0 0; color: #aeb5c5; font-size: 15px; line-height: 1.85; }
 .method-principles { margin-top: 38px; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #303544; border-left: 1px solid #303544; }
 .method-principles > div { min-height: 176px; padding: 22px; border-right: 1px solid #303544; border-bottom: 1px solid #303544; }
-.method-principles span { color: #7f8cf1; font-size: 10px; font-weight: 850; }
+.method-principles span { color: var(--lilac); font-size: 10px; font-weight: 850; }
 .method-principles strong { display: block; margin-top: 29px; font-size: 15px; }
 .method-principles p { margin: 10px 0 0; color: #989faf; font-size: 12px; line-height: 1.65; }
 .flywheel { position: relative; min-height: 660px; border-radius: 50%; }
@@ -347,7 +355,7 @@ img { max-width: 100%; }
 .timeline-content ul { margin: 18px 0 0; padding-left: 18px; color: #424959; font-size: 12px; line-height: 1.75; }
 
 .contact-section { padding: 130px 0 28px; color: white; background: #0d1017; }
-.contact-section .eyebrow { color: #9ba8ff; }
+.contact-section .eyebrow { color: var(--lilac); }
 .contact-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 90px; }
 .contact-layout > div:first-child p:last-child { max-width: 570px; margin: 25px 0 0; color: #aeb5c5; font-size: 15px; line-height: 1.85; }
 .contact-actions { border-top: 1px solid #303543; }
@@ -405,7 +413,7 @@ img { max-width: 100%; }
 .demo-grid p, .demo-state { margin: 16px 0 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
 .demo-state { padding: 14px 18px; border-left: 2px solid var(--accent); background: white; }
 .case-dark-section { padding: 124px 0; color: white; background: var(--dark); }
-.case-dark-section .eyebrow, .relationship-section .eyebrow { color: #9ba8ff; }
+.case-dark-section .eyebrow, .relationship-section .eyebrow { color: var(--lilac); }
 .case-title-light > span { color: white; background: #2a3150; }
 .decision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border: 1px solid var(--dark-line); background: var(--dark-line); }
 .decision-grid article { min-height: 285px; padding: 30px; background: var(--dark-2); }
@@ -506,7 +514,7 @@ img { max-width: 100%; }
 .case-navigation strong { font-size: 15px; }
 .case-all-link { padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px; background: white; font-size: 10px; font-weight: 780; }
 .case-contact { padding: 100px 0; color: white; background: #0d1017; }
-.case-contact .eyebrow { color: #9ba8ff; }
+.case-contact .eyebrow { color: var(--lilac); }
 .case-contact h2 { max-width: 850px; margin: 0; font-size: clamp(36px, 4.7vw, 62px); line-height: 1.1; letter-spacing: -.045em; }
 .case-contact > div > div { display: flex; gap: 11px; margin-top: 34px; }
 .case-contact .button-ghost { color: white; border-color: #3a4050; background: transparent; }

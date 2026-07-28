@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit",
-    "check:portfolio": "node scripts/consistency-gate.mjs"
+    "check:portfolio": "node scripts/consistency-gate.mjs",
+    "test:v5": "node --test tests/v5-home-contract.test.mjs",
+    "test:guide": "node --test tests/portfolio-guide.test.mjs"
   },
   "dependencies": {
     "next": "16.2.10",

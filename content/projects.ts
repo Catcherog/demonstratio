@@ -801,6 +801,8 @@ export const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is Project => Boolean(project));
 
+export const publicProjects = featuredProjects;
+
 export const capabilities = [
   {
     title: "产品判断",

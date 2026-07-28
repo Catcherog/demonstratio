@@ -38,11 +38,19 @@ const robots = read("app/robots.ts");
 const casePage = read("app/projects/[slug]/page.tsx");
 const header = read("components/Header.tsx");
 const systemMap = read("components/SystemMap.tsx");
+const homepageComponents = [
+  "components/home/Hero.tsx",
+  "components/home/FeaturedCases.tsx",
+  "components/home/ProductMethod.tsx",
+  "components/home/PortfolioGuide.tsx",
+  "components/home/ExperienceContact.tsx",
+  "components/ProjectLibrary.tsx",
+].map(read).join("\n");
 const resumeText = read("public/resume/chen-jiawei-ai-agent-cn-two-page.txt");
 const completion = authority("PORTFOLIO-JOB-READY-CLOSURE-R1.3-CODEX-COMPLETION.md");
 const publicOrigin = source.website.public_url;
 const evidenceIds = new Set(Object.keys(source.evidence_catalog));
-const publicSurfaces = [home, projects, layout, sitemap, robots, casePage, resumeText, resumeCanonical].join("\n");
+const publicSurfaces = [home, homepageComponents, projects, layout, sitemap, robots, casePage, resumeText, resumeCanonical].join("\n");
 const publicClaimSurfaces = [publicSurfaces, completion].join("\n");
 
 assert(source.package.current_public_baseline === "R1.3.1", "authority package baseline must be R1.3.1");
