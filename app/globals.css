@@ -277,7 +277,7 @@ img { max-width: 100%; }
 .layer-projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .layer-projects > * { min-height: 78px; padding: 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 11px; align-items: center; border: 1px solid #363c4e; border-radius: 13px; background: #202533; transition: border-color .2s ease, transform .2s ease, background .2s ease; }
 .layer-projects a:hover { transform: translateY(-2px); border-color: #6776de; background: #242a3c; }
-.layer-projects .system-project-label { border-style: dashed; opacity: .72; }
+.layer-projects .system-project-label { border-style: dashed; }
 .layer-projects span { color: #8492f4; font-size: 10px; font-weight: 850; }
 .layer-projects strong { font-size: 13px; }
 .layer-projects i { color: #7d879b; font-style: normal; }
@@ -334,7 +334,7 @@ img { max-width: 100%; }
 .library-evidence span { min-height: 70px; padding: 12px; display: flex; flex-direction: column; justify-content: center; gap: 4px; border-radius: 12px; background: var(--accent-soft); color: #5e6678; font-size: 9px; }
 .library-evidence strong { color: var(--text); font-size: 15px; }
 .text-link { margin-top: 21px; display: flex; align-items: center; justify-content: space-between; color: var(--accent-dark); font-size: 11px; font-weight: 800; }
-.metric-note { max-width: 880px; margin: 27px 0 0; color: #7a8293; font-size: 10px; line-height: 1.7; }
+.metric-note { max-width: 880px; margin: 27px 0 0; color: var(--muted); font-size: 10px; line-height: 1.7; }
 
 .experience-section { padding: 132px 0; border-top: 1px solid var(--line); background: #eef0f6; }
 .experience-layout { display: grid; grid-template-columns: .72fr 1.28fr; gap: 90px; }
@@ -354,7 +354,7 @@ img { max-width: 100%; }
 .contact-actions a { padding: 20px 0; display: grid; grid-template-columns: 150px 1fr auto; gap: 20px; align-items: center; border-bottom: 1px solid #303543; }
 .contact-actions span { color: #8991a2; font-size: 10px; }
 .contact-actions strong { font-size: 17px; }
-.footer-bottom { margin-top: 90px; padding-top: 24px; display: flex; justify-content: space-between; border-top: 1px solid #252a36; color: #727b8e; font-size: 10px; }
+.footer-bottom { margin-top: 90px; padding-top: 24px; display: flex; justify-content: space-between; border-top: 1px solid #252a36; color: #7d879b; font-size: 10px; }
 .footer-bottom a { color: white; }
 
 /* Case pages */
@@ -379,7 +379,7 @@ img { max-width: 100%; }
 .case-metrics strong { font-size: clamp(22px, 2.4vw, 34px); line-height: 1; letter-spacing: -.035em; }
 .case-metrics span { color: var(--muted); font-size: 10px; }
 .case-metrics small { width: fit-content; padding: 4px 6px; border-radius: 5px; color: var(--accent-dark); background: var(--accent-soft); font-size: 8px; font-weight: 800; }
-.case-disclaimer { margin: 16px 0 0; color: #7c8494; font-size: 10px; line-height: 1.65; }
+.case-disclaimer { margin: 16px 0 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
 .case-overview, .case-architecture, .case-gallery-section, .case-reflection { padding-top: 124px; padding-bottom: 124px; }
 .case-section-title { display: grid; grid-template-columns: 44px 1fr; gap: 20px; align-items: start; margin-bottom: 48px; }
 .case-section-title > span { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; color: var(--accent-dark); background: var(--accent-soft); font-size: 10px; font-weight: 850; }
@@ -460,8 +460,8 @@ img { max-width: 100%; }
 .capability-grid .cap-in-progress { border-color: #f0d9a8; background: #fff8ec; }
 .capability-grid .cap-planned { border-color: var(--line-strong); background: var(--surface-alt); }
 .capability-grid .cap-label { font-size: 10px; font-weight: 850; letter-spacing: .06em; }
-.capability-grid .cap-verified .cap-label { color: #1f8a55; }
-.capability-grid .cap-in-progress .cap-label { color: #b07318; }
+.capability-grid .cap-verified .cap-label { color: #14764c; }
+.capability-grid .cap-in-progress .cap-label { color: #8a5a0e; }
 .capability-grid .cap-planned .cap-label { color: var(--muted); }
 .capability-grid ul { margin: 16px 0 0; padding-left: 16px; color: #505767; font-size: 12px; line-height: 1.75; }
 .capability-grid li + li { margin-top: 8px; }
@@ -470,7 +470,7 @@ img { max-width: 100%; }
 .evidence-links .ev-ref { width: fit-content; padding: 4px 8px; border-radius: 6px; color: var(--accent-dark); background: var(--accent-soft); font-size: 9px; font-weight: 850; letter-spacing: .04em; }
 .evidence-links .ev-type { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .evidence-links strong { font-size: 12px; line-height: 1.5; }
-.case-verified-meta { margin-top: 20px; color: #8a92a3; font-size: 10px; font-weight: 600; letter-spacing: .03em; }
+.case-verified-meta { margin-top: 20px; color: var(--muted); font-size: 10px; font-weight: 600; letter-spacing: .03em; }
 .case-workflow-section { padding-top: 124px; padding-bottom: 124px; }
 .case-contribution-section, .case-capability-section { padding-top: 124px; padding-bottom: 124px; background: #eef0f6; }
 .case-capability-section { background: white; }

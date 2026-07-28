@@ -107,7 +107,7 @@ export default function Home() {
                 </div>
                 <a className="case-link" href={`/projects/${project.slug}`}>阅读完整案例 <Arrow /></a>
               </div>
-              <span className="featured-number">0{index + 1}</span>
+              <span className="featured-number" aria-hidden="true">0{index + 1}</span>
             </article>
           ))}
         </div>

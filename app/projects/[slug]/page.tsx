@@ -69,7 +69,7 @@ export default async function ProjectPage({ params }: Props) {
             <p className="case-summary">{project.summary}</p>
             <div className="case-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
           </div>
-          <aside className="case-facts">
+          <div className="case-facts">
             <div><span>状态</span><strong>{project.status}</strong></div>
             <div><span>我的角色</span><strong>{project.role}</strong></div>
             <div><span>团队</span><strong>{project.team}</strong></div>
@@ -80,7 +80,7 @@ export default async function ProjectPage({ params }: Props) {
                 {project.link.note && <small>{project.link.note}</small>}
               </a>
             )}
-          </aside>
+          </div>
         </div>
 
         <div className="case-metrics">
