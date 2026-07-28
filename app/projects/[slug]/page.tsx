@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${project.title}｜陈嘉伟 AI 产品案例`,
       description: project.summary,
-      url: `https://jaelchen-portfolio-vercel-extracted.vercel.app/projects/${project.slug}`,
+      url: `https://www.jaelchen.com/projects/${project.slug}`,
       images: [{ url: project.images[0], alt: `${project.title} 项目预览` }],
     },
   };
