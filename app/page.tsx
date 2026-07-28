@@ -3,7 +3,7 @@ import { DataFlywheel } from "@/components/DataFlywheel";
 import { Header } from "@/components/Header";
 import { ProjectLibrary } from "@/components/ProjectLibrary";
 import { SystemMap } from "@/components/SystemMap";
-import { capabilities, projects } from "@/content/projects";
+import { capabilities, getPublicMetrics, projects } from "@/content/projects";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -11,12 +11,7 @@ const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is (typeof projects)[number] => Boolean(project));
 
-const heroMetrics = [
-  { claimId: "PORTFOLIO-FLAGSHIP-COUNT", value: "3", label: "同优先级主案例", evidenceRef: "E-WEB-R13" },
-  { claimId: "PORTFOLIO-SUBSYSTEM-COUNT", value: "1", label: "飞书子系统 · Collator", evidenceRef: "E-FEISHU-SOURCES" },
-  { claimId: "FEISHU-HISTORICAL-BASELINE", value: "17 / 12", label: "测试 Base 历史验收基线 · 数据表 / 自动化", evidenceRef: "E-FEISHU-SCHEMA" },
-  { claimId: "WORK-PORTFOLIO-SUMMARY", value: "282 / 80+", label: "SKU / 峰值并行项目", evidenceRef: "E-WORK-HISTORY" },
-] as const;
+const heroMetrics = getPublicMetrics("hero");
 
 export default function Home() {
   return (

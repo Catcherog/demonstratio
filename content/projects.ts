@@ -1,3 +1,5 @@
+import publicClaimData from "./public-claims.json";
+
 export type ProjectCategory =
   | "Agent / RAG"
   | "Data / Automation"
@@ -13,6 +15,21 @@ export type ProjectMetric = {
   note?: string;
   evidenceRef?: string;
 };
+
+export type PublicMetricSurface = "hero" | "data-platform" | "service-agent" | "lumen-ink";
+
+export type BoundPublicMetric = Required<Pick<ProjectMetric, "claimId" | "value" | "label" | "evidenceRef">> &
+  Pick<ProjectMetric, "note">;
+
+type PublicMetricRecord = BoundPublicMetric & { surface: PublicMetricSurface };
+
+const boundPublicClaims = publicClaimData as PublicMetricRecord[];
+
+export function getPublicMetrics(surface: PublicMetricSurface): BoundPublicMetric[] {
+  return boundPublicClaims
+    .filter((claim) => claim.surface === surface)
+    .map(({ surface: _surface, ...metric }) => metric);
+}
 
 export type ArchitectureStep = {
   label: string;
@@ -100,12 +117,7 @@ export const projects: Project[] = [
     team: "3 人创业团队",
     period: "2026.02 - 至今",
     featured: true,
-    metrics: [
-      { claimId: "FEISHU-TABLE-COUNT", value: "17", label: "张历史基线表", note: "测试 Base；不是当前生产状态", evidenceRef: "E-FEISHU-SCHEMA" },
-      { claimId: "FEISHU-AUTOMATION-COUNT", value: "12", label: "条历史自动化", note: "测试 Base；不是 V2 已部署证明", evidenceRef: "E-FEISHU-SCHEMA" },
-      { claimId: "FEISHU-TEST-E2E", value: "E2E", label: "测试摄入到精确清理", evidenceRef: "E-FEISHU-PILOT-TESTS" },
-      { claimId: "FEISHU-LIVE-SCHEMA", value: "FAIL-CLOSED", label: "生产 Schema 状态", evidenceRef: "E-FEISHU-SCHEMA" },
-    ],
+    metrics: getPublicMetrics("data-platform"),
     tags: ["数据产品", "流程自动化", "移动作业"],
     stack: ["飞书多维表", "Node.js", "React Native", "Expo", "CloudBase", "OCR", "ASR", "CLIP"],
     problem: [
@@ -213,14 +225,7 @@ export const projects: Project[] = [
     provisional: true,
     evidenceLabel:
       "固定 90 样本仅用于静态路由器审计。现有 runner 比较 must_handoff 布尔值，没有验证 expected_route，也没有执行完整 LangGraph、检索、生成或 HTTP 链路，因此不公布路由准确率、回答正确率或禁止承诺结果。公网前端可访问；当前后端未接通，提问会 fail-closed。589 tests 是工程回归证据，不是质量指标。",
-    metrics: [
-      { claimId: "SCS-WORKFLOW-SHAPE", value: "8 / 11", label: "LangGraph 节点 / 边", evidenceRef: "E-SCS-SOURCE" },
-      { claimId: "SCS-REGRESSION-COUNT", value: "589", label: "pytest 全量回归", note: "2026-07-28；非准确率", evidenceRef: "E-SCS-TESTS" },
-      { claimId: "SCS-RISK-TAXONOMY", value: "R0–R3", label: "风险分级 fail-closed", evidenceRef: "E-SCS-SOURCE" },
-      { claimId: "SCS-SCENARIO-TAXONOMY", value: "18", label: "类咨询场景", evidenceRef: "E-SCS-SOURCE" },
-      { claimId: "SCS-AUDIT-DATASET", value: "90", label: "冻结审计样本", note: "现有 runner 不支持公开质量分数", evidenceRef: "E-SCS-EVAL-DATASET" },
-      { claimId: "SCS-DEPLOYED-SHA", value: "2f212d1", label: "公网演示代码 SHA", evidenceRef: "E-SCS-SOURCE" },
-    ],
+    metrics: getPublicMetrics("service-agent"),
     caseModules: [
       {
         eyebrow: "B1 / B2 / B3",
@@ -368,12 +373,7 @@ export const projects: Project[] = [
     featured: true,
     evidenceLabel:
       "Controlled Demo：lumen-ink.vercel.app 根页与 /api/health 已核验为 200，未授权项目请求返回 401；Preview 只读探针 dbRead 1/1。仍需 BYO key（用户自带模型 API Key）完成真实核心编辑验收，因此不把它表述为已验证的在线编辑能力。",
-    metrics: [
-      { claimId: "LUMEN-PROVIDER-COUNT", value: "4", label: "类模型 Provider", evidenceRef: "E-LUMEN-SOURCE" },
-      { claimId: "LUMEN-TOOL-COUNT", value: "6", label: "类专业工具", evidenceRef: "E-LUMEN-SOURCE" },
-      { claimId: "LUMEN-PROMPT-SECTIONS", value: "6 段", label: "结构化提示词", evidenceRef: "E-LUMEN-SOURCE" },
-      { claimId: "LUMEN-ABSTRACTION-COUNT", value: "1 套", label: "统一模型抽象", evidenceRef: "E-LUMEN-SOURCE" },
-    ],
+    metrics: getPublicMetrics("lumen-ink"),
     tags: ["多模态", "AI 创作", "模型抽象"],
     stack: ["React", "TypeScript", "Vite", "Express", "GPT Image", "GLM", "Gemini", "Seedream"],
     problem: [

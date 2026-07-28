@@ -28,6 +28,7 @@ const resumeCanonical = authority("04-RESUME-CANONICAL.md");
 
 const home = read("app/page.tsx");
 const projects = read("content/projects.ts");
+const publicClaims = JSON.parse(read("content/public-claims.json"));
 const layout = read("app/layout.tsx");
 const sitemap = read("app/sitemap.ts");
 const robots = read("app/robots.ts");
@@ -57,6 +58,7 @@ assert(
   "public flagship order must be data platform, Service Agent, then Lumen",
 );
 assert(home.includes("<ProjectLibrary projects={featuredProjects} />"), "public library must expose only the three evidence-bound flagship cases");
+assert(home.includes('const heroMetrics = getPublicMetrics("hero");'), "homepage metrics must come from the public claim manifest");
 assert(casePage.includes("return featuredProjects.map"), "static case routes must expose only flagship cases");
 assert(casePage.includes("if (!project?.featured) notFound()"), "non-flagship dynamic routes must fail closed");
 const publicMapMatch = systemMap.match(/const publicProjectSlugs = new Set\(\[([^\]]+)\]\)/s);
@@ -78,16 +80,9 @@ for (const [slug, status] of [
   const next = projects.indexOf("\n  {\n    slug:", start + 1);
   const segment = projects.slice(start, next < 0 ? projects.length : next);
   assert(segment.includes(status), `${slug} status differs from authority package`);
-  const metricBlock = segment.match(/metrics:\s*\[([\s\S]*?)\n\s*\],/);
-  assert(metricBlock, `${slug} metrics block is missing`);
-  const metrics = [...metricBlock[1].matchAll(/\{([^{}]+)\}/g)].map((match) => match[1]);
-  assert(metrics.length > 0, `${slug} has no public metrics`);
-  for (const metric of metrics) {
-    const ref = metric.match(/evidenceRef:\s*"([^"]+)"/)?.[1];
-    assert(ref, `${slug} public metric lacks an evidenceRef`);
-    assert(evidenceIds.has(ref), `${slug} public metric references undefined ${ref}`);
-  }
+  assert(segment.includes(`metrics: getPublicMetrics("${slug}"),`), `${slug} metrics must come from the public claim manifest`);
 }
+assert(!/\bclaimId\s*:/.test(`${home}\n${projects}`), "public claims must not be declared outside the manifest");
 
 for (const ref of [...projects.matchAll(/(?:evidenceRef|ref):\s*"([^"]+)"/g)].map((match) => match[1])) {
   if (/^(?:https?:|mailto:|#)/.test(ref)) continue;
@@ -130,24 +125,33 @@ assert(casePage.includes(`${publicOrigin}/projects/`), "case OpenGraph URL diffe
 assert(source.resume.links.includes(publicOrigin), "resume authority links omit the verified platform URL");
 
 const bindingById = new Map(source.public_numeric_bindings.map((claim) => [claim.id, claim]));
-const structuredClaims = [];
-const structuredPattern = /\{\s*claimId:\s*"([^"]+)",\s*value:\s*"([^"]+)",\s*label:\s*"([^"]+)"(?:,\s*note:\s*"[^"]*")?,\s*evidenceRef:\s*"([^"]+)"\s*\}/g;
-for (const sourceText of [home, projects]) {
-  for (const match of sourceText.matchAll(structuredPattern)) {
-    structuredClaims.push({ id: match[1], value: match[2], label: match[3], evidenceRef: match[4] });
-  }
-}
+assert(Array.isArray(publicClaims), "public claim manifest must be an array");
+assert(publicClaims.length === 18, "public claim manifest must contain the 18 approved structured claims");
+const expectedSurfaceCounts = new Map([["hero", 4], ["data-platform", 4], ["service-agent", 6], ["lumen-ink", 4]]);
+const surfaceCounts = new Map();
 const structuredIds = new Set();
-for (const claim of structuredClaims) {
-  assert(!structuredIds.has(claim.id), `structured public claim ID is duplicated: ${claim.id}`);
-  structuredIds.add(claim.id);
-  const binding = bindingById.get(claim.id);
-  assert(binding, `structured public claim is absent from authority: ${claim.id}`);
-  assert(binding.metric_value === claim.value, `metric value differs from authority: ${claim.id}`);
-  assert(binding.metric_label === claim.label, `metric label differs from authority: ${claim.id}`);
-  assert(binding.evidence_ref === claim.evidenceRef, `metric evidence differs from authority: ${claim.id}`);
-  assert(evidenceIds.has(claim.evidenceRef), `structured public claim references undefined evidence: ${claim.id}`);
-  assert(matrix.includes(claim.id), `structured public claim is absent from the claims matrix: ${claim.id}`);
+for (const claim of publicClaims) {
+  const keys = Object.keys(claim).sort();
+  const expectedKeys = ["claimId", "evidenceRef", "label", "surface", "value", ...(claim.note === undefined ? [] : ["note"])].sort();
+  assert(JSON.stringify(keys) === JSON.stringify(expectedKeys), `public claim has an unexpected schema: ${claim.claimId ?? "unknown"}`);
+  for (const field of ["surface", "claimId", "value", "label", "evidenceRef"]) {
+    assert(typeof claim[field] === "string" && claim[field].length > 0, `public claim has invalid ${field}`);
+  }
+  assert(expectedSurfaceCounts.has(claim.surface), `public claim has an unknown surface: ${claim.surface}`);
+  surfaceCounts.set(claim.surface, (surfaceCounts.get(claim.surface) ?? 0) + 1);
+  const id = claim.claimId;
+  assert(!structuredIds.has(id), `structured public claim ID is duplicated: ${id}`);
+  structuredIds.add(id);
+  const binding = bindingById.get(id);
+  assert(binding, `structured public claim is absent from authority: ${id}`);
+  assert(binding.metric_value === claim.value, `metric value differs from authority: ${id}`);
+  assert(binding.metric_label === claim.label, `metric label differs from authority: ${id}`);
+  assert(binding.evidence_ref === claim.evidenceRef, `metric evidence differs from authority: ${id}`);
+  assert(evidenceIds.has(claim.evidenceRef), `structured public claim references undefined evidence: ${id}`);
+  assert(matrix.includes(id), `structured public claim is absent from the claims matrix: ${id}`);
+}
+for (const [surface, count] of expectedSurfaceCounts) {
+  assert(surfaceCounts.get(surface) === count, `public claim count differs for ${surface}`);
 }
 
 for (const claim of source.public_numeric_bindings) {
