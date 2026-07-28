@@ -299,7 +299,7 @@ export default async function ProjectPage({ params }: Props) {
 
       <nav className="case-navigation section-shell" aria-label="项目翻页">
         <a href={`/projects/${previous.slug}`}><span>← 上一个案例</span><strong>{previous.title}</strong></a>
-        <a href="/#projects" className="case-all-link">全部 9 个项目</a>
+        <a href="/#projects" className="case-all-link">浏览案例库</a>
         <a href={`/projects/${next.slug}`}><span>下一个案例 →</span><strong>{next.title}</strong></a>
       </nav>
 
@@ -309,7 +309,7 @@ export default async function ProjectPage({ params }: Props) {
           <h2>正在寻找 AI 应用 / Agent 产品经理机会。</h2>
           <div>
             <a className="button button-primary" href="mailto:Jael_Chen@foxmail.com">联系我 <Arrow /></a>
-            <a className="button button-ghost" href="/resume/chen-jiawei-ai-agent-cn-one-page.pdf" target="_blank" rel="noreferrer">下载简历 <Arrow /></a>
+            <a className="button button-ghost" href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf" target="_blank" rel="noreferrer">下载两页简历 <Arrow /></a>
           </div>
         </div>
       </section>

@@ -26,7 +26,7 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="#featured">查看重点案例 <span>↓</span></a>
-            <a className="button button-ghost" href="/resume/chen-jiawei-ai-agent-cn-one-page.pdf" target="_blank" rel="noreferrer">下载中文简历 <Arrow /></a>
+            <a className="button button-ghost" href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf" target="_blank" rel="noreferrer">下载中文两页简历 <Arrow /></a>
           </div>
           <div className="hero-links">
             <a href="/resume/jiawei-chen-ai-agent-en.pdf" target="_blank" rel="noreferrer">English Resume</a>
@@ -53,7 +53,7 @@ export default function Home() {
         <div className="hero-metrics">
           <div><strong>3</strong><span>同优先级主案例</span></div>
           <div><strong>1</strong><span>飞书子系统 · Collator</span></div>
-          <div><strong>17 / 12</strong><span>数据表 / 自动化规则</span></div>
+          <div><strong>17 / 12</strong><span>测试 Base 历史验收基线 · 数据表 / 自动化</span></div>
           <div><strong>282 / 80+</strong><span>SKU / 峰值并行项目</span></div>
         </div>
       </section>
@@ -167,7 +167,7 @@ export default function Home() {
                 <p>从 0 到 1 构建五层 AI Native 产品系统，负责产品战略、业务建模、MVP 验证、技术方案与上线协同。</p>
                 <ul>
                   <li>3 个主案例 + Collator 飞书子系统 + 业务支撑模块</li>
-                  <li>12 个关键业务节点、17 张数据表、12 条自动化</li>
+                  <li>测试 Base 历史验收基线：12 个关键节点、17 张表、12 条自动化；V2 正式 Pilot 尚未启用</li>
                   <li>Agent、RAG、多模态与 QLoRA 端到端实践</li>
                 </ul>
               </div>
@@ -207,8 +207,7 @@ export default function Home() {
           <div className="contact-actions">
             <a href="mailto:Jael_Chen@foxmail.com"><span>邮箱</span><strong>Jael_Chen@foxmail.com</strong><Arrow /></a>
             <a href="tel:18874988048"><span>手机</span><strong>18874988048</strong><Arrow /></a>
-            <a href="/resume/chen-jiawei-ai-agent-cn-one-page.pdf" target="_blank" rel="noreferrer"><span>中文一页简历</span><strong>PDF</strong><Arrow /></a>
-            <a href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf" target="_blank" rel="noreferrer"><span>中文项目简历</span><strong>PDF</strong><Arrow /></a>
+            <a href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf" target="_blank" rel="noreferrer"><span>中文两页简历</span><strong>PDF</strong><Arrow /></a>
             <a href="/resume/jiawei-chen-ai-agent-en.pdf" target="_blank" rel="noreferrer"><span>English Resume</span><strong>PDF</strong><Arrow /></a>
           </div>
         </div>

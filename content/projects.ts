@@ -92,8 +92,8 @@ export const projects: Project[] = [
     period: "2026.02 - 至今",
     featured: true,
     metrics: [
-      { value: "17", label: "张核心数据表" },
-      { value: "12", label: "条自动化规则" },
+      { value: "17", label: "张核心数据表", note: "测试 Base 历史验收基线" },
+      { value: "12", label: "条自动化规则", note: "测试 Base 历史验收基线；不是 V2 已部署证明" },
       { value: "2-3周 → 3-5天", label: "新人上手周期" },
       { value: "111 / 0", label: "历史迁移条目 / 失败" },
     ],
@@ -109,7 +109,7 @@ export const projects: Project[] = [
       "移动端优先覆盖现场高频动作，加入离线缓存和待同步队列，而非复刻完整后台。",
     ],
     outcomes: [
-      "真实测试 Base 的端到端链路已验证：17 张表、12 条自动化覆盖客户全生命周期和拍摄全流程；正式业务 Pilot 与通知自动化仍待启用。",
+      "测试 Base 历史验收基线为 17 张表、12 条自动化；当前 V2 已验证真实测试 Base 的摄入、治理、写入、幂等、审计与精确清理链路，正式业务 Pilot 与通知自动化仍待启用。",
       "完成 111 条历史数据迁移；该迁移批次未记录失败。新人上手周期 2-3 周至 3-5 天为内部业务观察。",
       "为 Service Agent、Collator（飞书子系统）、内容调研、小程序与官网提供统一数据接口和流程触发点。",
     ],
@@ -163,10 +163,10 @@ export const projects: Project[] = [
     featured: true,
     provisional: true,
     evidenceLabel:
-      "固定 90 样本离线路由正确率 75/90=83.33%；这不是生产准确率/回答总体准确率。公网 URL 本轮未核验，当前标注为维护中 / fallback：请查看受控案例证据或联系了解演示。497 tests 为 2026-07-23 pytest 全量回归证据，非准确率指标。",
+      "固定 90 样本离线路由正确率 75/90=83.33%；这不是生产准确率/回答总体准确率。公网 URL 本轮未核验，当前标注为维护中 / fallback：请查看受控案例证据或联系了解演示。589 tests 为 2026-07-28 pytest 全量回归证据，非准确率指标。",
     metrics: [
       { value: "8 / 11", label: "LangGraph 节点 / 边" },
-      { value: "497", label: "pytest 全量回归", note: "2026-07-23 证据" },
+      { value: "589", label: "pytest 全量回归", note: "2026-07-28 证据" },
       { value: "R0–R3", label: "风险分级 fail-closed" },
       { value: "75/90=83.33%", label: "离线路由正确率", note: "不是生产准确率/回答总体准确率" },
       { value: "f98b1f5", label: "代码闭合 SHA" },
@@ -193,7 +193,7 @@ export const projects: Project[] = [
     outcomes: [
       "完成从需求定义、知识组织、LangGraph 8 节点 11 边编排到 PC 客服辅助界面的端到端 MVP。",
       "LangGraph 工作流、RAG 检索、风险分流、fail-closed 人工接管与反馈飞轮均有代码证据。",
-      "497 tests 全量回归通过（2026-07-23 pytest 证据），0 failed；28 个测试文件、819 tracked 文件支持当前架构。",
+      "589 tests 全量回归通过（2026-07-28 pytest 证据），0 failed；该数字是工程回归结果，不代表回答准确率。",
       "三项生产写入安全门禁保持关闭：PRODUCTION_PILOT_ALLOWED=false、EXTERNAL_WRITE_ACTIONS_ALLOWED=false、STORE_MESSAGE_CONTENT=false；Demo 限流 30/min，多轮 history 边界 6 条。",
       "代码闭合 SHA f98b1f5，SCS-MANUAL-012 LLM 配置闭合（OCI revision 固定 + base image digest + 脚本清理）。",
     ],
@@ -737,7 +737,7 @@ export const capabilities = [
   {
     title: "端到端交付",
     body: "能完成需求、原型、开发验证、上线协同、评估设计与数据回流。",
-    evidence: "9 个项目 · 17 表 / 12 自动化 · Web / 小程序 / APP",
+    evidence: "3 个主案例 · 测试 Base 历史验收基线 17 表 / 12 自动化 · Web / 小程序 / APP",
   },
 ];
 

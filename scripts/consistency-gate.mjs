@@ -29,13 +29,20 @@ assert(home.includes("https://github.com/Catcherog"), "homepage must expose the 
 assert(home.includes("mailto:Jael_Chen@foxmail.com"), "homepage must expose the email CTA");
 
 for (const resume of [
-  "public/resume/chen-jiawei-ai-agent-cn-one-page.pdf",
   "public/resume/chen-jiawei-ai-agent-cn-two-page.pdf",
   "public/resume/jiawei-chen-ai-agent-en.pdf",
 ]) {
   assert(existsSync(resolve(root, resume)), `resume asset missing: ${resume}`);
 }
-assert(home.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "homepage resume CTA must target the shipped resume");
+assert(home.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "homepage resume CTA must target the canonical two-page resume");
+assert(!home.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "homepage must not advertise the superseded one-page resume");
+assert(!casePage.includes("/resume/chen-jiawei-ai-agent-cn-one-page.pdf"), "case pages must not advertise the superseded one-page resume");
+assert(!casePage.includes("全部 9 个项目"), "case navigation must not market a nine-project count");
+assert(!projects.includes('evidence: "9 个项目'), "capability evidence must not market a nine-project count");
+assert(layout.includes("3 个同优先级主案例"), "site metadata must describe the three equal-priority flagship cases");
+assert(!layout.includes("4 个核心 AI 产品"), "site metadata must not market four flagship products");
+assert(home.includes("测试 Base 历史验收基线"), "homepage must qualify the 17-table / 12-automation claim");
+assert(projects.includes("测试 Base 历史验收基线"), "Feishu evidence must qualify the 17-table / 12-automation claim");
 
 assert(
   projects.includes("Portfolio Pilot｜真实测试 Base E2E 已验证，正式业务 Pilot 与通知自动化待启用"),
@@ -43,6 +50,7 @@ assert(
 );
 assert(projects.includes("75/90=83.33%"), "Service Agent must include the fixed offline routing result");
 assert(projects.includes("不是生产准确率/回答总体准确率"), "Service Agent result must carry its required accuracy boundary");
+assert(projects.includes("589 tests"), "Service Agent must expose the current full regression result");
 assert(projects.includes("维护中 / fallback"), "Service Agent must expose a maintenance fallback when its public URL is unverified");
 assert(projects.includes("Online Beta 候选/受限状态"), "Lumen must use the approved Online Beta candidate status");
 assert(projects.includes("BYO key"), "Lumen must disclose the BYO key requirement");
