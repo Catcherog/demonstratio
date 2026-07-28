@@ -282,14 +282,14 @@ export const projects: Project[] = [
     subtitle: "把修图专家经验抽象为可操作的参数、流程与模型能力",
     summary:
       "统一接入多类图像模型，将专业人像修图中的特征保留、光影、镜头与风格要求产品化，降低客户体验和团队复用门槛。",
-    status: "Controlled Demo｜界面可访问，后端待恢复",
+    status: "Controlled Demo｜后端健康已通过，核心编辑待实测",
     demoType: "controlled",
     role: "产品负责人 / 交互设计 / 全栈 MVP",
     team: "个人主导，团队业务验证",
     period: "2026.05 - 至今",
     featured: true,
     evidenceLabel:
-      "Controlled Demo：lumen-ink.vercel.app 已核验可查看产品界面与交互流程，需 BYO key（用户自带模型 API Key）；当前 /api/probe 未通过，持久化与核心编辑不作为在线能力开放，readyForPreview=false。",
+      "Controlled Demo：lumen-ink.vercel.app 根页与 /api/health 已核验为 200，未授权项目请求返回 401；Preview 只读探针 dbRead 1/1。仍需 BYO key（用户自带模型 API Key）完成真实核心编辑验收，因此不把它表述为已验证的在线编辑能力。",
     metrics: [
       { value: "4", label: "类模型 Provider" },
       { value: "6", label: "类专业工具" },
@@ -337,7 +337,7 @@ export const projects: Project[] = [
     link: {
       label: "访问光砚",
       href: "https://lumen-ink.vercel.app/",
-      note: "Controlled Demo，需 BYO key（用户自带模型 API Key）；当前仅可查看产品界面与交互流程，后端健康、持久化与核心编辑待恢复。",
+      note: "Controlled Demo，需 BYO key（用户自带模型 API Key）；根页与后端健康已核验，真实核心编辑仍待有效凭据实测。",
     },
     fallbackLink: {
       label: "查看受限状态与证据",

@@ -149,7 +149,7 @@ def render(output: Path) -> None:
     r.heading("04", "Service Agent", "RAG Service")
     r.project("Service Agent", "RAG 客服与知识飞轮", [("目标：", "使用 LangGraph 8 节点 11 边工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。"), ("验证：", "589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本离线路由 75/90 = 83.33%。"), ("安全与评测边界：", "高风险错误放行 0、禁止承诺 0；上述结果不是生产准确率，也不是回答总体准确率。"), ("公网状态：", "Controlled Demo｜公网前端可访问，后端恢复中；未接通时安全转人工。")])
     r.heading("05", "光砚 Lumen", "Multimodal Workspace")
-    r.project("光砚 Lumen", "AI 图像编辑工作台", [("产品：", "将多模型图像生成与编辑能力组织为含任务状态、版本与失败恢复的工作台，覆盖图片生成、编辑与多格式导出。"), ("工程协作：", "Provider 抽象，以及项目 / 任务 / 结果持久化与恢复。"), ("本地验证：", "_id 更新缺陷已修复；本地 client/server 回归与 build 通过。"), ("状态与边界：", "Controlled Demo｜界面可访问，后端健康 / 核心编辑链路待恢复；采用 BYO Key 使用边界。")])
+    r.project("光砚 Lumen", "AI 图像编辑工作台", [("产品：", "将多模型图像生成与编辑能力组织为含任务状态、版本与失败恢复的工作台，覆盖图片生成、编辑与多格式导出。"), ("工程协作：", "Provider 抽象，以及项目 / 任务 / 结果持久化与恢复。"), ("本地验证：", "_id 更新缺陷已修复；本地 client/server 回归与 build 通过。"), ("状态与边界：", "Controlled Demo｜后端健康已通过，真实核心编辑待有效凭据实测；采用 BYO Key 使用边界。")])
     r.heading("06", "教育背景与能力", "Education & Skills")
     r.text("中南大学", M, r.y, 9.4, True); r.text("|  材料物理  |  本科  |  2020.09 - 2024.06", M + 50, r.y + 1, 8.4, False, HexColor("#666666")); r.y -= 13
     r.text("CET-6；基础 SQL；大学生创新创业项目省级奖项。", M, r.y, 8.55); r.y -= 17
