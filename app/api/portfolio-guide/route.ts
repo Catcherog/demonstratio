@@ -16,7 +16,7 @@ import { fallbackNote, type PortfolioAiError } from "@/lib/portfolio-ai/errors";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const maxDuration = 45;
+export const maxDuration = 60;
 
 type HistoryMessage = {
   role: "user" | "assistant";
@@ -259,6 +259,22 @@ export async function POST(request: Request): Promise<Response> {
 
           if (emitted) {
             if (result.error) {
+              // If we already emitted partial output and the upstream timed out,
+              // keep the partial output rather than showing an error to the user.
+              // The partial answer is more useful than replacing it with offline fallback.
+              // For non-timeout errors (e.g. invalid response), still surface the error.
+              if (result.error.code === "UPSTREAM_TIMEOUT") {
+                logProviderEvent("stream_partial_output_on_timeout", {
+                  provider: config.provider,
+                  model: modelId,
+                  errorCode: result.error.code,
+                  durationMs: result.durationMs,
+                  legacyKey,
+                });
+                controller.close();
+                return;
+              }
+
               logProviderEvent("stream_interrupted_after_partial_output", {
                 provider: config.provider,
                 model: modelId,

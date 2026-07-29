@@ -183,6 +183,33 @@ export async function callVolcengineArk(
 
     if (buffer.trim()) consumeLine(buffer);
 
+    // If the stream ended without any output, treat it as an invalid response.
+    // This can happen when the upstream closes the connection prematurely
+    // (e.g. Coding Plan connection limits) without sending an explicit error.
+    if (!emitted && !streamDone) {
+      return {
+        emitted: false,
+        error: {
+          code: "UPSTREAM_INVALID_RESPONSE",
+          message: "stream_ended_without_output",
+        },
+        durationMs: Date.now() - startedAt,
+        model: options.model,
+      };
+    }
+
+    if (!emitted && streamDone) {
+      return {
+        emitted: false,
+        error: {
+          code: "UPSTREAM_INVALID_RESPONSE",
+          message: "stream_done_no_content",
+        },
+        durationMs: Date.now() - startedAt,
+        model: options.model,
+      };
+    }
+
     return {
       emitted,
       durationMs: Date.now() - startedAt,
