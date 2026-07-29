@@ -55,7 +55,7 @@ test("three flagship cases stay data-driven and use the current two-page resume"
 
 test("guide is a full section between product method and project library", async () => {
   const page = await read("app/page.tsx");
-  const guide = await read("components/home/PortfolioGuide.tsx");
+  const guide = await read("components/PortfolioGuide.tsx");
   assert.ok(page.indexOf("<ProductMethod") < page.indexOf("<PortfolioGuide"));
   assert.ok(page.indexOf("<PortfolioGuide") < page.indexOf("<ProjectLibrary"));
   assert.match(guide, /<section className="guide-section" id="portfolio-guide">/);

@@ -42,7 +42,7 @@ const homepageComponents = [
   "components/home/Hero.tsx",
   "components/home/FeaturedCases.tsx",
   "components/home/ProductMethod.tsx",
-  "components/home/PortfolioGuide.tsx",
+  "components/PortfolioGuide.tsx",
   "components/home/ExperienceContact.tsx",
   "components/ProjectLibrary.tsx",
 ].map(read).join("\n");
@@ -71,18 +71,12 @@ assert(
   JSON.stringify(featuredSlugs) === JSON.stringify(["data-platform", "service-agent", "lumen-ink"]),
   "public flagship order must be data platform, Service Agent, then Lumen",
 );
-assert(home.includes("<ProjectLibrary projects={featuredProjects} />"), "public library must expose only the three evidence-bound flagship cases");
+assert(home.includes("<ProjectLibrary projects={projects} />"), "public library must expose all nine projects");
 assert(home.includes('const heroMetrics = getPublicMetrics("hero");'), "homepage metrics must come from the public claim manifest");
-assert(casePage.includes("return featuredProjects.map"), "static case routes must expose only flagship cases");
-assert(casePage.includes("if (!project?.featured) notFound()"), "non-flagship dynamic routes must fail closed");
-const publicMapMatch = systemMap.match(/const publicProjectSlugs = new Set\(\[([^\]]+)\]\)/s);
-assert(publicMapMatch, "system map must declare its public project allowlist");
-const publicMapSlugs = [...publicMapMatch[1].matchAll(/"([^"]+)"/g)].map((match) => match[1]);
-assert(
-  JSON.stringify(publicMapSlugs) === JSON.stringify(featuredSlugs),
-  "system map links must be limited to the three public flagship routes",
-);
-assert(systemMap.includes('className="system-project-label"'), "support modules must render as non-link labels");
+assert(casePage.includes("return projects.map"), "static case routes must expose all nine projects");
+assert(casePage.includes("if (!project) notFound()"), "non-existent project routes must fail closed");
+assert(systemMap.includes("flagshipSlugs"), "system map must declare its flagship tier set");
+assert(!systemMap.includes("system-project-label"), "all projects in system map must be links, not static labels");
 
 for (const [slug, status] of [
   ["data-platform", source.public_cases.feishu_data_platform.status],

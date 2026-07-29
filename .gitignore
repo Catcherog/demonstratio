@@ -9,3 +9,4 @@ public/resume/qa-render/
 scripts/resume/*.exe
 __pycache__/
 *.pyc
+.trae-portfolio-ai-backup/
