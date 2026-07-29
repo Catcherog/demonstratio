@@ -33,26 +33,31 @@ type MetaState = {
   note?: string;
 };
 
-const roles: Array<{ value: GuideRole; label: string; note: string }> = [
-  { value: "recruiter", label: "招聘官", note: "职责、交付与岗位证据" },
-  { value: "product-lead", label: "产品负责人", note: "判断、取舍与业务闭环" },
-  { value: "technical", label: "技术面试官", note: "架构、可靠性与实现边界" },
+type WaitState = {
+  title: string;
+  detail: string;
+};
+
+const roles: Array<{ value: GuideRole; index: string; label: string; note: string }> = [
+  { value: "recruiter", index: "01", label: "招聘官", note: "快速判断岗位匹配与交付证据" },
+  { value: "product-lead", index: "02", label: "产品负责人", note: "追问判断、取舍与业务闭环" },
+  { value: "technical", index: "03", label: "技术面试官", note: "核验架构、可靠性与实现边界" },
 ];
 
 const suggestions: Record<GuideRole, string[]> = {
   recruiter: [
-    "用 90 秒带我看三个最能说明岗位匹配的证据。",
-    "除了三个主案例，他还做过哪些项目？",
-    "他在这些项目里具体负责了什么？",
+    "用 90 秒判断他是否匹配 AI 产品经理岗位。",
+    "三个主案例分别证明了什么能力？",
+    "他在项目里具体负责了什么，而不是团队做了什么？",
   ],
   "product-lead": [
     "三个主案例最关键的产品取舍是什么？",
     "飞书数据平台如何避免错误数据写入？",
-    "他如何把 AI 能力推进到业务闭环？",
+    "他如何把 AI 能力推进到真实业务闭环？",
   ],
   technical: [
     "Service Agent 的 fail-closed 如何实现？",
-    "光砚如何统一多个图像模型 Provider？",
+    "飞书数据平台为什么需要 Candidate 与 SOP Gate？",
     "对比 Service Agent、Collator 与 LoRA 的技术关系。",
   ],
 };
@@ -69,6 +74,48 @@ function modelLabel(model?: string): string {
   return name.replaceAll("-", " ");
 }
 
+function getWaitState({
+  elapsedSeconds,
+  hasSources,
+  hasAnswer,
+}: {
+  elapsedSeconds: number;
+  hasSources: boolean;
+  hasAnswer: boolean;
+}): WaitState {
+  if (hasAnswer) {
+    return {
+      title: "正在生成回答",
+      detail: "首段内容已经返回，后续文字会继续流式出现。",
+    };
+  }
+
+  if (hasSources) {
+    if (elapsedSeconds >= 20) {
+      return {
+        title: "模型仍在组织答案",
+        detail: "连接正常。跨项目比较或技术问题可能接近 30 秒。",
+      };
+    }
+    return {
+      title: "证据已命中，模型正在思考",
+      detail: "正在把项目事实、当前边界与角色视角组织成回答。",
+    };
+  }
+
+  if (elapsedSeconds >= 8) {
+    return {
+      title: "正在检索作品集证据",
+      detail: "没有卡住。模型首个可见内容通常需要 10–30 秒。",
+    };
+  }
+
+  return {
+    title: "正在理解问题",
+    detail: "先检索公开证据，再由大模型组织回答。",
+  };
+}
+
 function GuideAnswer({ text }: { text: string }) {
   const blocks = useMemo(
     () => text.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean),
@@ -80,13 +127,19 @@ function GuideAnswer({ text }: { text: string }) {
       {blocks.map((block, index) => {
         const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
         const first = lines[0] ?? "";
-        const headingLike = /^(结论|关键证据|具体机制|技术实现|产品判断|能力边界|当前边界|建议追问|岗位判断建议|产品判断建议|技术判断建议)/.test(first);
+        const headingLike =
+          /^(结论|关键证据|具体机制|技术实现|产品判断|能力边界|当前边界|建议追问|岗位判断建议|产品判断建议|技术判断建议)/.test(
+            first,
+          );
 
         if (headingLike && lines.length === 1) {
           return <h4 key={`${first}-${index}`}>{first}</h4>;
         }
 
-        if (lines.length > 1 && lines.every((line) => /^\d+[.、]/.test(line) || /^[-•]/.test(line))) {
+        if (
+          lines.length > 1 &&
+          lines.every((line) => /^\d+[.、]/.test(line) || /^[-•]/.test(line))
+        ) {
           return (
             <ul key={`list-${index}`}>
               {lines.map((line) => (
@@ -110,9 +163,11 @@ export function PortfolioGuide() {
   const [streamingSources, setStreamingSources] = useState<SourceItem[]>([]);
   const [streamingMeta, setStreamingMeta] = useState<MetaState>({ mode: "live" });
   const [loading, setLoading] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [error, setError] = useState("");
   const abortRef = useRef<AbortController | null>(null);
   const lastSubmitAt = useRef(0);
+  const startedAtRef = useRef<number | null>(null);
   const transcriptRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => () => abortRef.current?.abort(), []);
@@ -122,14 +177,44 @@ export function PortfolioGuide() {
       top: transcriptRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [turns, streamingAnswer, loading]);
+  }, [turns, streamingAnswer, streamingSources, loading]);
+
+  useEffect(() => {
+    if (!loading || startedAtRef.current === null) {
+      setElapsedSeconds(0);
+      return;
+    }
+
+    const tick = () => {
+      if (startedAtRef.current === null) return;
+      setElapsedSeconds(Math.max(0, Math.floor((Date.now() - startedAtRef.current) / 1_000)));
+    };
+
+    tick();
+    const timer = window.setInterval(tick, 1_000);
+    return () => window.clearInterval(timer);
+  }, [loading]);
 
   const recentTurns = turns.slice(-3);
+  const waitState = getWaitState({
+    elapsedSeconds,
+    hasSources: streamingSources.length > 0 || Boolean(streamingMeta.retrievedCount),
+    hasAnswer: Boolean(streamingAnswer),
+  });
 
   function changeRole(nextRole: GuideRole) {
     setRole(nextRole);
     setQuestion(suggestions[nextRole][0]);
     setError("");
+  }
+
+  function stopGeneration() {
+    abortRef.current?.abort();
+    abortRef.current = null;
+    setLoading(false);
+    setStreamingAnswer("");
+    setStreamingSources([]);
+    setError("已停止本次回答，可以修改问题后重新发送。");
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -145,6 +230,8 @@ export function PortfolioGuide() {
     lastSubmitAt.current = now;
 
     setLoading(true);
+    startedAtRef.current = Date.now();
+    setElapsedSeconds(0);
     setError("");
     setStreamingAnswer("");
     setStreamingSources([]);
@@ -186,7 +273,7 @@ export function PortfolioGuide() {
 
         for (const line of lines) {
           if (!line.trim()) continue;
-          const event = JSON.parse(line) as {
+          const streamEvent = JSON.parse(line) as {
             type: "meta" | "delta" | "sources" | "error";
             mode?: StreamMode;
             model?: string;
@@ -197,24 +284,29 @@ export function PortfolioGuide() {
             message?: string;
           };
 
-          if (event.type === "meta") {
+          if (streamEvent.type === "meta") {
             meta = {
-              mode: event.mode ?? meta.mode,
-              model: event.model ?? meta.model,
-              note: event.note ?? meta.note,
-              retrievedCount: event.retrievedCount ?? meta.retrievedCount,
+              mode: streamEvent.mode ?? meta.mode,
+              model: streamEvent.model ?? meta.model,
+              note: streamEvent.note ?? meta.note,
+              retrievedCount: streamEvent.retrievedCount ?? meta.retrievedCount,
             };
             setStreamingMeta(meta);
           }
-          if (event.type === "delta" && event.text) {
-            answer += event.text;
+
+          if (streamEvent.type === "delta" && streamEvent.text) {
+            answer += streamEvent.text;
             setStreamingAnswer(answer);
           }
-          if (event.type === "sources" && event.items) {
-            sources = event.items;
+
+          if (streamEvent.type === "sources" && streamEvent.items) {
+            sources = streamEvent.items;
             setStreamingSources(sources);
           }
-          if (event.type === "error") streamError = event.message ?? "导览暂时不可用。";
+
+          if (streamEvent.type === "error") {
+            streamError = streamEvent.message ?? "导览暂时不可用。";
+          }
         }
 
         if (done) break;
@@ -246,6 +338,8 @@ export function PortfolioGuide() {
       if (caught instanceof Error && caught.name === "AbortError") return;
       setError("导览暂时不可用，请稍后再试。");
     } finally {
+      if (abortRef.current === controller) abortRef.current = null;
+      startedAtRef.current = null;
       setLoading(false);
       setStreamingAnswer("");
       setStreamingSources([]);
@@ -256,19 +350,35 @@ export function PortfolioGuide() {
     <section className="guide-section" id="portfolio-guide">
       <div className="section-shell guide-layout">
         <div className="guide-intro">
-          <p className="eyebrow">AI PORTFOLIO GUIDE</p>
-          <h2>让 AI 带你理解我的项目、决策与技术实现。</h2>
+          <p className="eyebrow">LIVE AI PORTFOLIO GUIDE</p>
+          <h2>把面试官最想问的问题，交给 AI 先回答。</h2>
           <p>
-            按招聘官、产品负责人或技术面试官视角提问。AI 会检索九个案例、工作经历与公开证据，解释我做了什么、为什么这样设计、如何实现，以及当前能力边界。
+            选择招聘官、产品负责人或技术面试官视角。AI 会先检索项目证据，再解释我做了什么、为什么这样设计、如何实现，以及哪些能力仍有边界。
           </p>
           <a className="button button-light" href="#guide-window">
-            开始 AI 导览 <span aria-hidden="true">↘</span>
+            直接问 AI <span aria-hidden="true">↘</span>
           </a>
+
+          <div className="guide-proof" aria-label="AI 导览说明">
+            <div>
+              <strong>10–30 秒</strong>
+              <span>常见等待时间</span>
+            </div>
+            <div>
+              <strong>只读</strong>
+              <span>不修改任何数据</span>
+            </div>
+            <div>
+              <strong>可追问</strong>
+              <span>保留最近 6 条消息</span>
+            </div>
+          </div>
+
           <div className="guide-boundaries" aria-label="AI 导览技术能力">
             <span>服务端 LLM</span>
-            <span>证据检索</span>
+            <span>结构化证据检索</span>
             <span>流式回答</span>
-            <span>只读边界</span>
+            <span>确定性降级</span>
           </div>
         </div>
 
@@ -278,10 +388,13 @@ export function PortfolioGuide() {
               <span className="guide-orb" aria-hidden="true" />
               <div>
                 <strong>作品集 AI 导览</strong>
-                <small>LLM · EVIDENCE RETRIEVAL · READ ONLY</small>
+                <small>EVIDENCE-GROUNDED · READ ONLY</small>
               </div>
             </div>
-            <span className="guide-online">可连续追问</span>
+            <span className="guide-online">
+              <i aria-hidden="true" />
+              在线 · 可连续追问
+            </span>
           </header>
 
           <div className="guide-role-tabs" aria-label="选择导览视角">
@@ -292,6 +405,7 @@ export function PortfolioGuide() {
                 aria-pressed={role === item.value}
                 onClick={() => changeRole(item.value)}
               >
+                <span>{item.index}</span>
                 <strong>{item.label}</strong>
                 <small>{item.note}</small>
               </button>
@@ -299,10 +413,10 @@ export function PortfolioGuide() {
           </div>
 
           <div className="guide-transcript" aria-live="polite" ref={transcriptRef}>
-            <div className="guide-message guide-assistant">
+            <div className="guide-message guide-assistant guide-welcome">
               <span>AI 导览</span>
               <p>
-                你好。你可以直接问项目功能、产品取舍、技术架构、本人贡献或证据边界。我会先检索相关案例，再组织回答；需要跨项目比较时，也会把三个主案例与其他六个项目一起纳入。
+                选一个视角，或直接使用下方推荐问题。我会先检索公开证据，再由模型组织回答；首个可见内容通常需要 10–30 秒。
               </p>
             </div>
 
@@ -346,15 +460,41 @@ export function PortfolioGuide() {
                     <small>检索 {streamingMeta.retrievedCount} 条证据</small>
                   ) : null}
                 </div>
-                <GuideAnswer text={streamingAnswer || "正在检索项目与公开证据…"} />
+
+                <div className="guide-wait" role="status" aria-live="polite">
+                  <div className="guide-wait-head">
+                    <span className="guide-thinking-dots" aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                    </span>
+                    <strong>{waitState.title}</strong>
+                    <time>{elapsedSeconds}s</time>
+                  </div>
+                  <p>{waitState.detail}</p>
+                  <div className="guide-wait-track" aria-hidden="true">
+                    <span />
+                  </div>
+                  <small>通常 10–30 秒返回首个可见内容，请保留当前页面。</small>
+                </div>
+
+                {streamingAnswer ? <GuideAnswer text={streamingAnswer} /> : null}
+
                 {streamingSources.length > 0 && !streamingAnswer ? (
-                  <p className="guide-mode-note">已命中 {streamingSources.length} 个相关证据片段，正在组织回答。</p>
+                  <p className="guide-mode-note">
+                    已命中 {streamingSources.length} 个相关证据片段，正在组织回答。
+                  </p>
                 ) : null}
+
+                <button className="guide-stop" type="button" onClick={stopGeneration}>
+                  停止本次回答
+                </button>
               </div>
             ) : null}
           </div>
 
           <div className="guide-suggestions" aria-label="推荐问题">
+            <span>试着问：</span>
             {suggestions[role].map((item) => (
               <button type="button" onClick={() => setQuestion(item)} key={item}>
                 {item}
@@ -374,10 +514,10 @@ export function PortfolioGuide() {
                 placeholder="例如：Service Agent 的 fail-closed 如何实现？"
               />
               <button type="submit" disabled={loading || !question.trim()} aria-label="发送问题">
-                {loading ? "…" : "↑"}
+                {loading ? "思考中" : "发送"}
               </button>
             </div>
-            <small>{question.length}/600 · 最多保留 6 条历史消息 · 不保存访客正文</small>
+            <small>{question.length}/600 · 最近 6 条消息用于连续追问 · 不保存访客正文</small>
           </form>
 
           {error ? (
