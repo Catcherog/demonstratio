@@ -365,14 +365,14 @@ export const projects: Project[] = [
     subtitle: "把修图专家经验抽象为可操作的参数、流程与模型能力",
     summary:
       "统一接入多类图像模型，将专业人像修图中的特征保留、光影、镜头与风格要求产品化，降低客户体验和团队复用门槛。",
-    status: "Controlled Demo｜后端健康已通过，核心编辑待实测",
+    status: "Live Demo｜Seedream 文生图与图生图真实链路已验证",
     demoType: "controlled",
     role: "产品负责人 / 交互设计 / 全栈 MVP",
     team: "个人主导，团队业务验证",
     period: "2026.05 - 至今",
     featured: true,
     evidenceLabel:
-      "Controlled Demo：lumen-ink.vercel.app 根页与 /api/health 已核验为 200，未授权项目请求返回 401；Preview 只读探针 dbRead 1/1。仍需 BYO key（用户自带模型 API Key）完成真实核心编辑验收，因此不把它表述为已验证的在线编辑能力。",
+      "Live Demo：lumen-ink.vercel.app 文生图与图生图已通过 Seedream 4.5 真实链路验证（HTTP 200，合成测试图片）。Provider/Model 与响应一致，密钥未进入 localStorage/sessionStorage/网络日志。未测试液化、修复、消除等其他编辑模式。",
     metrics: getPublicMetrics("lumen-ink"),
     tags: ["多模态", "AI 创作", "模型抽象"],
     stack: ["React", "TypeScript", "Vite", "Express", "GPT Image", "GLM", "Gemini", "Seedream"],
