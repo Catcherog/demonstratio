@@ -45,7 +45,7 @@ check(!page.includes("开始 90 秒导览"), "主入口不应继续叫“开始 
 check(guide.includes("开始 AI 导览"), "导览组件应使用“开始 AI 导览”");
 check(guide.includes("LLM · EVIDENCE RETRIEVAL · READ ONLY"), "导览组件应展示技术能力标识");
 check(guide.includes('/api/portfolio-guide'), "导览组件应调用 Portfolio Guide API");
-check(route.includes("streamText") || (route.includes("chat/completions") && route.includes("text/event-stream")), "API 应接入流式模型调用");
+check(route.includes("streamText") || route.includes("callVolcengineArk") || (route.includes("chat/completions") && route.includes("text/event-stream")), "API 应接入流式模型调用（通过适配器或直接调用）");
 check(route.includes("retrievePortfolioSources"), "API 应先执行作品集证据检索");
 check(route.includes("staticPortfolioAnswer"), "API 应保留离线证据回退");
 check(retrieval.includes("projects.flatMap"), "检索索引应覆盖全部项目");

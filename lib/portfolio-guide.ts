@@ -404,7 +404,16 @@ export function staticPortfolioAnswer(
   role: GuideRole,
   sources: PortfolioSource[],
 ): string {
-  const top = sources.slice(0, 4);
+  // Deduplicate by project slug: each project appears at most once in the offline answer.
+  // This prevents "微信公众号 AI 客服机器人" from appearing 3+ times when retrieval
+  // returns multiple sections (overview, decisions, architecture, evidence) for the same project.
+  const seenProjects = new Set<string>();
+  const dedupedSources = sources.filter((source) => {
+    if (seenProjects.has(source.projectSlug)) return false;
+    seenProjects.add(source.projectSlug);
+    return true;
+  });
+  const top = dedupedSources.slice(0, 4);
   const crossProject = CROSS_PROJECT_TERMS.some((term) => question.toLowerCase().includes(term));
 
   const conclusion = crossProject
