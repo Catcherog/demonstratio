@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { ProjectGallery } from "@/components/ProjectGallery";
-import { featuredProjects, getProject } from "@/content/projects";
+import { getProject, projects } from "@/content/projects";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return featuredProjects.map((project) => ({ slug: project.slug }));
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
-  if (!project?.featured) return {};
+  if (!project) return {};
   return {
     title: `${project.title}｜陈嘉伟 AI 产品案例`,
     description: project.summary,
@@ -32,11 +32,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getProject(slug);
-  if (!project?.featured) notFound();
+  if (!project) notFound();
 
-  const currentIndex = featuredProjects.findIndex((item) => item.slug === project.slug);
-  const previous = featuredProjects[(currentIndex - 1 + featuredProjects.length) % featuredProjects.length];
-  const next = featuredProjects[(currentIndex + 1) % featuredProjects.length];
+  const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+  const previous = projects[(currentIndex - 1 + projects.length) % projects.length];
+  const next = projects[(currentIndex + 1) % projects.length];
   const primaryDemo = project.link ?? {
     label: "查看项目证据",
     href: "#evidence",
@@ -69,7 +69,7 @@ export default async function ProjectPage({ params }: Props) {
             <p className="case-summary">{project.summary}</p>
             <div className="case-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
           </div>
-          <aside className="case-facts">
+          <div className="case-facts">
             <div><span>状态</span><strong>{project.status}</strong></div>
             <div><span>我的角色</span><strong>{project.role}</strong></div>
             <div><span>团队</span><strong>{project.team}</strong></div>
@@ -80,7 +80,7 @@ export default async function ProjectPage({ params }: Props) {
                 {project.link.note && <small>{project.link.note}</small>}
               </a>
             )}
-          </aside>
+          </div>
         </div>
 
         <div className="case-metrics">
@@ -301,7 +301,7 @@ export default async function ProjectPage({ params }: Props) {
         <div className="section-shell">
           <div className="case-section-title case-title-light"><span>10</span><div><p className="eyebrow">CROSS-PROJECT RELATIONSHIPS</p><h2>它如何进入完整产品系统。</h2></div></div>
           <div className="relationship-grid">
-            {project.relationships.filter((relation) => featuredProjects.some((item) => item.slug === relation.slug)).map((relation) => (
+            {project.relationships.filter((relation) => projects.some((item) => item.slug === relation.slug)).map((relation) => (
               <a href={`/projects/${relation.slug}`} key={relation.slug}>
                 <strong>{relation.label}</strong>
                 <p>{relation.detail}</p>

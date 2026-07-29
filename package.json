@@ -7,12 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit",
-    "check:portfolio": "node scripts/consistency-gate.mjs"
+    "check:portfolio": "node scripts/consistency-gate.mjs",
+    "test:v5": "node --test tests/v5-home-contract.test.mjs",
+    "test:guide": "node --test tests/portfolio-guide.test.mjs",
+    "check:portfolio-ai": "node scripts/check-portfolio-ai-guide.mjs",
+    "check:portfolio-model": "node scripts/check-portfolio-model.mjs",
+    "check:portfolio-glm": "node scripts/check-portfolio-model.mjs"
   },
   "dependencies": {
     "next": "16.2.10",
     "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react-dom": "19.2.7",
+    "ai": "^6.0.34"
   },
   "devDependencies": {
     "@types/node": "24.10.1",

@@ -216,7 +216,7 @@ export const projects: Project[] = [
     subtitle: "影像工作室 AI 辅助客服 Agent",
     summary:
       "面向影像工作室咨询与运营场景的 Agentic Workflow，通过 LangGraph 8 节点 11 边工作流编排知识检索、意图/风险判断、答案生成、质量检查、人工接管与反馈飞轮，以 fail-closed 策略控制高风险承诺。",
-    status: "Controlled Demo｜公网前端可访问，后端恢复中",
+    status: "Controlled Demo｜静态 B1/B2/B3 演示可用，实时后端修复中",
     demoType: "controlled",
     role: "产品定义 / Agent 架构 / 评估方案 / MVP 开发",
     team: "3 人创业团队",
@@ -224,7 +224,7 @@ export const projects: Project[] = [
     featured: true,
     provisional: true,
     evidenceLabel:
-      "固定 90 样本仅用于静态路由器审计。现有 runner 比较 must_handoff 布尔值，没有验证 expected_route，也没有执行完整 LangGraph、检索、生成或 HTTP 链路，因此不公布路由准确率、回答正确率或禁止承诺结果。公网前端可访问；当前后端未接通，提问会 fail-closed。589 tests 是工程回归证据，不是质量指标。",
+      "固定 90 样本仅用于静态路由器审计。R2 runner 执行了带 Stub 生成节点和缺失 KB 条件下的图级评测，但未验证 expected_route、真实检索或生成输出，因此不公布路由准确率、回答正确率或禁止承诺结果。静态 B1/B2/B3 演示可用；实时后端修复中，自由输入 fail-closed。589 tests 是工程回归证据，不是质量指标。E031 高风险误放行为公开后端恢复前的阻塞缺陷。",
     metrics: getPublicMetrics("service-agent"),
     caseModules: [
       {
@@ -263,7 +263,7 @@ export const projects: Project[] = [
     ],
     productStrategy: [
       "产品目标：用受控 Agent 工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。",
-      "产品边界：当前为受控作品集 Demo，公网前端已核验，服务端未配置时返回 503 并安全转人工；不主张生产 SLO，不声明生产上线或生产试点。",
+      "产品边界：当前为受控作品集 Demo，静态 B1/B2/B3 演示可用，实时后端修复中；不主张生产 SLO，不声明生产上线或生产试点。",
       "方案选择：采用 LangGraph 确定性节点与 LLM 节点组合工作流，LLM 通过可配置的 OpenAI 兼容接口接入，未配置 Key 时回退本地模板匹配。",
       "暂不做：不追求无条件自动回复，不把内部小样本估算写成生产指标，不公开展示具体 LLM 型号。",
     ],
@@ -353,7 +353,7 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 7 }, (_, i) => `/projects/service-agent/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
-    link: { label: "打开受控演示", href: "https://zehuai-customer-demo.vercel.app/", note: "公网前端已核验；当前后端未接通，页面会明确显示受控状态，提问 fail-closed，不代表实时生产能力。" },
+    link: { label: "打开受控演示", href: "https://zehuai-customer-demo.vercel.app/", note: "静态 B1/B2/B3 演示可用；实时后端修复中，页面会明确显示受控状态，提问 fail-closed，不代表实时生产能力。" },
     fallbackLink: { label: "联系了解受控演示", href: "mailto:Jael_Chen@foxmail.com", note: "若页面内容加载失败或需要进一步确认，请重试或使用此备用入口；不承诺实时生产能力。" },
   },
   {
@@ -365,14 +365,14 @@ export const projects: Project[] = [
     subtitle: "把修图专家经验抽象为可操作的参数、流程与模型能力",
     summary:
       "统一接入多类图像模型，将专业人像修图中的特征保留、光影、镜头与风格要求产品化，降低客户体验和团队复用门槛。",
-    status: "Controlled Demo｜后端健康已通过，核心编辑待实测",
+    status: "Live Demo｜Seedream 文生图与图生图真实链路已验证",
     demoType: "controlled",
     role: "产品负责人 / 交互设计 / 全栈 MVP",
     team: "个人主导，团队业务验证",
     period: "2026.05 - 至今",
     featured: true,
     evidenceLabel:
-      "Controlled Demo：lumen-ink.vercel.app 根页与 /api/health 已核验为 200，未授权项目请求返回 401；Preview 只读探针 dbRead 1/1。仍需 BYO key（用户自带模型 API Key）完成真实核心编辑验收，因此不把它表述为已验证的在线编辑能力。",
+      "Live Demo：lumen-ink.vercel.app 文生图与图生图已通过 Seedream 4.5 真实链路验证（HTTP 200，合成测试图片）。Provider/Model 与响应一致，密钥未进入 localStorage/sessionStorage/网络日志。根页与 /api/health 已核验为 200，未授权项目请求返回 401；Preview 只读探针 dbRead 1/1。未测试液化、修复、消除等其他编辑模式。",
     metrics: getPublicMetrics("lumen-ink"),
     tags: ["多模态", "AI 创作", "模型抽象"],
     stack: ["React", "TypeScript", "Vite", "Express", "GPT Image", "GLM", "Gemini", "Seedream"],
@@ -436,12 +436,11 @@ export const projects: Project[] = [
     role: "产品定义 / 通道架构 / MVP 开发",
     team: "3 人创业团队",
     period: "2026.04 - 至今",
-    evidenceLabel: "自动应答率为业务运营观察，尚未形成大样本统计。",
+    evidenceLabel: "自动应答率未形成大样本统计，已撤回公开质量百分比指标。",
     metrics: [
       { value: "18", label: "类业务场景" },
       { value: "4", label: "类消息通道" },
       { value: "7 步", label: "消息处理管线" },
-      { value: "50%+", label: "基础咨询自动应答", note: "内部估算" },
     ],
     tags: ["WeChat", "客服 Agent", "通道适配"],
     stack: ["Python", "微信公众号 API", "GLM-4-Flash", "JSON 关键词检索", "jieba", "字符 bigram", "COS"],
@@ -457,7 +456,6 @@ export const projects: Project[] = [
     outcomes: [
       "支持公众号、iLink、Gewechat 与 itchat 等通道适配，统一进入同一消息处理管线。",
       "会话本地归档并同步至 COS，供 Service Agent 拉取、清洗和人工确认。",
-      "内部运营观察显示基础重复咨询自动应答约 50%+，但仍按估算口径展示。",
     ],
     architecture: [
       { label: "消息通道", detail: "公众号 / iLink / Gewechat / itchat" },
@@ -860,6 +858,8 @@ export const categories: (ProjectCategory | "全部")[] = [
 export const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is Project => Boolean(project));
+
+export const publicProjects = featuredProjects;
 
 export const capabilities = [
   {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./v5.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.jaelchen.com"),
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
     default: "陈嘉伟｜AI / Agent 产品经理作品集",
     template: "%s｜陈嘉伟 AI 产品作品集",
   },
-  description: "AI 应用与 Agent 产品经理作品集：3 个同优先级主案例，覆盖飞书数据平台、Service Agent 与多模态编辑产品。",
+  description: "AI 应用与 Agent 产品经理作品集：3 个主案例与 6 个扩展案例，覆盖 Agent、数据平台、多模态、用户产品、增长与模型训练。",
   keywords: ["AI 产品经理", "Agent 产品经理", "RAG", "AI 应用", "数据产品", "多模态", "QLoRA", "陈嘉伟"],
   authors: [{ name: "陈嘉伟", url: "https://www.jaelchen.com" }],
   creator: "陈嘉伟",
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "陈嘉伟｜AI / Agent 产品经理作品集",
-    description: "3 个同优先级主案例：飞书数据平台、Service Agent 与光砚多模态编辑产品。",
+    description: "3 个主案例与 6 个扩展案例：覆盖飞书数据平台、Service Agent、光砚及完整 AI 产品能力版图。",
     images: ["/og.jpg"],
   },
 };
