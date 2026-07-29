@@ -65,7 +65,7 @@ Service Agent | RAG 客服与知识飞轮
 使用 LangGraph 8 节点 11 边工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。
 589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本保留为静态 runner 审计输入。
 现有 runner 未验证 expected_route、实际澄清节点或生成输出，因此不发布路由准确率、回答正确率或禁止承诺结果。
-Controlled Demo｜公网前端可访问，后端恢复中；未接通时安全转人工。
+Controlled Demo｜静态 B1/B2/B3 演示可用，实时后端修复中；未接通时安全转人工。
 
 光砚 Lumen | AI 图像编辑工作台
 将多模型图像生成与编辑能力组织为含任务状态、版本与失败恢复的工作台，覆盖图片生成、编辑与多格式导出。
@@ -86,7 +86,7 @@ REQUIRED = [
     "追回 2 周", "五款产品提前 15 天", "飞书 AI 业务数据平台", "Service Agent",
     "光砚 Lumen", "测试 Base 历史验收基线", "不是 V2 自动化已上线证据", "589 tests",
     "固定 90 样本保留为静态 runner 审计输入", "未验证 expected_route", "不发布路由准确率、回答正确率或禁止承诺结果",
-    "Controlled Demo", "公网前端可访问", "未接通时安全转人工", "Provider 抽象", "项目 / 任务 / 结果持久化与恢复",
+    "Controlled Demo", "静态 B1/B2/B3 演示可用", "未接通时安全转人工", "Provider 抽象", "项目 / 任务 / 结果持久化与恢复",
     "_id 更新缺陷已修复", "本地 client/server 回归与 build 通过",
     "后端健康已通过", "真实核心编辑待有效凭据实测", "BYO Key",
 ]
@@ -360,7 +360,7 @@ def build_docx(photo_source: Path) -> None:
         ("目标：", "使用 LangGraph 8 节点 11 边工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。"),
         ("验证：", "589 tests 全量回归（2026-07-28，非准确率）；固定 90 样本保留为静态 runner 审计输入。"),
         ("评测边界：", "现有 runner 未验证 expected_route、实际澄清节点或生成输出，因此不发布路由准确率、回答正确率或禁止承诺结果。"),
-        ("公网状态：", "Controlled Demo｜公网前端可访问，后端恢复中；未接通时安全转人工。"),
+        ("公网状态：", "Controlled Demo｜静态 B1/B2/B3 演示可用，实时后端修复中；未接通时安全转人工。"),
     ])
     section_heading(doc, "05", "光砚 Lumen", "Multimodal Workspace")
     add_project(doc, "光砚 Lumen", "AI 图像编辑工作台", [
