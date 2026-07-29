@@ -763,3 +763,549 @@ img { max-width: 100%; }
   .library-summary { align-items: flex-start; flex-direction: column; gap: 5px; }
   .library-card-supporting .library-image { min-height: 220px; }
 }
+
+/* PORTFOLIO_AI_GUIDE_UX_R2_START
+   Frontend-only UX refinement:
+   - truthful 10–30s wait state, elapsed timer, and staged copy
+   - warm neutral + sage palette (no purple-on-lilac chat bubbles)
+   - explicit AI invitation in the homepage hero
+*/
+.guide-section {
+  padding: 124px 0;
+  color: #f7f3e9;
+  background:
+    radial-gradient(circle at 14% 12%, rgba(87, 111, 91, .18), transparent 28%),
+    #191b18;
+}
+.guide-layout {
+  grid-template-columns: minmax(0, .78fr) minmax(560px, 1.22fr);
+  gap: 76px;
+}
+.guide-intro .eyebrow { color: #a9c0aa; }
+.guide-intro h2 { color: #faf7ef; }
+.guide-intro > p:not(.eyebrow) { color: #b9beb5; }
+.guide-intro .button-light {
+  color: #1d211d;
+  border-color: #dfe7dc;
+  background: #edf3ea;
+}
+.guide-intro .button-light:hover { box-shadow: 0 12px 30px rgba(0, 0, 0, .2); }
+.guide-proof {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+.guide-proof div { padding: 17px 14px 17px 0; }
+.guide-proof div + div { padding-left: 14px; border-left: 1px solid rgba(255, 255, 255, .12); }
+.guide-proof strong { display: block; color: #f4f1e9; font-size: 14px; }
+.guide-proof span { display: block; margin-top: 5px; color: #969d94; font-size: 8px; }
+.guide-boundaries span {
+  color: #bcc5ba;
+  border-color: rgba(222, 234, 218, .17);
+  background: rgba(222, 234, 218, .05);
+}
+
+.guide-window {
+  color: #242722;
+  border-color: rgba(255, 255, 255, .12);
+  background: #f5f1e8;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .32);
+}
+.guide-window-head {
+  min-height: 82px;
+  color: #f8f4eb;
+  border-color: rgba(255, 255, 255, .1);
+  background: #252923;
+}
+.guide-window-head strong { font-size: 13px; }
+.guide-window-head small { color: #a8afa5; }
+.guide-orb {
+  width: 31px;
+  height: 31px;
+  background: radial-gradient(circle at 32% 28%, #f3efe5 0 12%, #9db59e 38%, #49624f 72%, #273229 100%);
+  box-shadow: 0 0 0 5px rgba(157, 181, 158, .12);
+}
+.guide-online {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #dcebd9;
+  background: rgba(129, 166, 133, .13);
+  border: 1px solid rgba(165, 196, 167, .17);
+}
+.guide-online i,
+.hero-ai-button > i,
+.hero-ai-invite-head span > i {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  border-radius: 50%;
+  background: #79a77f;
+  box-shadow: 0 0 0 4px rgba(121, 167, 127, .13);
+}
+
+.guide-role-tabs {
+  border-color: #d8d2c8;
+  background: #e9e4da;
+}
+.guide-role-tabs button {
+  padding: 17px 14px;
+  color: #777a73;
+  border-color: #d6d0c6;
+}
+.guide-role-tabs button > span {
+  display: block;
+  margin-bottom: 9px;
+  color: #8b9289;
+  font-size: 7px;
+  font-weight: 850;
+  letter-spacing: .08em;
+}
+.guide-role-tabs button[aria-pressed="true"] {
+  color: #20241f;
+  background: #fbf8f1;
+  box-shadow: inset 0 -3px #4d6e5b;
+}
+.guide-role-tabs button[aria-pressed="true"] > span { color: #4d6e5b; }
+.guide-role-tabs strong { font-size: 11px; }
+.guide-role-tabs small { color: #8d9189; }
+
+.guide-transcript {
+  max-height: 590px;
+  min-height: 340px;
+  padding: 24px;
+  background:
+    linear-gradient(rgba(255, 255, 255, .36), rgba(255, 255, 255, .36)),
+    #efeae1;
+}
+.guide-message {
+  max-width: 90%;
+  padding: 16px 18px;
+  color: #343832;
+  border-color: #d8d2c8;
+  background: #fffdf8;
+  box-shadow: 0 8px 22px rgba(45, 49, 43, .045);
+}
+.guide-message > span,
+.guide-answer-meta > span { color: #496a55; }
+.guide-message > p,
+.guide-answer-text { color: #52584f; font-size: 10px; }
+.guide-welcome {
+  max-width: 94%;
+  border-left: 3px solid #6f8d73;
+  background: #f9f7f0;
+}
+.guide-user {
+  color: #f8f6ef;
+  border-color: #355440;
+  background: #355440;
+  box-shadow: 0 10px 26px rgba(48, 75, 58, .16);
+}
+.guide-user > span { color: #bcd0bf; }
+.guide-user > p { color: #f8f6ef; }
+.guide-streaming {
+  min-width: min(92%, 520px);
+  border-style: solid;
+  border-color: #cfd8cc;
+  background: #fffef9;
+}
+.guide-streaming::after { display: none; }
+
+.guide-answer-meta small {
+  color: #4b6752;
+  border-color: rgba(77, 110, 91, .17);
+  background: rgba(77, 110, 91, .07);
+}
+.guide-answer-text h4 { color: #252a24; }
+.guide-mode-note {
+  color: #626a61 !important;
+  border-left-color: #739078;
+  background: rgba(77, 110, 91, .06);
+}
+.guide-sources a {
+  color: #343a34;
+  border-color: #ddd8cf;
+  background: #faf8f2;
+}
+.guide-sources a:hover { border-color: #7e9b83; }
+.guide-sources a small { color: #52705a; }
+
+.guide-wait {
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid #d5ddd2;
+  border-radius: 13px;
+  background: #f3f6f0;
+}
+.guide-wait-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.guide-wait-head strong { color: #293229; font-size: 10px; }
+.guide-wait-head time {
+  min-width: 34px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: #48614e;
+  background: #e3ebe1;
+  font-size: 8px;
+  font-weight: 850;
+  text-align: center;
+}
+.guide-wait > p { margin: 9px 0 0; color: #616a60; font-size: 9px; line-height: 1.6; }
+.guide-wait > small { display: block; margin-top: 9px; color: #899087; font-size: 7px; }
+.guide-thinking-dots { display: inline-flex; align-items: center; gap: 3px; }
+.guide-thinking-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #5f7c65;
+  animation: guide-thinking-dot 1.05s ease-in-out infinite;
+}
+.guide-thinking-dots i:nth-child(2) { animation-delay: .14s; }
+.guide-thinking-dots i:nth-child(3) { animation-delay: .28s; }
+.guide-wait-track {
+  height: 3px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #dfe6dd;
+}
+.guide-wait-track span {
+  width: 38%;
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+  background: #5f7c65;
+  animation: guide-thinking-track 1.6s ease-in-out infinite;
+}
+@keyframes guide-thinking-dot {
+  0%, 60%, 100% { opacity: .32; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-2px); }
+}
+@keyframes guide-thinking-track {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(365%); }
+}
+.guide-stop {
+  margin-top: 11px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #a4aaa1;
+  color: #767d74;
+  background: transparent;
+  font-size: 8px;
+  cursor: pointer;
+}
+.guide-stop:hover { color: #30362f; border-color: #596359; }
+
+.guide-suggestions {
+  padding: 14px 22px 16px;
+  align-items: center;
+  border-top: 1px solid #ddd7cd;
+  background: #eee9df;
+}
+.guide-suggestions > span {
+  flex: 0 0 auto;
+  color: #6d746b;
+  font-size: 8px;
+  font-weight: 850;
+}
+.guide-suggestions button {
+  max-width: 300px;
+  color: #50594f;
+  border-color: #d4cec4;
+  background: #fbf8f1;
+}
+.guide-suggestions button:hover {
+  color: #34533e;
+  border-color: #739078;
+  background: #fffdf8;
+}
+.guide-form {
+  border-color: #d9d3ca;
+  background: #fffdf8;
+}
+.guide-form label { color: #6e756c; }
+.guide-form > div { grid-template-columns: 1fr 76px; }
+.guide-form textarea {
+  color: #2a2f29;
+  border-color: #d5d0c7;
+  background: #f8f5ee;
+}
+.guide-form textarea:focus {
+  border-color: #6f8d73;
+  box-shadow: 0 0 0 3px rgba(77, 110, 91, .1);
+}
+.guide-form button {
+  border: 1px solid #304839;
+  color: #f8f6ef;
+  background: #304839;
+  font-size: 10px;
+  font-weight: 850;
+}
+.guide-form button:not(:disabled):hover { background: #24382c; }
+.guide-form > small { color: #8c9289; }
+
+.hero-ai-button {
+  color: #f7f4ec;
+  border-color: #355440;
+  background: #355440;
+  box-shadow: 0 12px 28px rgba(48, 75, 58, .14);
+}
+.hero-ai-button:hover { box-shadow: 0 16px 34px rgba(48, 75, 58, .2); }
+.hero-ai-invite {
+  max-width: 720px;
+  margin-top: 20px;
+  padding: 17px;
+  border: 1px solid #cfc9be;
+  border-radius: 16px;
+  background: rgba(250, 247, 239, .76);
+  box-shadow: 0 12px 34px rgba(45, 42, 36, .045);
+}
+.hero-ai-invite-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+}
+.hero-ai-invite-head > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #42604a;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero-ai-invite-head > strong {
+  color: #3f423d;
+  font-size: 11px;
+  font-weight: 720;
+  text-align: right;
+}
+.hero-ai-prompts {
+  margin-top: 13px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+.hero-ai-prompts a {
+  min-width: 0;
+  min-height: 70px;
+  padding: 11px 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr;
+  column-gap: 8px;
+  border: 1px solid #d8d2c8;
+  border-radius: 11px;
+  background: #fffdf8;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.hero-ai-prompts a:hover {
+  transform: translateY(-2px);
+  border-color: #809785;
+  box-shadow: 0 8px 20px rgba(49, 72, 56, .08);
+}
+.hero-ai-prompts span {
+  color: #66806c;
+  font-size: 7px;
+  font-weight: 850;
+}
+.hero-ai-prompts strong {
+  margin-top: 7px;
+  color: #30352f;
+  font-size: 9px;
+  line-height: 1.45;
+}
+.hero-ai-prompts i {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  color: #6d7e70;
+  font-size: 10px;
+  font-style: normal;
+}
+.hero-ai-invite > small {
+  display: block;
+  margin-top: 11px;
+  color: #7d817a;
+  font-size: 8px;
+}
+
+
+/* Cascade override: app/v5.css is imported after globals.css and re-introduces
+   purple tokens (--lilac-soft, --action, --deep, --lilac) on guide selectors
+   with equal specificity. These !important declarations restore the R2
+   neutral + sage palette without modifying v5.css (outside the allowed
+   file list for PORTFOLIO-AI-GUIDE-UX-R2). Only purple-removing properties
+   are marked !important; layout and minor tones keep normal cascade. */
+.guide-section {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(87, 111, 91, .18), transparent 28%),
+    #191b18 !important;
+}
+.guide-window-head { background: #252923 !important; }
+.guide-window-head small { color: #a8afa5 !important; }
+.guide-orb {
+  background: radial-gradient(circle at 32% 28%, #f3efe5 0 12%, #9db59e 38%, #49624f 72%, #273229 100%) !important;
+}
+.guide-user,
+.guide-user p { background: #355440 !important; border-color: #355440 !important; }
+.guide-form button {
+  border: 1px solid #304839 !important;
+  background: #304839 !important;
+}
+.guide-intro > p:not(.eyebrow) { color: #b9beb5 !important; }
+.guide-message > span,
+.guide-answer-meta > span { color: #496a55 !important; }
+
+@media (max-width: 980px) {
+  .guide-layout { grid-template-columns: 1fr; gap: 48px; }
+  .guide-intro { position: static; }
+  .hero-ai-invite { max-width: none; }
+}
+@media (max-width: 720px) {
+  .guide-proof { grid-template-columns: 1fr; }
+  .guide-proof div { padding: 13px 0; }
+  .guide-proof div + div { padding-left: 0; border-left: 0; border-top: 1px solid rgba(255, 255, 255, .12); }
+  .guide-role-tabs { grid-template-columns: 1fr; }
+  .guide-role-tabs button { border-right: 0; }
+  .guide-transcript { padding: 15px; }
+  .guide-streaming { min-width: 0; }
+  .guide-wait-head { grid-template-columns: auto 1fr auto; }
+  .guide-suggestions { align-items: flex-start; }
+  .guide-suggestions > span { padding-top: 9px; }
+  .guide-form > div { grid-template-columns: 1fr 64px; }
+  .hero-ai-invite-head { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .hero-ai-invite-head > strong { text-align: left; }
+  .hero-ai-prompts { grid-template-columns: 1fr; }
+  .hero-ai-prompts a { min-height: 58px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .guide-thinking-dots i,
+  .guide-wait-track span { animation: none; }
+}
+/* RF-01: 360/375/390px mobile responsive fixes.
+   No overflow-x:hidden here — these rules shrink/stack content so it
+   genuinely fits the viewport. Boundary assertions run in tests. */
+@media (max-width: 400px) {
+  /* Header: tighten width and brand mark */
+  .site-header {
+    top: 6px;
+    width: calc(100% - 12px);
+    min-height: 56px;
+    padding: 8px 10px;
+    border-radius: 14px;
+  }
+  .brand-mark { width: 32px; height: 32px; font-size: 11px; }
+  .brand-copy strong { font-size: 12px; }
+  .menu-button { width: 40px; height: 40px; }
+
+  /* Hero: shrink title so it wraps cleanly */
+  .hero { padding-top: 104px; padding-bottom: 60px; gap: 30px; }
+  .hero h1 {
+    max-width: 100%;
+    font-size: clamp(32px, 8.6vw, 40px);
+    line-height: 1.08;
+    letter-spacing: -.04em;
+  }
+  .hero-lead { font-size: 14px; line-height: 1.7; }
+  .hero-actions { gap: 8px; margin-top: 24px; }
+  .hero-actions .button { min-height: 44px; padding: 10px 14px; font-size: 12px; gap: 10px; }
+
+  /* AI invite card: reduce padding and ensure prompt cards stack tightly */
+  .hero-ai-invite { padding: 13px; border-radius: 13px; margin-top: 16px; }
+  .hero-ai-invite-head { gap: 6px; }
+  .hero-ai-invite-head > span { font-size: 7px; letter-spacing: .06em; }
+  .hero-ai-invite-head > strong { font-size: 10px; line-height: 1.4; }
+  .hero-ai-prompts { gap: 6px; margin-top: 10px; }
+  .hero-ai-prompts a { min-height: 54px; padding: 9px 10px; border-radius: 9px; }
+  .hero-ai-prompts strong { font-size: 8px; line-height: 1.4; }
+  .hero-ai-prompts span { font-size: 6px; }
+  .hero-ai-invite > small { font-size: 7px; margin-top: 9px; line-height: 1.5; }
+
+  /* Hero proof strip: smaller cells */
+  .hero-proof-strip div { min-height: 64px; padding: 11px 10px; }
+  .hero-proof-strip strong { font-size: 15px; }
+  .hero-proof-strip span { font-size: 8px; }
+
+  /* Guide section: shrink intro heading and window padding */
+  .guide-section { padding: 72px 0; }
+  .guide-intro h2 {
+    font-size: clamp(28px, 7.4vw, 34px);
+    line-height: 1.12;
+    letter-spacing: -.035em;
+  }
+  .guide-intro > p:not(.eyebrow) { font-size: 12px; line-height: 1.7; }
+  .guide-proof { margin-top: 22px; }
+  .guide-proof div { padding: 12px 0; }
+  .guide-proof strong { font-size: 12px; }
+  .guide-proof span { font-size: 7px; }
+  .guide-boundaries span { font-size: 7px; padding: 6px 8px; }
+
+  /* Guide window: tighten head and form so nothing overflows */
+  .guide-window { border-radius: 14px; }
+  .guide-window-head { min-height: 64px; padding: 12px 14px; gap: 10px; }
+  .guide-window-head > div { gap: 9px; min-width: 0; }
+  .guide-window-head strong { font-size: 11px; }
+  .guide-window-head small { font-size: 6px; margin-top: 2px; }
+  .guide-orb { width: 26px; height: 26px; }
+  .guide-online { padding: 5px 7px; font-size: 7px; }
+
+  .guide-role-tabs button { padding: 13px 11px; }
+  .guide-role-tabs button > span { font-size: 6px; margin-bottom: 6px; }
+  .guide-role-tabs strong { font-size: 10px; }
+  .guide-role-tabs small { font-size: 6px; line-height: 1.35; }
+
+  .guide-transcript { padding: 13px; min-height: 280px; }
+  .guide-message { max-width: 96%; padding: 13px 14px; }
+  .guide-message > p { font-size: 9px; line-height: 1.65; }
+  .guide-answer-text { font-size: 9px; line-height: 1.7; }
+  .guide-answer-text h4 { font-size: 10px; }
+  .guide-answer-meta { gap: 4px; }
+  .guide-answer-meta small { font-size: 6px; padding: 3px 6px; }
+
+  .guide-wait { padding: 11px; border-radius: 11px; }
+  .guide-wait-head { gap: 7px; }
+  .guide-wait-head strong { font-size: 9px; }
+  .guide-wait-head time { min-width: 28px; padding: 3px 5px; font-size: 7px; }
+  .guide-wait > p { font-size: 8px; line-height: 1.55; margin-top: 7px; }
+  .guide-wait > small { font-size: 6px; margin-top: 7px; }
+  .guide-thinking-dots i { width: 4px; height: 4px; }
+  .guide-wait-track { height: 2px; margin-top: 9px; }
+  .guide-stop { font-size: 7px; margin-top: 9px; }
+
+  .guide-suggestions { padding: 11px 14px 13px; gap: 6px; }
+  .guide-suggestions > span { font-size: 7px; padding-top: 7px; }
+  .guide-suggestions button { max-width: 220px; padding: 7px 9px; font-size: 7px; line-height: 1.35; }
+
+  .guide-form { padding: 13px 14px 16px; }
+  .guide-form > div { grid-template-columns: 1fr 56px; gap: 6px; }
+  .guide-form textarea { min-height: 54px; padding: 9px 11px; font-size: 9px; }
+  .guide-form button { font-size: 9px; }
+  .guide-form label { font-size: 7px; margin-bottom: 5px; }
+  .guide-form > small { font-size: 6px; margin-top: 4px; }
+
+  .guide-sources a { padding: 9px 10px; }
+  .guide-sources a span { font-size: 7px; }
+  .guide-sources a small { font-size: 6px; }
+  .guide-sources a em { font-size: 6px; }
+
+  .guide-mode-note { font-size: 7px !important; padding: 8px 10px; }
+
+  .hero-links { gap: 10px 16px; font-size: 11px; }
+  .capability-line { min-height: 110px; padding: 18px 0; grid-template-columns: 26px 1fr 22px; gap: 11px; }
+  .capability-line strong { font-size: 17px; }
+  .capability-line p { font-size: 12px; }
+  .capability-line small { font-size: 9px; }
+  .capability-line > span { font-size: 11px; }
+}
+/* PORTFOLIO_AI_GUIDE_UX_R2_END */
