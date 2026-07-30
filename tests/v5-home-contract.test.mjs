@@ -131,3 +131,33 @@ test("Jael identity and guide submit states stay legible at compact sizes", asyn
   assert.match(css, /\.guide-submit-spinner\s*\{[^}]*animation:/s);
   assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*\.guide-submit-spinner\s*\{[^}]*animation:\s*none/s);
 });
+
+test("homepage and flagship details share the exact R1.3 status contract", async () => {
+  const projects = await read("content/projects.ts");
+  const featured = await read("components/home/FeaturedCases.tsx");
+  const statuses = [
+    "Portfolio Pilot｜真实测试 Base E2E 已验证，生产 V2 Schema 表级匹配通过（10/10），正式业务 Pilot 待启用",
+    "Controlled Demo｜后端已上线 CloudBase Deploy 039（Phase G 验证通过），前端仍指向 Render 静态降级",
+    "Live Demo｜真实 Provider 编辑已验证",
+  ];
+  for (const status of statuses) assert.ok(projects.includes(status), `missing status: ${status}`);
+  assert.match(featured, /projects\.map/);
+  for (const status of statuses) assert.equal(featured.includes(status), false, "FeaturedCases must not duplicate status copy");
+});
+
+test("public source trees contain no superseded flagship claims", async () => {
+  const paths = [
+    "content/projects.ts",
+    "content/flagship-cases/data-platform.ts",
+    "content/flagship-cases/service-agent.ts",
+    "content/flagship-cases/lumen-ink.ts",
+    "content/portfolio-evidence.ts",
+    "components/home/FeaturedCases.tsx",
+    "lib/portfolio-guide.ts",
+  ];
+  const source = (await Promise.all(paths.map(read))).join("\n");
+  for (const stale of ["589", "后端修复中", "真实编辑待验证", "缺少生产只读权限", "52/90", "16/16", "3/3"]) {
+    assert.equal(source.includes(stale), false, `stale public phrase: ${stale}`);
+  }
+  assert.doesNotMatch(source, /(?:准确率|accuracy)\s*(?:为|[:：=])?\s*\d+(?:\.\d+)?%/i);
+});
