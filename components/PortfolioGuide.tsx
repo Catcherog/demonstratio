@@ -513,8 +513,20 @@ export function PortfolioGuide() {
                 rows={2}
                 placeholder="例如：Service Agent 的 fail-closed 如何实现？"
               />
-              <button type="submit" disabled={loading || !question.trim()} aria-label="发送问题">
-                {loading ? "思考中" : "发送"}
+              <button
+                type="submit"
+                disabled={loading || !question.trim()}
+                aria-label={loading ? "正在生成回答" : "发送问题"}
+              >
+                {loading ? (
+                  <svg className="guide-submit-spinner" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <circle cx="12" cy="12" r="8" />
+                  </svg>
+                ) : (
+                  <svg className="guide-submit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 19V5M6.5 10.5 12 5l5.5 5.5" />
+                  </svg>
+                )}
               </button>
             </div>
             <small>{question.length}/600 · 最近 6 条消息用于连续追问 · 不保存访客正文</small>

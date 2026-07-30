@@ -9,7 +9,12 @@ export function Header() {
   return (
     <header className="site-header">
       <a className="brand" href="/#top" onClick={close} aria-label="陈嘉伟作品集首页">
-        <span className="brand-mark">CJ</span>
+        <span className="brand-signature" aria-hidden="true">
+          Jael
+          <svg viewBox="0 0 84 12" focusable="false">
+            <path d="M2 8.5C19 3.5 35 3 51 6.4C62 8.8 72 8.6 82 4.2" />
+          </svg>
+        </span>
         <span className="brand-copy">
           <strong>陈嘉伟</strong>
           <small>AI / Agent Product</small>
