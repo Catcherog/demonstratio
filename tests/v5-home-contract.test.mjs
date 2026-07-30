@@ -111,3 +111,23 @@ test("continuous paper editorial layer unifies every homepage section", async ()
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.doesNotMatch(css, /#0c0f17|#0d1017|#191b18/);
 });
+
+test("Jael identity and guide submit states stay legible at compact sizes", async () => {
+  const header = await read("components/Header.tsx");
+  const guide = await read("components/PortfolioGuide.tsx");
+  const icon = await read("app/icon.svg");
+  const css = await read("app/editorial-responsive.css");
+
+  assert.match(header, /className="brand-signature"[^>]*>\s*Jael\s*</);
+  assert.doesNotMatch(header, /className="brand-mark"[^>]*>\s*CJ\s*</);
+
+  assert.match(guide, /aria-label=\{loading \? "正在生成回答" : "发送问题"\}/);
+  assert.match(guide, /guide-submit-icon/);
+  assert.match(guide, /guide-submit-spinner/);
+  assert.doesNotMatch(guide, /loading \? "思考中" : "发送"/);
+
+  assert.match(icon, /<path\b/);
+  assert.doesNotMatch(icon, /<text\b/);
+  assert.match(css, /\.guide-submit-spinner\s*\{[^}]*animation:/s);
+  assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*\.guide-submit-spinner\s*\{[^}]*animation:\s*none/s);
+});
