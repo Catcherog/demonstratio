@@ -144,15 +144,15 @@ export const projects: Project[] = [
     subtitle: "影像工作室 AI 辅助客服 Agent",
     summary:
       "面向影像工作室咨询与运营场景的 Agentic Workflow，通过 LangGraph 8 节点 11 边工作流编排知识检索、意图/风险判断、答案生成、质量检查、人工接管与反馈飞轮，以 fail-closed 策略控制高风险承诺。",
-    status: "Case Ready｜在线演示维护中",
-    demoType: "unavailable",
+    status: "公网实时 Demo｜受控生产验证",
+    demoType: "public",
     role: "产品定义 / Agent 架构 / 评估方案 / MVP 开发",
     team: "3 人创业团队",
     period: "2026.04 - 至今",
     featured: true,
     provisional: true,
     evidenceLabel:
-      "在线演示维护中：chat.jael.com 当前连接关闭（NXDOMAIN，三源验证）。案例为完整作品集展示，自动应答率与准确率为内部小样本估算，待固定评测集与线上数据验证。497 tests 为 2026-07-23 pytest 全量回归证据，非准确率指标。",
+      "已接入真实 Service Agent 后端（CloudBase Deploy 039），支持知识检索、多轮追问、来源展示与安全转人工。高风险、低置信度及知识不足的问题不会强行回答。公网 Demo 完成受控浏览器 E2E 验证；自动应答率与准确率为内部小样本估算，待固定评测集与线上数据验证。497 tests 为 2026-07-23 pytest 全量回归证据，非准确率指标。",
     metrics: [
       { value: "8 / 11", label: "LangGraph 节点 / 边" },
       { value: "497", label: "pytest 全量回归", note: "2026-07-23 证据" },
@@ -167,7 +167,7 @@ export const projects: Project[] = [
     ],
     productStrategy: [
       "产品目标：用受控 Agent 工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。",
-      "产品边界：当前为作品集 Demo，公开演示维护中，不主张生产 SLO，不声明生产上线或生产试点。",
+      "产品边界：公网实时 Demo 已接入真实后端并完成受控 E2E 验证，仍不主张生产 SLO，不声明全面上线或生产试点。",
       "方案选择：采用 LangGraph 确定性节点与 LLM 节点组合工作流，LLM 通过可配置的 OpenAI 兼容接口接入，未配置 Key 时回退本地模板匹配。",
       "暂不做：不追求无条件自动回复，不把内部小样本估算写成生产指标，不公开展示具体 LLM 型号。",
     ],
@@ -208,9 +208,9 @@ export const projects: Project[] = [
       "LLM 生成与模板回退双路径，牺牲部分回答质量以换取服务可用性（未配置 Key 时仍可运行）。",
     ],
     nextSteps: [
-      "恢复公开演示域名健康检查，或明确标注演示维护中。",
-      "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率与转人工率。",
       "在真实流量中做分阶段灰度，校准置信度阈值并记录误答成本。",
+      "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率与转人工率。",
+      "持续监测公网 Demo 后端健康与 P50/P95 延迟，并完善反馈数据回流。",
     ],
     verifiedCapabilities: [
       "LangGraph 8 节点 11 边工作流编排",
@@ -222,11 +222,13 @@ export const projects: Project[] = [
       "Web/API 端到端 MVP",
       "497 tests 全量回归通过（2026-07-23）",
       "三项生产写入安全门禁保持关闭",
+      "公网实时 Demo 接入真实 Service Agent 后端（CloudBase Deploy 039）",
+      "受控浏览器 E2E：多轮追问、来源展示、高风险转人工、无知识拒答",
     ],
     inProgressCapabilities: [
-      "公开演示恢复（chat.jael.com 连接关闭）",
       "冻结评测集建立",
       "STATUS 文档同步至 SCS-MANUAL-012",
+      "反馈接口公网联调（/api/feedback 非阻塞）",
     ],
     plannedCapabilities: [
       "真实流量灰度上线",
@@ -240,7 +242,7 @@ export const projects: Project[] = [
       { label: "知识检索 API 证据", type: "api", ref: "SCS-004" },
       { label: "28 个测试文件 / 497 tests", type: "test", ref: "SCS-005" },
       { label: "反馈飞轮闭环代码", type: "api", ref: "SCS-006" },
-      { label: "Demo Disclosure（演示维护中）", type: "deploy", ref: "SCS-007" },
+      { label: "公网实时 Demo（已接入真实后端）", type: "deploy", ref: "SCS-007" },
     ],
     myContribution: [
       { area: "用户与业务需求", detail: "影像工作室咨询与运营场景调研，定义 18 类咨询场景与 R0–R3 风险分级" },
@@ -258,7 +260,7 @@ export const projects: Project[] = [
     ],
     images: Array.from({ length: 7 }, (_, i) => `/projects/service-agent/${String(i + 1).padStart(2, "0")}.webp`),
     imageMode: "desktop",
-    link: { label: "查看案例", href: "#contact", note: "在线演示维护中：chat.jael.com 当前连接关闭，可查看案例详情或联系了解受控演示" },
+    link: { label: "打开公网实时 Demo", href: "https://zehuai-customer-demo.vercel.app/", note: "已接入真实 Service Agent 后端，支持知识检索、多轮追问、来源展示与安全转人工。高风险、低置信度及知识不足的问题不会强行回答。" },
   },
   {
     slug: "lumen-ink",
