@@ -63,3 +63,36 @@ test("guide is a full section between product method and project library", async
   assert.match(guide, /产品负责人/);
   assert.match(guide, /技术面试官/);
 });
+
+test("continuous paper editorial layer unifies every homepage section", async () => {
+  const css = (await read("app/editorial-responsive.css")).toLowerCase();
+
+  for (const token of [
+    "--editorial-paper: #f3eee4",
+    "--editorial-paper-high: #fbf8f1",
+    "--editorial-ink: #1c1820",
+    "--editorial-plum: #4f4054",
+    "--editorial-sage: #718c7b",
+    "--editorial-sage-soft: #dfe7de",
+    "--editorial-lilac-soft: #e7dde9",
+  ]) {
+    assert.match(css, new RegExp(token));
+  }
+
+  for (const selector of [
+    ".system-section > .section-shell",
+    ".method-section > .section-shell",
+    ".guide-section > .section-shell",
+    ".experience-section > .section-shell",
+    ".contact-section > .contact-layout",
+  ]) {
+    assert.ok(css.includes(selector), `missing full-page selector: ${selector}`);
+  }
+
+  assert.match(css, /editorial_continuous_paper_a_start/);
+  assert.match(css, /\.system-section\s*\{[^}]*background:\s*transparent/s);
+  assert.match(css, /\.method-section\s*\{[^}]*background:\s*transparent/s);
+  assert.match(css, /\.guide-section\s*\{[^}]*background:\s*transparent/s);
+  assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  assert.doesNotMatch(css, /#0c0f17|#0d1017|#191b18/);
+});
