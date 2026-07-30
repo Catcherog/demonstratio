@@ -53,6 +53,11 @@ test("three flagship cases stay data-driven and use the current two-page resume"
   assert.match(hero, /chen-jiawei-ai-agent-cn-two-page\.pdf/);
 });
 
+test("supporting library excludes the frontend-only Feishu Portal", async () => {
+  const projects = await read("content/projects.ts");
+  assert.doesNotMatch(projects, /slug:\s*"feishu-portal"/);
+});
+
 test("guide is a full section between product method and project library", async () => {
   const page = await read("app/page.tsx");
   const guide = await read("components/PortfolioGuide.tsx");
