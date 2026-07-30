@@ -17,13 +17,17 @@ export function FlagshipCasePage({ project, study, evidence }: { project: Projec
       <Header />
       <article>
         <CaseHero project={project} study={study} />
-        <CaseSectionNav items={CASE_SECTIONS} />
-        <CaseOverview id="overview" project={project} study={study} />
-        <BusinessContext id="business" study={study} />
-        <ProductDesign id="product" study={study} />
-        <TechnicalImplementation id="technical" study={study} />
-        <IterationPath id="iterations" entries={study.iterations} />
-        <CaseEvidenceGallery id="evidence" items={evidence} />
+        <div className="flagship-case-body section-shell">
+          <CaseSectionNav items={CASE_SECTIONS} />
+          <div className="flagship-case-sections">
+            <CaseOverview id="overview" project={project} study={study} />
+            <CaseEvidenceGallery id="evidence" items={evidence} />
+            <BusinessContext id="business" study={study} />
+            <ProductDesign id="product" study={study} />
+            <TechnicalImplementation id="technical" study={study} />
+            <IterationPath id="iterations" entries={study.iterations} />
+          </div>
+        </div>
       </article>
       <nav className="flagship-footer-nav section-shell" aria-label="案例后续操作">
         <a href="/#featured">返回三个主案例</a>

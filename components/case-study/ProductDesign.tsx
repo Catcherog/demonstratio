@@ -15,7 +15,7 @@ export function ProductDesign({ id, study }: { id: string; study: FlagshipCaseSt
   return (
     <section id={id} className="flagship-section section-shell flagship-product-section" aria-labelledby={`${id}-heading`}>
       <div className="flagship-section-heading">
-        <p className="eyebrow">03 · PRODUCT DESIGN</p>
+        <p className="eyebrow">04 · PRODUCT DESIGN</p>
         <h2 id={`${id}-heading`}>产品方案</h2>
         <p>{study.product.form}</p>
       </div>
