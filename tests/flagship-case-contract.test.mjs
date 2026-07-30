@@ -229,3 +229,24 @@ test("evidence gallery renders bounded media, links and explicit missing states"
   assert.match(media, /解释性架构图/);
   assert.match(media, /公开产品界面/);
 });
+
+test("case stylesheet implements the approved paper palette and responsive navigation", async () => {
+  const css = await read("app/case-study.css");
+  const lower = css.toLowerCase();
+  for (const color of ["#f2eee4", "#fbf8f1", "#1c1820", "#4f4054", "#b9a7c1", "#e7dde9", "#718c7b", "#d4ccc1"]) {
+    assert.ok(lower.includes(color), `missing color ${color}`);
+  }
+  assert.match(css, /\.case-section-nav\s*\{[^}]*top:\s*92px;[^}]*height:\s*44px;[^}]*max-height:\s*44px;/s);
+  assert.match(css, /background:\s*rgba\(251, 248, 241, \.94\)/);
+  assert.doesNotMatch(css, /\.case-section-nav\s*\{[^}]*(?:#000|#111|#171b27|#1C1820)/s);
+  assert.match(css, /\.flagship-section\s*\{[^}]*scroll-margin-top:\s*148px;/s);
+  assert.match(css, /\.flagship-product-section \.case-balanced-grid,[\s\S]*\.flagship-technical-section \.case-balanced-grid\s*\{[^}]*grid-template-columns:/);
+  assert.match(css, /@media \(max-width: 900px\)[\s\S]*\.iteration-path\s*\{[^}]*grid-template-columns:\s*1fr;/);
+  assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.case-section-nav\s*\{[^}]*top:\s*76px;/);
+  assert.match(css, /overflow-x:\s*auto/);
+  assert.match(css, /white-space:\s*nowrap/);
+  assert.match(css, /min-height:\s*40px/);
+  assert.match(css, /:focus-visible/);
+  const layout = await read("app/layout.tsx");
+  assert.ok(layout.indexOf('import "./case-study.css";') > layout.indexOf('import "./editorial-responsive.css";'));
+});
