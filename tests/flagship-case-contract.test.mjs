@@ -189,3 +189,21 @@ test("product and technical sections use the same outer layout contract", async 
   assert.match(product, /className="case-balanced-grid"/);
   assert.match(technical, /className="case-balanced-grid"/);
 });
+
+test("section navigation is ordered, active, scroll-aware and progressively enhanced", async () => {
+  const source = await read("components/case-study/CaseSectionNav.tsx");
+  assert.match(source, /^"use client";/);
+  const labels = ["项目概览", "业务判断", "产品方案", "技术实现", "迭代链路", "项目证据"];
+  const ids = ["overview", "business", "product", "technical", "iterations", "evidence"];
+  const positions = labels.map((label) => source.indexOf(`"${label}"`));
+  assert.ok(positions.every((position) => position >= 0));
+  assert.deepEqual([...positions].sort((a, b) => a - b), positions);
+  for (const id of ids) assert.ok(source.includes(`"${id}"`));
+  assert.match(source, /new IntersectionObserver/);
+  assert.match(source, /rootMargin: "-132px 0px -58% 0px"/);
+  assert.match(source, /threshold: \[0, 0\.2, 0\.6\]/);
+  assert.match(source, /!\("IntersectionObserver" in window\)/);
+  assert.match(source, /aria-current=\{activeId === item\.id \? "location" : undefined\}/);
+  assert.match(source, /aria-label="案例板块导航"/);
+  assert.doesNotMatch(source, /preventDefault/);
+});
