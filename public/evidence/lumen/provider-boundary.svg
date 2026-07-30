@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">光砚 Provider 与任务边界图</title>
+  <desc id="desc">工作台创建任务，经 Provider 适配器调用已验证路径并保存结果历史；未验证编辑模式保持关闭。</desc>
+  <rect width="1200" height="640" fill="#F2EEE4"/>
+  <text x="72" y="82" fill="#1C1820" font-size="34" font-family="sans-serif" font-weight="700">Lumen · provider and task boundary</text>
+  <text x="72" y="122" fill="#4F4054" font-size="20" font-family="sans-serif">先闭合真实编辑路径，再扩大工具声明</text>
+  <g font-family="sans-serif">
+    <g transform="translate(72 205)"><rect width="230" height="150" rx="24" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="3"/><text x="28" y="52" fill="#4F4054" font-size="17" font-weight="700">WORKBENCH</text><text x="28" y="91" fill="#1C1820" font-size="24" font-weight="700">结构化操作</text><text x="28" y="124" fill="#718C7B" font-size="16">画布 · 参数 · 复核</text></g>
+    <path d="M320 280 H392" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
+    <g transform="translate(410 205)"><rect width="230" height="150" rx="24" fill="#E7DDE9" stroke="#B9A7C1" stroke-width="3"/><text x="28" y="52" fill="#4F4054" font-size="17" font-weight="700">TASK</text><text x="28" y="91" fill="#1C1820" font-size="24" font-weight="700">可恢复状态</text><text x="28" y="124" fill="#4F4054" font-size="16">创建 · 处理中 · 结果</text></g>
+    <path d="M658 280 H730" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
+    <g transform="translate(748 205)"><rect width="230" height="150" rx="24" fill="#DFE7DE" stroke="#718C7B" stroke-width="3"/><text x="28" y="52" fill="#4F4054" font-size="17" font-weight="700">PROVIDER</text><text x="28" y="91" fill="#1C1820" font-size="24" font-weight="700">统一适配器</text><text x="28" y="124" fill="#718C7B" font-size="16">鉴权 · 错误 · 响应</text></g>
+    <path d="M996 280 H1068" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
+    <g transform="translate(930 405)"><rect width="198" height="112" rx="22" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="3"/><text x="24" y="44" fill="#4F4054" font-size="16" font-weight="700">RESULT / HISTORY</text><text x="24" y="78" fill="#1C1820" font-size="20" font-weight="700">结果与历史</text></g>
+    <path d="M1086 355 V388" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
+    <g transform="translate(72 430)"><rect width="720" height="118" rx="24" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="3" stroke-dasharray="10 8"/><text x="28" y="43" fill="#4F4054" font-size="17" font-weight="700">VERIFICATION SPLIT</text><text x="28" y="78" fill="#1C1820" font-size="22" font-weight="700">已验证：文生图 / 图生图</text><text x="380" y="78" fill="#4F4054" font-size="22" font-weight="700">未验证：其他编辑模式</text><text x="28" y="104" fill="#718C7B" font-size="16">界面存在不等于能力已验证</text></g>
+  </g>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#4F4054"/></marker></defs>
+</svg>

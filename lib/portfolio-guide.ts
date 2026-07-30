@@ -1,4 +1,6 @@
-import { projects, type Project } from "@/content/projects";
+import { flagshipCaseStudies, type FlagshipCaseStudy, type NarrativePoint } from "@/content/flagship-cases";
+import { portfolioEvidence } from "@/content/portfolio-evidence";
+import { getProject, projects, type Project } from "@/content/projects";
 
 export type GuideRole = "recruiter" | "product-lead" | "technical";
 
@@ -16,6 +18,7 @@ export type PortfolioSource = {
 export type PortfolioDocument = Omit<PortfolioSource, "score"> & {
   content: string;
   searchText: string;
+  evidenceIds: string[];
 };
 
 const ROLE_HINTS: Record<GuideRole, string[]> = {
@@ -68,8 +71,13 @@ function compact(items: Array<string | undefined | null>): string[] {
   return items.filter((item): item is string => Boolean(item?.trim()));
 }
 
-function flattenProject(project: Project): PortfolioDocument[] {
-  const href = `/projects/${project.slug}`;
+function createDocument(
+  project: Project,
+  sectionId: string,
+  section: string,
+  content: string,
+  evidenceIds: string[],
+): PortfolioDocument {
   const common = [
     project.title,
     project.subtitle,
@@ -83,93 +91,136 @@ function flattenProject(project: Project): PortfolioDocument[] {
     ...project.tags,
     ...project.stack,
   ].join("\n");
-
-  const create = (section: string, content: string, evidenceId: string): PortfolioDocument => ({
-    evidenceId,
+  return {
+    evidenceId: `${project.slug}:${sectionId}`,
+    evidenceIds,
     projectSlug: project.slug,
     title: project.title,
     status: project.status,
-    href,
+    href: `/projects/${project.slug}`,
     section,
     excerpt: content.slice(0, 320),
     content,
     searchText: `${common}\n${section}\n${content}`.toLowerCase(),
-  });
+  };
+}
 
-  const documents: PortfolioDocument[] = [
-    create(
-      "项目概览",
-      compact([
-        `项目：${project.title}`,
-        `定位：${project.subtitle}`,
-        `摘要：${project.summary}`,
-        `当前状态：${project.status}`,
-        `我的角色：${project.role}`,
-        `团队：${project.team}`,
-        `周期：${project.period}`,
-        project.evidenceLabel ? `证据边界：${project.evidenceLabel}` : undefined,
-      ]).join("\n"),
-      `${project.slug}:overview`,
-    ),
-    create(
-      "业务问题与产品决策",
-      compact([
-        ...project.problem.map((item, index) => `问题 ${index + 1}：${item}`),
-        ...(project.productStrategy ?? []).map((item, index) => `产品策略 ${index + 1}：${item}`),
-        ...project.decisions.map((item, index) => `决策 ${index + 1}：${item}`),
-        ...project.tradeoffs.map((item, index) => `取舍 ${index + 1}：${item}`),
-      ]).join("\n"),
-      `${project.slug}:decisions`,
-    ),
-    create(
-      "架构与实现",
-      compact([
-        ...project.architecture.map((item, index) => `架构 ${index + 1}｜${item.label}：${item.detail}`),
-        ...(project.keyWorkflow ?? []).map((item, index) => `工作流 ${index + 1}｜${item.label}：${item.detail}`),
-        `技术栈：${project.stack.join("、")}`,
-      ]).join("\n"),
-      `${project.slug}:architecture`,
-    ),
-    create(
-      "成果、证据与边界",
-      compact([
-        ...project.outcomes.map((item, index) => `成果 ${index + 1}：${item}`),
-        ...project.metrics.map(
-          (metric, index) =>
-            `指标 ${index + 1}：${metric.value} ${metric.label}${metric.note ? `（${metric.note}）` : ""}${
-              metric.evidenceRef ? `；证据 ${metric.evidenceRef}` : ""
-            }`,
-        ),
-        ...(project.verifiedCapabilities ?? []).map((item) => `已验证：${item}`),
-        ...(project.inProgressCapabilities ?? []).map((item) => `进行中：${item}`),
-        ...(project.plannedCapabilities ?? []).map((item) => `计划：${item}`),
-        ...(project.evidenceLinks ?? []).map((item) => `证据：${item.label}｜${item.ref}｜${item.type}`),
-        project.lastVerifiedAt ? `最后核验时间：${project.lastVerifiedAt}` : undefined,
-      ]).join("\n"),
-      `${project.slug}:evidence`,
-    ),
-    create(
-      "个人贡献与项目关系",
-      compact([
-        ...(project.myContribution ?? []).map((item) => `贡献｜${item.area}：${item.detail}`),
-        ...project.relationships.map((item) => `关系｜${item.label}：${item.detail}`),
-        ...project.nextSteps.map((item, index) => `下一步 ${index + 1}：${item}`),
-      ]).join("\n"),
-      `${project.slug}:contribution`,
-    ),
+function flattenSupportingProject(project: Project): PortfolioDocument[] {
+  const projectEvidenceIds = (project.evidenceLinks ?? []).map((item) => item.ref);
+  const documents = [
+    createDocument(project, "overview", "项目概览", compact([
+      `项目：${project.title}`,
+      `定位：${project.subtitle}`,
+      `摘要：${project.summary}`,
+      `当前状态：${project.status}`,
+      `我的角色：${project.role}`,
+      `团队：${project.team}`,
+      `周期：${project.period}`,
+      project.evidenceLabel ? `证据边界：${project.evidenceLabel}` : undefined,
+    ]).join("\n"), projectEvidenceIds),
+    createDocument(project, "decisions", "业务问题与产品决策", compact([
+      ...project.problem.map((item, index) => `问题 ${index + 1}：${item}`),
+      ...(project.productStrategy ?? []).map((item, index) => `产品策略 ${index + 1}：${item}`),
+      ...project.decisions.map((item, index) => `决策 ${index + 1}：${item}`),
+      ...project.tradeoffs.map((item, index) => `取舍 ${index + 1}：${item}`),
+    ]).join("\n"), projectEvidenceIds),
+    createDocument(project, "architecture", "架构与实现", compact([
+      ...project.architecture.map((item, index) => `架构 ${index + 1}｜${item.label}：${item.detail}`),
+      ...(project.keyWorkflow ?? []).map((item, index) => `工作流 ${index + 1}｜${item.label}：${item.detail}`),
+      `技术栈：${project.stack.join("、")}`,
+    ]).join("\n"), projectEvidenceIds),
+    createDocument(project, "evidence", "成果、证据与边界", compact([
+      ...project.outcomes.map((item, index) => `成果 ${index + 1}：${item}`),
+      ...project.metrics.map((metric, index) => `指标 ${index + 1}：${metric.value} ${metric.label}${metric.note ? `（${metric.note}）` : ""}${metric.evidenceRef ? `；证据 ${metric.evidenceRef}` : ""}`),
+      ...(project.verifiedCapabilities ?? []).map((item) => `已验证：${item}`),
+      ...(project.inProgressCapabilities ?? []).map((item) => `进行中：${item}`),
+      ...(project.plannedCapabilities ?? []).map((item) => `计划：${item}`),
+      ...(project.evidenceLinks ?? []).map((item) => `证据：${item.label}｜${item.ref}｜${item.type}`),
+      project.lastVerifiedAt ? `最后核验时间：${project.lastVerifiedAt}` : undefined,
+    ]).join("\n"), projectEvidenceIds),
+    createDocument(project, "contribution", "个人贡献与项目关系", compact([
+      ...(project.myContribution ?? []).map((item) => `贡献｜${item.area}：${item.detail}`),
+      ...project.relationships.map((item) => `关系｜${item.label}：${item.detail}`),
+      ...project.nextSteps.map((item, index) => `下一步 ${index + 1}：${item}`),
+    ]).join("\n"), projectEvidenceIds),
   ];
-
-  for (const module of project.caseModules ?? []) {
-    documents.push(
-      create(
-        module.title,
-        [`模块：${module.eyebrow}｜${module.title}`, ...module.items.map((item, index) => `${index + 1}. ${item}`)].join("\n"),
-        `${project.slug}:module:${module.eyebrow.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-      ),
-    );
-  }
-
   return documents.filter((document) => document.content.trim().length > 0);
+}
+
+const SECTION_LABELS = {
+  overview: "项目概览",
+  business: "业务判断",
+  product: "产品方案",
+  technical: "技术实现",
+  iterations: "迭代链路",
+  evidence: "项目证据",
+} as const;
+
+function pointLines(prefix: string, points: NarrativePoint[]) {
+  return points.map((point, index) => `${prefix} ${index + 1}｜${point.title}：${point.detail}；证据 ${point.evidenceRefs.join("、")}`);
+}
+
+function availableEvidenceForProject(slug: string) {
+  return portfolioEvidence.filter(
+    (item) => item.projectSlug === slug && item.publicSafe && item.state === "available" && item.evidenceRefs.length > 0,
+  );
+}
+
+function flagshipDocuments(study: FlagshipCaseStudy): PortfolioDocument[] {
+  const project = getProject(study.slug);
+  if (!project) throw new Error(`Missing flagship project: ${study.slug}`);
+  const availableEvidence = availableEvidenceForProject(study.slug);
+  const availableEvidenceIds = availableEvidence.map((item) => item.id);
+  const create = (sectionId: keyof typeof SECTION_LABELS, content: string) =>
+    createDocument(project, sectionId, SECTION_LABELS[sectionId], content, availableEvidenceIds);
+
+  return [
+    create("overview", compact([
+      `项目：${project.title}`,
+      `一句话：${study.overview.oneLine}`,
+      `责任：${study.overview.responsibility}`,
+      `当前状态：${project.status}`,
+      `证据边界：${study.overview.boundary}`,
+      `公开指标绑定：${study.overview.claimIds.join("、")}`,
+    ]).join("\n")),
+    create("business", compact([
+      `为什么做：${study.business.whyBuild}`,
+      ...pointLines("业务信号", study.business.signals),
+      ...pointLines("关键判断", study.business.judgments),
+      ...study.business.constraints.map((item, index) => `约束 ${index + 1}：${item}`),
+    ]).join("\n")),
+    create("product", compact([
+      `产品形态：${study.product.form}`,
+      `用户：${study.product.users.join("、")}`,
+      ...pointLines("工作流", study.product.workflow),
+      ...pointLines("产品决策", study.product.decisions),
+      ...study.product.nonGoals.map((item, index) => `非目标 ${index + 1}：${item}`),
+    ]).join("\n")),
+    create("technical", compact([
+      ...pointLines("架构", study.technical.architecture),
+      ...pointLines("关键机制", study.technical.mechanisms),
+      ...pointLines("技术取舍", study.technical.tradeoffs),
+      `技术栈：${project.stack.join("、")}`,
+    ]).join("\n")),
+    create("iterations", study.iterations.map((entry, index) => compact([
+      `迭代 ${index + 1}｜${entry.version}`,
+      `触发：${entry.trigger}`,
+      `产品变化：${entry.productChange}`,
+      `技术变化：${entry.technicalChange}`,
+      `结果：${entry.result}`,
+      `边界：${entry.boundary}`,
+      `证据：${entry.evidenceRefs.join("、")}`,
+    ]).join("\n")).join("\n\n")),
+    create("evidence", availableEvidence.map((item, index) => compact([
+      `证据 ${index + 1}｜${item.id}｜${item.title}`,
+      `类型：${item.kind}`,
+      `状态：${item.state}`,
+      `范围：${item.scope}`,
+      `摘要：${item.summary}`,
+      `边界：${item.boundary}`,
+      `权威引用：${item.evidenceRefs.join("、")}`,
+    ]).join("\n")).join("\n\n")),
+  ];
 }
 
 function experienceDocuments(): PortfolioDocument[] {
@@ -180,8 +231,7 @@ function experienceDocuments(): PortfolioDocument[] {
       status: "2024.07—2026.02",
       section: "复杂项目组合管理",
       excerpt: "负责 5 条软硬件产品线、282 个 SKU 全生命周期及峰值 80+ 项目并行。",
-      content:
-        "陈嘉伟曾任 TP-Link 商用项目经理，负责 5 条软硬件产品线的项目组合、跨国需求和高风险交付；管理 282 个 SKU 全生命周期，峰值 80+ 项目并行；主导海外 NFC 功能定义与交互方案；高风险项目追回 2 周工期，5 款产品提前 15 天量产。",
+      content: "陈嘉伟曾任 TP-Link 商用项目经理，负责 5 条软硬件产品线的项目组合、跨国需求和高风险交付；管理 282 个 SKU 全生命周期，峰值 80+ 项目并行；主导海外 NFC 功能定义与交互方案；高风险项目追回 2 周工期，5 款产品提前 15 天量产。",
     },
     {
       evidenceId: "experience:startup",
@@ -189,8 +239,7 @@ function experienceDocuments(): PortfolioDocument[] {
       status: "2026.02—至今",
       section: "AI 产品创业",
       excerpt: "3 人全职创业团队创始人兼 AI 产品负责人，构建五层 AI Native 产品系统。",
-      content:
-        "陈嘉伟现为 3 人全职创业团队的创始人兼 AI 产品负责人，负责产品战略、业务建模、MVP 验证、技术方案、开发协作、上线与评估设计。作品集包含 3 个主案例、Collator 飞书子系统及其他业务支撑项目。",
+      content: "陈嘉伟现为 3 人全职创业团队的创始人兼 AI 产品负责人，负责产品战略、业务建模、MVP 验证、技术方案、开发协作、上线与评估设计。作品集包含 3 个主案例、Collator 飞书子系统及其他业务支撑项目。",
     },
     {
       evidenceId: "experience:education",
@@ -198,21 +247,25 @@ function experienceDocuments(): PortfolioDocument[] {
       status: "2020.09—2024.06",
       section: "教育背景",
       excerpt: "材料物理本科，省级大学生创新创业项目奖项，参与固态电池材料课题，CET-6。",
-      content:
-        "陈嘉伟毕业于中南大学材料物理专业，获得大学生创新创业项目省级奖项，参与固态电池材料课题研究，CET-6。材料科学训练支持其结构化分析复杂系统与约束。",
+      content: "陈嘉伟毕业于中南大学材料物理专业，获得大学生创新创业项目省级奖项，参与固态电池材料课题研究，CET-6。材料科学训练支持其结构化分析复杂系统与约束。",
     },
   ];
-
   return items.map((item) => ({
     ...item,
+    evidenceIds: [item.evidenceId],
     projectSlug: "experience",
     href: "/#experience",
     searchText: `${item.title}\n${item.section}\n${item.content}`.toLowerCase(),
   }));
 }
 
+const flagshipBySlug = new Map<string, FlagshipCaseStudy>(flagshipCaseStudies.map((study) => [study.slug, study]));
+
 export const portfolioDocuments: PortfolioDocument[] = [
-  ...projects.flatMap(flattenProject),
+  ...projects.flatMap((project) => {
+    const study = flagshipBySlug.get(project.slug);
+    return study ? flagshipDocuments(study) : flattenSupportingProject(project);
+  }),
   ...experienceDocuments(),
 ];
 
@@ -382,7 +435,7 @@ export function contextForSources(sources: PortfolioSource[]): string {
     .filter((document) => sourceIds.has(document.evidenceId))
     .map(
       (document, index) =>
-        `【证据 ${index + 1}｜${document.title}｜${document.section}｜${document.evidenceId}】\n${document.content.slice(0, 1800)}`,
+        `【证据 ${index + 1}｜${document.title}｜${document.section}｜${document.evidenceId}｜公开证据 ${document.evidenceIds.join("、")}】\n${document.content.slice(0, 1800)}`,
     )
     .join("\n\n");
 }

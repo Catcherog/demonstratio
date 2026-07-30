@@ -32,14 +32,14 @@ const evidence = [
     roleWeights: { recruiter: 5, "product-lead": 6, technical: 3 },
   },
   {
-    id: "LUMEN-MOCK",
+    id: "LUMEN-PLANNED",
     projectSlug: "lumen-ink",
     kind: "video",
     title: "光砚操作视频",
     summary: "待补录。",
-    state: "mock",
-    publicSafe: false,
-    evidenceRefs: [],
+    state: "planned",
+    publicSafe: true,
+    evidenceRefs: ["E-LUMEN-EDIT"],
     tags: ["光砚", "视频"],
     roleWeights: { recruiter: 3, "product-lead": 2, technical: 1 },
   },
@@ -105,10 +105,10 @@ test("guide evidence is public, available and free of local paths", () => {
   assert.equal(JSON.stringify(safe).includes("D:\\private"), false);
 });
 
-test("production hides mocks while preview labels them", () => {
+test("production hides planned evidence while preview labels it", () => {
   assert.equal(typeof core.getRenderableEvidence, "function");
   assert.deepEqual(core.getRenderableEvidence(evidence, "production").map((item) => item.id), ["SCS-ARCH", "FEISHU-GOV"]);
-  assert.deepEqual(core.getRenderableEvidence(evidence, "preview").map((item) => item.id), ["SCS-ARCH", "FEISHU-GOV", "LUMEN-MOCK"]);
+  assert.deepEqual(core.getRenderableEvidence(evidence, "preview").map((item) => item.id), ["SCS-ARCH", "FEISHU-GOV", "LUMEN-PLANNED"]);
 });
 
 test("retrieval combines topic match with role weight", () => {
@@ -148,4 +148,43 @@ test("evidence module derives current statuses and uses valid flagship slugs", a
   for (const slug of ["data-platform", "service-agent", "lumen-ink"]) assert.match(source, new RegExp(`requiredProject\\("${slug}"\\)`));
   assert.doesNotMatch(source, /projectSlug:\s*"feishu-platform"/);
   assert.match(source, /status:\s*project\.status/);
+});
+
+test("flagship guide documents derive all six sections from the narrative registry", async () => {
+  const source = await readFile(new URL("../lib/portfolio-guide.ts", import.meta.url), "utf8");
+  assert.match(source, /flagshipCaseStudies/);
+  for (const [key, label] of Object.entries({
+    overview: "项目概览",
+    business: "业务判断",
+    product: "产品方案",
+    technical: "技术实现",
+    iterations: "迭代链路",
+    evidence: "项目证据",
+  })) {
+    assert.match(source, new RegExp(`${key}: "${label}"`));
+  }
+  assert.match(source, /study \? flagshipDocuments\(study\) : flattenSupportingProject\(project\)/);
+  assert.match(source, /evidenceIds:\s*string\[\]/);
+});
+
+test("guide sources bind only available public-safe evidence", async () => {
+  const source = await readFile(new URL("../lib/portfolio-guide.ts", import.meta.url), "utf8");
+  assert.match(source, /item\.publicSafe && item\.state === "available" && item\.evidenceRefs\.length > 0/);
+  assert.match(source, /公开证据 \$\{document\.evidenceIds\.join\("、"\)\}/);
+  assert.doesNotMatch(source, /state === "planned"/);
+});
+
+test("guide preserves the current availability and schema boundaries", async () => {
+  const files = await Promise.all([
+    "../content/projects.ts",
+    "../content/flagship-cases/data-platform.ts",
+    "../content/flagship-cases/service-agent.ts",
+    "../content/portfolio-evidence.ts",
+  ].map((path) => readFile(new URL(path, import.meta.url), "utf8")));
+  const source = files.join("\n");
+  assert.match(source, /后端已上线 CloudBase Deploy 039（Phase G 验证通过），前端仍指向 Render 静态降级/);
+  assert.match(source, /前端仍指向 Render 静态降级，不调用 CloudBase Deploy 039/);
+  assert.match(source, /历史 Test Base/);
+  assert.match(source, /10 表[、\s\/]+216 字段/);
+  assert.match(source, /生产 Schema 元数据只读检查/);
 });

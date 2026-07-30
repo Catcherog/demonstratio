@@ -12,7 +12,8 @@
     "test:guide": "node --test tests/portfolio-guide.test.mjs",
     "check:portfolio-ai": "node scripts/check-portfolio-ai-guide.mjs",
     "check:portfolio-model": "node scripts/check-portfolio-model.mjs",
-    "check:portfolio-glm": "node scripts/check-portfolio-model.mjs"
+    "check:portfolio-glm": "node scripts/check-portfolio-model.mjs",
+    "test:cases": "node --test tests/flagship-authority-contract.test.mjs tests/flagship-case-contract.test.mjs"
   },
   "dependencies": {
     "next": "16.2.10",

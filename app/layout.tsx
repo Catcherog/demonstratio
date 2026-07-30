@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./v5.css";
 import "./editorial-responsive.css";
+import "./case-study.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.jaelchen.com"),

@@ -1,20 +1,156 @@
 [
-  { "surface": "hero", "claimId": "PORTFOLIO-FLAGSHIP-COUNT", "value": "3", "label": "同优先级主案例", "evidenceRef": "E-WEB-R13" },
-  { "surface": "hero", "claimId": "PORTFOLIO-SUBSYSTEM-COUNT", "value": "1", "label": "飞书子系统 · Collator", "evidenceRef": "E-FEISHU-SOURCES" },
-  { "surface": "hero", "claimId": "FEISHU-HISTORICAL-BASELINE", "value": "17 / 12", "label": "测试 Base 历史验收基线 · 数据表 / 自动化", "evidenceRef": "E-FEISHU-SCHEMA" },
-  { "surface": "hero", "claimId": "WORK-PORTFOLIO-SUMMARY", "value": "282 / 80+", "label": "SKU / 峰值并行项目", "evidenceRef": "E-WORK-HISTORY" },
-  { "surface": "data-platform", "claimId": "FEISHU-TABLE-COUNT", "value": "17", "label": "张历史基线表", "note": "测试 Base；不是当前生产状态", "evidenceRef": "E-FEISHU-SCHEMA" },
-  { "surface": "data-platform", "claimId": "FEISHU-AUTOMATION-COUNT", "value": "12", "label": "条历史自动化", "note": "测试 Base；不是 V2 已部署证明", "evidenceRef": "E-FEISHU-SCHEMA" },
-  { "surface": "data-platform", "claimId": "FEISHU-TEST-E2E", "value": "E2E", "label": "测试摄入到精确清理", "evidenceRef": "E-FEISHU-PILOT-TESTS" },
-  { "surface": "data-platform", "claimId": "FEISHU-LIVE-SCHEMA", "value": "FAIL-CLOSED", "label": "生产 Schema 状态", "evidenceRef": "E-FEISHU-SCHEMA" },
-  { "surface": "service-agent", "claimId": "SCS-WORKFLOW-SHAPE", "value": "8 / 11", "label": "LangGraph 节点 / 边", "evidenceRef": "E-SCS-SOURCE" },
-  { "surface": "service-agent", "claimId": "SCS-REGRESSION-COUNT", "value": "589", "label": "pytest 全量回归", "note": "2026-07-28；非准确率", "evidenceRef": "E-SCS-TESTS" },
-  { "surface": "service-agent", "claimId": "SCS-RISK-TAXONOMY", "value": "R0–R3", "label": "风险分级 fail-closed", "evidenceRef": "E-SCS-SOURCE" },
-  { "surface": "service-agent", "claimId": "SCS-SCENARIO-TAXONOMY", "value": "18", "label": "类咨询场景", "evidenceRef": "E-SCS-SOURCE" },
-  { "surface": "service-agent", "claimId": "SCS-AUDIT-DATASET", "value": "90", "label": "冻结审计样本", "note": "现有 runner 不支持公开质量分数", "evidenceRef": "E-SCS-EVAL-DATASET" },
-  { "surface": "service-agent", "claimId": "SCS-DEPLOYED-SHA", "value": "2f212d1", "label": "公网演示代码 SHA", "evidenceRef": "E-SCS-SOURCE" },
-  { "surface": "lumen-ink", "claimId": "LUMEN-PROVIDER-COUNT", "value": "4", "label": "类模型 Provider", "evidenceRef": "E-LUMEN-SOURCE" },
-  { "surface": "lumen-ink", "claimId": "LUMEN-TOOL-COUNT", "value": "6", "label": "类专业工具", "evidenceRef": "E-LUMEN-SOURCE" },
-  { "surface": "lumen-ink", "claimId": "LUMEN-PROMPT-SECTIONS", "value": "6 段", "label": "结构化提示词", "evidenceRef": "E-LUMEN-SOURCE" },
-  { "surface": "lumen-ink", "claimId": "LUMEN-ABSTRACTION-COUNT", "value": "1 套", "label": "统一模型抽象", "evidenceRef": "E-LUMEN-SOURCE" }
+  {
+    "surface": "hero",
+    "claimId": "PORTFOLIO-FLAGSHIP-COUNT",
+    "value": "3",
+    "label": "同优先级主案例",
+    "evidenceRef": "E-WEB-R13"
+  },
+  {
+    "surface": "hero",
+    "claimId": "PORTFOLIO-SUBSYSTEM-COUNT",
+    "value": "1",
+    "label": "飞书子系统 · Collator",
+    "evidenceRef": "E-FEISHU-SOURCES"
+  },
+  {
+    "surface": "hero",
+    "claimId": "FEISHU-HISTORICAL-BASELINE",
+    "value": "17 / 12",
+    "label": "测试 Base 历史验收基线 · 数据表 / 自动化",
+    "evidenceRef": "E-FEISHU-SCHEMA"
+  },
+  {
+    "surface": "hero",
+    "claimId": "WORK-PORTFOLIO-SUMMARY",
+    "value": "282 / 80+",
+    "label": "SKU / 峰值并行项目",
+    "evidenceRef": "E-WORK-HISTORY"
+  },
+  {
+    "surface": "data-platform",
+    "claimId": "FEISHU-TABLE-COUNT",
+    "value": "17",
+    "label": "张历史基线表",
+    "note": "测试 Base；不是当前生产状态",
+    "evidenceRef": "E-FEISHU-SCHEMA"
+  },
+  {
+    "surface": "data-platform",
+    "claimId": "FEISHU-AUTOMATION-COUNT",
+    "value": "12",
+    "label": "条历史自动化",
+    "note": "测试 Base；不是 V2 已部署证明",
+    "evidenceRef": "E-FEISHU-SCHEMA"
+  },
+  {
+    "surface": "data-platform",
+    "claimId": "FEISHU-TEST-E2E",
+    "value": "E2E",
+    "label": "测试摄入到精确清理",
+    "evidenceRef": "E-FEISHU-PILOT-TESTS"
+  },
+  {
+    "surface": "data-platform",
+    "claimId": "FEISHU-LIVE-SCHEMA",
+    "value": "10/10",
+    "label": "生产 V2 表级匹配",
+    "evidenceRef": "E-FEISHU-LIVE-SCHEMA"
+  },
+  {
+    "surface": "data-platform",
+    "claimId": "FEISHU-LIVE-TABLE-COUNT",
+    "value": "10 / 216",
+    "label": "生产 V2 表 / 字段",
+    "note": "只读生产检查；字段级差异与正式写入仍未完成",
+    "evidenceRef": "E-FEISHU-LIVE-SCHEMA"
+  },
+  {
+    "surface": "service-agent",
+    "claimId": "SCS-WORKFLOW-SHAPE",
+    "value": "8 / 11",
+    "label": "LangGraph 节点 / 边",
+    "evidenceRef": "E-SCS-SOURCE"
+  },
+  {
+    "surface": "service-agent",
+    "claimId": "SCS-REGRESSION-COUNT",
+    "value": "661",
+    "label": "pytest 全量回归",
+    "note": "工程回归计数，不代表准确率或回答质量",
+    "evidenceRef": "E-SCS-TESTS"
+  },
+  {
+    "surface": "service-agent",
+    "claimId": "SCS-RISK-TAXONOMY",
+    "value": "R0–R3",
+    "label": "风险分级 fail-closed",
+    "evidenceRef": "E-SCS-SOURCE"
+  },
+  {
+    "surface": "service-agent",
+    "claimId": "SCS-SCENARIO-TAXONOMY",
+    "value": "18",
+    "label": "类咨询场景",
+    "evidenceRef": "E-SCS-SOURCE"
+  },
+  {
+    "surface": "service-agent",
+    "claimId": "SCS-AUDIT-DATASET",
+    "value": "90",
+    "label": "冻结审计样本",
+    "note": "现有 runner 不支持公开质量分数",
+    "evidenceRef": "E-SCS-EVAL-DATASET"
+  },
+  {
+    "surface": "service-agent",
+    "claimId": "SCS-DEPLOYED-SHA",
+    "value": "2f212d1",
+    "label": "公网演示代码 SHA",
+    "evidenceRef": "E-SCS-SOURCE"
+  },
+  {
+    "surface": "service-agent",
+    "claimId": "SCS-R2-EVAL-DIMENSIONS",
+    "value": "7",
+    "label": "R2 评测维度",
+    "note": "图级离线评测维度；不等同于线上回答质量",
+    "evidenceRef": "E-SCS-R2-EVAL"
+  },
+  {
+    "surface": "lumen-ink",
+    "claimId": "LUMEN-PROVIDER-COUNT",
+    "value": "4",
+    "label": "类模型 Provider",
+    "evidenceRef": "E-LUMEN-SOURCE"
+  },
+  {
+    "surface": "lumen-ink",
+    "claimId": "LUMEN-TOOL-COUNT",
+    "value": "6",
+    "label": "类专业工具",
+    "evidenceRef": "E-LUMEN-SOURCE"
+  },
+  {
+    "surface": "lumen-ink",
+    "claimId": "LUMEN-PROMPT-SECTIONS",
+    "value": "6 段",
+    "label": "结构化提示词",
+    "evidenceRef": "E-LUMEN-SOURCE"
+  },
+  {
+    "surface": "lumen-ink",
+    "claimId": "LUMEN-ABSTRACTION-COUNT",
+    "value": "1 套",
+    "label": "统一模型抽象",
+    "evidenceRef": "E-LUMEN-SOURCE"
+  },
+  {
+    "surface": "lumen-ink",
+    "claimId": "LUMEN-EDIT-VERIFY",
+    "value": "2/2",
+    "label": "Seedream 4.5 编辑验证",
+    "note": "仅文生图与图生图；其他编辑模式未验证",
+    "evidenceRef": "E-LUMEN-EDIT"
+  }
 ]

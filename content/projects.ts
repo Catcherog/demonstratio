@@ -112,7 +112,7 @@ export const projects: Project[] = [
     subtitle: "把非标摄影交付拆成可追踪、可协作的标准流程",
     summary:
       "围绕获客、咨询、拍摄、后期、交付与复盘，建立统一业务数据模型、自动化规则与移动作业入口；Collator 作为飞书子系统处理非结构化资料摄入。",
-    status: "Portfolio Pilot｜真实测试 Base E2E 已验证，正式业务 Pilot 与通知自动化待启用",
+    status: "Portfolio Pilot｜真实测试 Base E2E 已验证，生产 V2 Schema 表级匹配通过（10/10），正式业务 Pilot 待启用",
     role: "产品负责人 / 数据模型设计 / MVP 开发",
     team: "3 人创业团队",
     period: "2026.02 - 至今",
@@ -171,7 +171,7 @@ export const projects: Project[] = [
     ],
     outcomes: [
       "测试 Base 历史验收基线为 17 张表、12 条自动化；当前 V2 已验证真实测试 Base 的摄入、治理、写入、幂等、审计与精确清理链路，正式业务 Pilot 与通知自动化仍待启用。",
-      "真实测试链路已覆盖摄入、治理、写入、幂等、审计与精确清理；生产租户兼容性仍因只读授权缺失而保持 fail-closed。",
+      "生产 V2 已完成只读 Schema 检查：10 表、216 字段，表级匹配 10/10；字段级差异和正式业务写入仍保持 fail-closed。",
       "为 Service Agent、Collator（飞书子系统）、内容调研、小程序与官网提供统一数据接口和流程触发点。",
     ],
     architecture: [
@@ -194,17 +194,13 @@ export const projects: Project[] = [
       { slug: "service-agent", label: "Service Agent", detail: "知识与客户上下文由中台提供。" },
       { slug: "mini-program", label: "微信小程序", detail: "咨询和预约留资回写中台。" },
     ],
-    images: Array.from({ length: 10 }, (_, i) => `/projects/data-platform/${String(i + 1).padStart(2, "0")}.webp`),
-    imageMode: "mixed",
-    link: {
-      label: "打开测试 Base 受控演示",
-      href: "https://portal-seven-jade-47.vercel.app",
-      note: "真实测试 Base E2E 已验证；不连接生产业务数据，正式业务 Pilot 与通知自动化待启用。",
-    },
+    images: ["/evidence/data-platform/closed-loop.svg"],
+    imageMode: "desktop",
+    lastVerifiedAt: "2026-07-30T06:30:00+08:00",
     fallbackLink: {
       label: "查看平台证据",
       href: "#evidence",
-      note: "若受控入口加载失败，请重试或查看页面内的架构、测试和状态证据。",
+      note: "当前仅展示公开安全的架构、测试和 Schema 只读核验证据；公开入口待补。",
     },
   },
   {
@@ -216,7 +212,7 @@ export const projects: Project[] = [
     subtitle: "影像工作室 AI 辅助客服 Agent",
     summary:
       "面向影像工作室咨询与运营场景的 Agentic Workflow，通过 LangGraph 8 节点 11 边工作流编排知识检索、意图/风险判断、答案生成、质量检查、人工接管与反馈飞轮，以 fail-closed 策略控制高风险承诺。",
-    status: "Controlled Demo｜静态 B1/B2/B3 演示可用，实时后端修复中",
+    status: "Controlled Demo｜后端已上线 CloudBase Deploy 039（Phase G 验证通过），前端仍指向 Render 静态降级",
     demoType: "controlled",
     role: "产品定义 / Agent 架构 / 评估方案 / MVP 开发",
     team: "3 人创业团队",
@@ -224,16 +220,16 @@ export const projects: Project[] = [
     featured: true,
     provisional: true,
     evidenceLabel:
-      "固定 90 样本仅用于静态路由器审计。R2 runner 执行了带 Stub 生成节点和缺失 KB 条件下的图级评测，但未验证 expected_route、真实检索或生成输出，因此不公布路由准确率、回答正确率或禁止承诺结果。静态 B1/B2/B3 演示可用；实时后端修复中，自由输入 fail-closed。589 tests 是工程回归证据，不是质量指标。E031 高风险误放行为公开后端恢复前的阻塞缺陷。",
+      "固定 90 样本用于离线图级审计，R2 runner 覆盖 7 个评测维度，但生成节点为 Stub 且知识库缺失，因此不公布路由或回答质量分数。CloudBase Deploy 039 已完成 Phase G 验证；公开前端仍指向 Render 静态 B1/B2/B3 降级。661 项 pytest 是工程回归计数，不代表准确率。安全状态为 provisional，可用性、延迟与知识覆盖仍需生产加固。",
     metrics: getPublicMetrics("service-agent"),
     caseModules: [
       {
         eyebrow: "B1 / B2 / B3",
         title: "三个客服场景与当前状态",
         items: [
-          "B1 标准咨询：本地工作流与回归已验证；公网后端未接通，不声明实时回答能力。",
-          "B2 价格、档期等敏感咨询：进入高风险分级与人工接管，公开 Demo 保持 fail-closed。",
-          "B3 未知或低置信度咨询：不猜测答案，转人工并记录后续知识治理入口。",
+          "B1 标准咨询：CloudBase Deploy 039 后端已验证可返回带来源回答；公开前端仍为静态降级。",
+          "B2 价格、健康与确定性承诺等敏感咨询：确定性硬风险和人工确认 Gate 保持 fail-closed。",
+          "B3 未知或证据不足咨询：转人工并记录知识缺口，不以非空检索替代语义支持。",
         ],
       },
       {
@@ -263,7 +259,7 @@ export const projects: Project[] = [
     ],
     productStrategy: [
       "产品目标：用受控 Agent 工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。",
-      "产品边界：当前为受控作品集 Demo，静态 B1/B2/B3 演示可用，实时后端修复中；不主张生产 SLO，不声明生产上线或生产试点。",
+      "产品边界：CloudBase Deploy 039 后端已上线并完成 Phase G 验证；公开前端仍为 Render 静态 B1/B2/B3 降级，尚未切换实时 API。安全为 provisional，不主张生产 SLO。",
       "方案选择：采用 LangGraph 确定性节点与 LLM 节点组合工作流，LLM 通过可配置的 OpenAI 兼容接口接入，未配置 Key 时回退本地模板匹配。",
       "暂不做：不追求无条件自动回复，不把内部小样本估算写成生产指标，不公开展示具体 LLM 型号。",
     ],
@@ -277,7 +273,7 @@ export const projects: Project[] = [
     outcomes: [
       "完成从需求定义、知识组织、LangGraph 8 节点 11 边编排到 PC 客服辅助界面的端到端 MVP。",
       "LangGraph 工作流、RAG 检索、风险分流、fail-closed 人工接管与反馈飞轮均有代码证据。",
-      "589 tests 全量回归通过（2026-07-28 pytest 证据）；该数字是工程回归结果，不代表回答准确率。",
+      "661 项 pytest 全量回归通过；该数字是工程回归计数，不代表回答准确率或业务质量。",
       "生产写入安全门禁保持关闭：PRODUCTION_PILOT_ALLOWED=false、EXTERNAL_WRITE_ACTIONS_ALLOWED=false、STORE_MESSAGE_CONTENT=false；Demo 限流与多轮 history 均有明确边界。",
       "公网受控演示代码 SHA 2f212d1，Vercel Production 制品 dpl_5wv5idcTu4ALf4xgguQqHoFMwoxf；未配置后端时 /api/chat 返回 503。",
       "固定 90 样本、报告与 runner 已冻结留档；因 runner 未验证 expected_route、澄清节点和生成输出，旧的准确率、I00 与禁止承诺结果已撤回公开使用。",
@@ -305,7 +301,7 @@ export const projects: Project[] = [
       "LLM 生成与模板回退双路径，牺牲部分回答质量以换取服务可用性（未配置 Key 时仍可运行）。",
     ],
     nextSteps: [
-      "恢复真实后端并通过 /readyz、/api/chat 与安全门禁后，才把受控状态切换为 live。",
+      "将公开前端 API 从 Render 切换到已验证的 CloudBase 后端，并完成切换后的端到端回归。",
       "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率与转人工率。",
       "在真实流量中做分阶段灰度，校准置信度阈值并记录误答成本。",
     ],
@@ -317,13 +313,13 @@ export const projects: Project[] = [
       "反馈飞轮闭环（归档→清洗→人工确认→知识同步）",
       "LLM 生成与模板回退双路径",
       "Web/API 端到端 MVP",
-      "589 tests 全量回归通过（2026-07-28）",
+      "661 项 pytest 全量回归通过（含 Phase G 定向测试）",
       "三项生产写入安全门禁保持关闭",
     ],
     inProgressCapabilities: [
-      "真实后端恢复与公网 /readyz 核验（前端维持受控状态）",
-      "重建端到端冻结评测：验证 expected_route、实际澄清节点与生成输出",
-      "STATUS 文档同步至 SCS-MANUAL-012",
+      "公开前端 API 切换、可用性监控与失败回退验证",
+      "生产加固：延迟优化、知识覆盖扩充与可观测性补齐",
+      "持续评测：检索支持度、人工接管质量与多轮上下文回归",
     ],
     plannedCapabilities: [
       "真实流量灰度上线",
@@ -332,7 +328,7 @@ export const projects: Project[] = [
     ],
     evidenceLinks: [
       { label: "工作流、风险路由与反馈飞轮源码", type: "architecture", ref: "E-SCS-SOURCE" },
-      { label: "589 Python + 55 Web 回归", type: "test", ref: "E-SCS-TESTS" },
+      { label: "661 Python + 55 Web 回归", type: "test", ref: "E-SCS-TESTS" },
       { label: "冻结 90 样本（仅作审计输入）", type: "data", ref: "E-SCS-EVAL-DATASET" },
       { label: "评测 runner 语义审计", type: "api", ref: "E-SCS-EVAL-RUNNER" },
       { label: "Controlled Demo 与 503 fail-closed", type: "deploy", ref: "E-SCS-PRODUCTION" },
@@ -342,18 +338,18 @@ export const projects: Project[] = [
       { area: "产品架构", detail: "LangGraph 8 节点 11 边工作流编排、风险路由与 fail-closed 策略设计" },
       { area: "Agent / 数据流", detail: "RAG 检索链路、三级置信度分流、反馈飞轮与知识更新闸门" },
       { area: "工程协作", detail: "3 人团队协作，Flask API + Next Web + ChromaDB + 飞书知识库，负责 Agent 架构与评估方案" },
-      { area: "测试与验收", detail: "589 tests 全量回归、固定 90 样本 runner 语义审计、三项生产写入安全门禁验证" },
+      { area: "测试与验收", detail: "661 项 pytest 回归、固定 90 样本 R2 图级审计与 Phase G 安全门禁验证" },
       { area: "迭代决策", detail: "公网 Demo 与生产写动作分离（fail-closed + 安全开关始终 false）" },
     ],
-    lastVerifiedAt: "2026-07-28T03:49:00Z",
+    lastVerifiedAt: "2026-07-30T11:15:00+08:00",
     relationships: [
       { slug: "wechat-bot", label: "微信公众号机器人", detail: "机器人负责通道接入和会话归档，Agent 负责知识与质量。" },
       { slug: "lora-finetuning", label: "LoRA 微调", detail: "微调模型作为本地推理与云端 API 的备选后端。" },
       { slug: "data-platform", label: "数据中台", detail: "客户上下文和业务知识由统一数据底座支撑。" },
     ],
-    images: Array.from({ length: 7 }, (_, i) => `/projects/service-agent/${String(i + 1).padStart(2, "0")}.webp`),
+    images: ["/evidence/service-agent/risk-workflow.svg"],
     imageMode: "desktop",
-    link: { label: "打开受控演示", href: "https://zehuai-customer-demo.vercel.app/", note: "静态 B1/B2/B3 演示可用；实时后端修复中，页面会明确显示受控状态，提问 fail-closed，不代表实时生产能力。" },
+    link: { label: "打开受控演示", href: "https://zehuai-customer-demo.vercel.app/", note: "公开前端提供静态 B1/B2/B3 降级并仍指向 Render；CloudBase Deploy 039 后端已完成 Phase G 验证，但前端尚未切换实时 API。" },
     fallbackLink: { label: "联系了解受控演示", href: "mailto:Jael_Chen@foxmail.com", note: "若页面内容加载失败或需要进一步确认，请重试或使用此备用入口；不承诺实时生产能力。" },
   },
   {
@@ -365,7 +361,7 @@ export const projects: Project[] = [
     subtitle: "把修图专家经验抽象为可操作的参数、流程与模型能力",
     summary:
       "统一接入多类图像模型，将专业人像修图中的特征保留、光影、镜头与风格要求产品化，降低客户体验和团队复用门槛。",
-    status: "Live Demo｜Seedream 文生图与图生图真实链路已验证",
+    status: "Live Demo｜真实 Provider 编辑已验证",
     demoType: "controlled",
     role: "产品负责人 / 交互设计 / 全栈 MVP",
     team: "个人主导，团队业务验证",
@@ -388,7 +384,7 @@ export const projects: Project[] = [
     outcomes: [
       "完成 GPT Image、GLM、Gemini、Seedream 等模型的统一接入和热切换验证。",
       "修脸、调色、液化、修复、消除、导出六类工具覆盖主要人像后期流程。",
-      "当前为 Controlled Demo：可用于界面与流程评审，不将其表述为已开放的持久化或在线核心编辑服务。",
+      "当前公开入口与真实 Provider 编辑链路已验证；仅文生图和图生图两项操作闭合，其他编辑模式不得视为已验证。",
     ],
     architecture: [
       { label: "需求结构化", detail: "六段式提示词与专业参数预设" },
@@ -409,13 +405,13 @@ export const projects: Project[] = [
       { slug: "mini-program", label: "微信小程序", detail: "作为用户端 AI 体验入口，承接咨询前的信任建立。" },
       { slug: "data-platform", label: "数据中台", detail: "体验结果与咨询留资可进入客户流程。" },
     ],
-    images: Array.from({ length: 5 }, (_, i) => `/projects/lumen-ink/${String(i + 1).padStart(2, "0")}.webp`),
+    images: ["/projects/lumen-ink/01.webp", "/evidence/lumen/provider-boundary.svg"],
     imageMode: "desktop",
     lastVerifiedAt: "2026-07-28T00:00:00Z",
     link: {
       label: "访问光砚",
       href: "https://lumen-ink.vercel.app/",
-      note: "Controlled Demo，需 BYO key（用户自带模型 API Key）；根页与后端健康已核验，真实核心编辑仍待有效凭据实测。",
+      note: "Live Demo；根页、健康接口与 Seedream 4.5 文生图/图生图已完成真实验证。液化、修复、消除等其他模式仍未验证。",
     },
     fallbackLink: {
       label: "查看受限状态与证据",
