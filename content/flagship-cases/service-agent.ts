@@ -132,7 +132,7 @@ export const serviceAgentCase: FlagshipCaseStudy = {
   },
   iterations: [
     {
-      version: "Controlled Demo · 静态基线",
+      version: "Initial Baseline · 静态基线",
       trigger: "需要先让招聘方理解 B1/B2/B3 和安全边界。",
       productChange: "提供三类受控场景与静态降级。",
       technicalChange: "前端在后端不可用时避免裸错误页。",

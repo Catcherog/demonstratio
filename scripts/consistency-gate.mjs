@@ -172,7 +172,7 @@ for (const forbidden of ["589", "后端修复中", "真实编辑待验证", "缺
 assert(!/(?:准确率|accuracy)\s*(?:为|[:：=])?\s*\d+(?:\.\d+)?%/i.test(publicCaseSurface), "public surface contains an unsupported accuracy percentage");
 const regressionClaim = publicClaims.find((claim) => claim.claimId === "SCS-REGRESSION-COUNT");
 assert.equal(regressionClaim?.note, "工程回归计数，不代表准确率或回答质量", "regression count boundary is missing");
-assert(publicCaseSurface.includes("前端仍指向 Render 静态降级"), "Service Agent frontend/backend boundary is missing");
+assert(publicCaseSurface.includes("公网前端已接入 CloudBase Deploy 039 后端"), "Service Agent frontend/backend boundary is missing");
 assert(publicCaseSurface.includes("历史 Test Base"), "Feishu historical baseline boundary is missing");
 assert(publicCaseSurface.includes("生产 Schema 元数据只读检查"), "Feishu production read-only boundary is missing");
 assert(publicCaseSurface.includes("液化、修复、消除和其他模式仍未验证"), "Lumen unverified mode boundary is missing");
