@@ -207,3 +207,25 @@ test("section navigation is ordered, active, scroll-aware and progressively enha
   assert.match(source, /aria-label="案例板块导航"/);
   assert.doesNotMatch(source, /preventDefault/);
 });
+
+test("evidence gallery renders bounded media, links and explicit missing states", async () => {
+  const gallery = await read("components/case-study/CaseEvidenceGallery.tsx");
+  const media = await read("components/case-study/EvidenceMedia.tsx");
+  assert.match(gallery, /planned: "待补素材"/);
+  assert.match(gallery, /unavailable: "暂不可用"/);
+  assert.match(gallery, /item\.verifiedAt \?\? "待补素材"/);
+  assert.match(gallery, /item\.scope/);
+  assert.match(gallery, /item\.boundary/);
+  assert.match(gallery, /item\.evidenceRefs\.join/);
+  assert.match(media, /if \(item\.state !== "available"\) return null/);
+  assert.match(media, /<video[\s\S]*controls[\s\S]*preload="metadata"[\s\S]*poster=\{item\.thumbnailUrl\}/);
+  assert.doesNotMatch(media, /autoPlay/);
+  assert.doesNotMatch(media, /<iframe/);
+  assert.match(media, /item\.transcript \?\? item\.summary/);
+  assert.match(media, /target="_blank" rel="noreferrer"/);
+  assert.match(media, /item\.kind === "interactive" && item\.href/);
+  assert.match(media, /onError=\{\(\) => setFailed\(true\)\}/);
+  assert.match(media, /item\.state === "available" && item\.fallbackHref/);
+  assert.match(media, /解释性架构图/);
+  assert.match(media, /公开产品界面/);
+});
