@@ -13,8 +13,9 @@ export const CASE_SECTIONS = [
 
 type SectionItem = Readonly<{ id: string; label: string }> | readonly [string, string];
 
-function normalizeItem(item: SectionItem) {
-  return Array.isArray(item) ? { id: item[0], label: item[1] } : item;
+function normalizeItem(item: SectionItem): { id: string; label: string } {
+  if ("id" in item) return { id: item.id, label: item.label };
+  return { id: item[0], label: item[1] };
 }
 
 export function CaseSectionNav({ items = CASE_SECTIONS }: { items?: ReadonlyArray<SectionItem> }) {
