@@ -93,6 +93,16 @@ test("continuous paper editorial layer unifies every homepage section", async ()
   assert.match(css, /\.system-section\s*\{[^}]*background:\s*transparent/s);
   assert.match(css, /\.method-section\s*\{[^}]*background:\s*transparent/s);
   assert.match(css, /\.guide-section\s*\{[^}]*background:\s*transparent/s);
+  assert.match(css, /\.guide-section\s*\{[^}]*background:\s*transparent\s*!important/s);
+  assert.match(css, /\.guide-window-head\s*\{[^}]*background:\s*var\(--editorial-paper-high\)\s*!important/s);
+  assert.match(css, /\.guide-form button\s*\{[^}]*background:\s*var\(--editorial-plum\)\s*!important/s);
+  assert.match(css, /\.guide-intro > p:not\(\.eyebrow\)\s*\{[^}]*color:\s*#59655d\s*!important/s);
+  assert.match(css, /editorial_readability_floor_start/);
+  assert.match(css, /\.flagship-summary,[^}]*font-size:\s*14px/s);
+  assert.match(css, /\.guide-role-tabs small,[^}]*font-size:\s*11px/s);
+  assert.match(css, /\.flywheel-center strong\s*\{[^}]*color:\s*var\(--editorial-paper-high\)/s);
+  assert.match(css, /\.guide-proof strong\s*\{[^}]*color:\s*var\(--editorial-ink\)/s);
+  assert.match(css, /\.guide-proof span\s*\{[^}]*color:\s*#59655d/s);
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.doesNotMatch(css, /#0c0f17|#0d1017|#191b18/);
 });
