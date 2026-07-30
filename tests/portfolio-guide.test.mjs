@@ -32,14 +32,14 @@ const evidence = [
     roleWeights: { recruiter: 5, "product-lead": 6, technical: 3 },
   },
   {
-    id: "LUMEN-MOCK",
+    id: "LUMEN-PLANNED",
     projectSlug: "lumen-ink",
     kind: "video",
     title: "光砚操作视频",
     summary: "待补录。",
-    state: "mock",
-    publicSafe: false,
-    evidenceRefs: [],
+    state: "planned",
+    publicSafe: true,
+    evidenceRefs: ["E-LUMEN-EDIT"],
     tags: ["光砚", "视频"],
     roleWeights: { recruiter: 3, "product-lead": 2, technical: 1 },
   },
@@ -105,10 +105,10 @@ test("guide evidence is public, available and free of local paths", () => {
   assert.equal(JSON.stringify(safe).includes("D:\\private"), false);
 });
 
-test("production hides mocks while preview labels them", () => {
+test("production hides planned evidence while preview labels it", () => {
   assert.equal(typeof core.getRenderableEvidence, "function");
   assert.deepEqual(core.getRenderableEvidence(evidence, "production").map((item) => item.id), ["SCS-ARCH", "FEISHU-GOV"]);
-  assert.deepEqual(core.getRenderableEvidence(evidence, "preview").map((item) => item.id), ["SCS-ARCH", "FEISHU-GOV", "LUMEN-MOCK"]);
+  assert.deepEqual(core.getRenderableEvidence(evidence, "preview").map((item) => item.id), ["SCS-ARCH", "FEISHU-GOV", "LUMEN-PLANNED"]);
 });
 
 test("retrieval combines topic match with role weight", () => {

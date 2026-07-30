@@ -92,3 +92,67 @@ test("shared project summaries contain no superseded flagship language", async (
     assert.equal(source.includes(stale), false, `stale phrase: ${stale}`);
   }
 });
+
+test("evidence catalog uses exact states and keeps planned items non-interactive", async () => {
+  const source = await read("content/portfolio-evidence.ts");
+  assert.match(source, /export type EvidenceState = "available" \| "planned" \| "unavailable"/);
+  assert.doesNotMatch(source, /\bmock\b/);
+  assert.match(source, /Planned evidence cannot expose a live primary control/);
+  for (const id of [
+    "data-platform-closed-loop",
+    "data-platform-schema-verification",
+    "data-platform-e2e-verification",
+    "data-platform-portal-entry",
+    "data-platform-walkthrough",
+    "service-agent-risk-workflow",
+    "service-agent-phase-g-summary",
+    "service-agent-controlled-demo",
+    "service-agent-live-frontend",
+    "service-agent-walkthrough",
+    "lumen-workbench",
+    "lumen-provider-boundary",
+    "lumen-edit-verification",
+    "lumen-live-entry",
+    "lumen-walkthrough",
+  ]) assert.ok(source.includes(`id: "${id}"`), `missing evidence ${id}`);
+  for (const plannedId of ["data-platform-portal-entry", "data-platform-walkthrough", "service-agent-live-frontend", "service-agent-walkthrough", "lumen-walkthrough"]) {
+    const start = source.indexOf(`id: "${plannedId}"`);
+    const next = source.indexOf("\n  buildEvidence(", start + 1);
+    const block = source.slice(start, next < 0 ? source.length : next);
+    assert.match(block, /state: "planned"/);
+    assert.doesNotMatch(block, /\bhref:/);
+    assert.doesNotMatch(block, /\bassetUrl:/);
+  }
+});
+
+test("available local assets are public-safe diagrams or the reviewed Lumen UI", async () => {
+  const evidence = await read("content/portfolio-evidence.ts");
+  for (const match of evidence.matchAll(/assetUrl: "([^"]+)"/g)) {
+    const path = match[1];
+    assert.ok(path.startsWith("/evidence/") || path === "/projects/lumen-ink/01.webp", `unsafe asset path: ${path}`);
+  }
+  assert.doesNotMatch(evidence, /\/projects\/service-agent\/(?:0[1-7])\.webp/);
+  assert.doesNotMatch(evidence, /\/projects\/data-platform\/01\.webp/);
+  const projects = await read("content/projects.ts");
+  assert.doesNotMatch(projects, /Array\.from\(\{ length: 7 \}[^\n]+service-agent/);
+  assert.doesNotMatch(projects, /Array\.from\(\{ length: 10 \}[^\n]+data-platform/);
+});
+
+test("flagship evidence sources contain no literal private identifiers", async () => {
+  const combined = await Promise.all([
+    read("content/portfolio-evidence.ts"),
+    ...Object.values(caseFiles).map(read),
+    read("public/evidence/data-platform/closed-loop.svg"),
+    read("public/evidence/service-agent/risk-workflow.svg"),
+    read("public/evidence/lumen/provider-boundary.svg"),
+  ]).then((parts) => parts.join("\n"));
+  for (const pattern of [
+    /[A-Z]:\\/,
+    /\bcli_[A-Za-z0-9]+\b/,
+    /\btbl[A-Za-z0-9]{8,}\b/,
+    /Bearer\s+[A-Za-z0-9._-]+/,
+    /eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\./,
+    /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/,
+    /\b1[3-9]\d{9}\b/,
+  ]) assert.doesNotMatch(combined, pattern);
+});
