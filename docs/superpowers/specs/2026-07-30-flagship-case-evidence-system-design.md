@@ -240,7 +240,8 @@ Service Agent 使用 Deploy 028、031/032、039 形成一条清楚链路。飞�
 - LangGraph 8 节点 11 边。
 - N03.5 Query Resolver、多查询融合、检索证据与上下文支持双层门禁。
 - R0-R3 风险分级和确定性硬风险 fail-closed。
-- Deploy 039 的 Phase G、16/16 smoke、Turn 2 3/3，以及可用性、时延和知识覆盖边界。
+- Deploy 039 的 Phase G 已验证，以及可用性、时延和知识覆盖边界。
+- `16/16 smoke` 与 `Turn 2 3/3` 目前只存在于验证报告，尚未进入声明—证据矩阵；在获得 claimId 与 evidenceRef 前不得展示为公开数字。
 
 建议证据：
 
@@ -426,6 +427,7 @@ public/evidence/
 
 - 三个主案例必须各有六个板块。
 - 所有公开数字必须存在于 `public-claims.json` 并绑定 evidenceRef。
+- 验证报告中的数字若尚未进入 `02-CLAIMS-EVIDENCE-MATRIX.md`，只能用于内部核验，不得直接进入页面、首页卡片或 AI 导览语料。
 - 页面状态与权威包当前状态一致。
 - evidenceRef 唯一、存在且与案例匹配。
 - `available` 资源文件或 URL 必须存在；`planned` 不得渲染为可操作入口。
