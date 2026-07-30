@@ -18,7 +18,8 @@ test("guide exposes a truthful staged wait state instead of a frozen placeholder
 
 test("homepage explicitly invites recruiter and technical interviewer to use AI", async () => {
   const hero = await read("components/home/Hero.tsx");
-  assert.match(hero, /让 AI 用 90 秒介绍我/);
+  assert.match(hero, /进入 AI 导览/);
+  assert.doesNotMatch(hero, /让 AI 用 90 秒介绍我/);
   assert.match(hero, /AI 导览已上线/);
   assert.match(hero, /招聘官/);
   assert.match(hero, /技术面试官/);

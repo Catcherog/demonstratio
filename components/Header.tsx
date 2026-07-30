@@ -16,6 +16,15 @@ export function Header() {
         </span>
       </a>
 
+      <a
+        className="header-mobile-resume"
+        href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf"
+        target="_blank"
+        rel="noreferrer"
+      >
+        查看简历 <span aria-hidden="true">↗</span>
+      </a>
+
       <button
         className="menu-button"
         type="button"

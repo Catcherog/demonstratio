@@ -2,9 +2,9 @@ import type { BoundPublicMetric } from "@/content/projects";
 import { capabilities } from "@/content/projects";
 
 const guidePrompts = [
-  { label: "招聘官", text: "90 秒判断岗位匹配" },
-  { label: "产品负责人", text: "追问产品取舍与闭环" },
-  { label: "技术面试官", text: "核验 Agent 架构与边界" },
+  { promptIndex: "01", label: "招聘官", text: "90 秒判断岗位匹配" },
+  { promptIndex: "02", label: "产品负责人", text: "追问产品取舍与闭环" },
+  { promptIndex: "03", label: "技术面试官", text: "核验 Agent 架构与边界" },
 ];
 
 export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
@@ -14,7 +14,22 @@ export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
       <div className="hero-copy">
         <p className="availability"><span aria-hidden="true" /> OPEN TO AI PRODUCT OPPORTUNITIES</p>
         <p className="eyebrow">AI / AGENT 产品经理 · TECHNICAL BUILDER</p>
-        <h1 id="hero-title">把复杂业务，做成可上线、可评估的 AI 产品。</h1>
+        <h1 id="hero-title" aria-label="把复杂业务，做成可上线、可评估的 AI 产品。">
+          <span className="hero-title-desktop" aria-hidden="true">
+            <span className="hero-title-line">把复杂业务，</span>
+            <span className="hero-title-line hero-title-line-shift">
+              做成<span className="hero-title-accent">可上线、可评估</span>的
+            </span>
+            <span className="hero-title-line">AI 产品。</span>
+          </span>
+          <span className="hero-title-mobile" aria-hidden="true">
+            <span className="hero-title-line">把复杂业务，</span>
+            <span className="hero-title-line hero-title-line-shift">
+              做成<span className="hero-title-accent">可上线、</span>
+            </span>
+            <span className="hero-title-line">可评估的 AI 产品。</span>
+          </span>
+        </h1>
         <p className="hero-lead">
           我是陈嘉伟。曾在 TP-Link 管理复杂软硬件项目组合，现作为 3 人全职创业团队的创始人兼 AI 产品负责人，围绕飞书 AI 业务数据平台、Service Agent 与光砚构建可验证的 AI 产品；Collator 作为飞书子系统处理非结构化数据摄入。
         </p>
@@ -25,7 +40,7 @@ export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
           </a>
           <a className="button button-secondary hero-ai-button" href="#portfolio-guide">
             <i aria-hidden="true" />
-            让 AI 用 90 秒介绍我 <span aria-hidden="true">→</span>
+            进入 AI 导览 <span aria-hidden="true">→</span>
           </a>
           <a
             className="button button-tertiary"
@@ -37,22 +52,28 @@ export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
           </a>
         </div>
 
-        <aside className="hero-ai-invite" aria-label="AI 作品集导览入口">
-          <div className="hero-ai-invite-head">
-            <span><i aria-hidden="true" /> AI 导览已上线</span>
-            <strong>不必从头翻案例，直接问你最关心的问题。</strong>
-          </div>
-          <div className="hero-ai-prompts">
-            {guidePrompts.map((prompt) => (
-              <a href="#portfolio-guide" key={prompt.label}>
-                <span>{prompt.label}</span>
-                <strong>{prompt.text}</strong>
-                <i aria-hidden="true">↘</i>
-              </a>
-            ))}
-          </div>
-          <small>基于公开证据回答 · 可连续追问 · 首个可见内容通常需要 10–30 秒</small>
-        </aside>
+        <div className="hero-ai-path">
+          <svg className="hero-guide-route" viewBox="0 0 235 126" aria-hidden="true">
+            <path d="M225 5 C 150 10, 33 14, 28 72 C 25 103, 70 113, 102 113" />
+            <circle cx="102" cy="113" r="4" />
+          </svg>
+          <aside className="hero-ai-invite" aria-label="AI 作品集导览入口">
+            <div className="hero-ai-invite-head">
+              <span><i aria-hidden="true" /> AI 导览已上线</span>
+              <strong>不必从头翻案例，直接问你最关心的问题。</strong>
+            </div>
+            <div className="hero-ai-prompts">
+              {guidePrompts.map((prompt) => (
+                <a href="#portfolio-guide" key={prompt.label}>
+                  <span><b>{prompt.promptIndex}</b>{prompt.label}</span>
+                  <strong>{prompt.text}</strong>
+                  <i aria-hidden="true">↘</i>
+                </a>
+              ))}
+            </div>
+            <small>基于公开证据回答 · 可连续追问 · 首个可见内容通常需要 10–30 秒</small>
+          </aside>
+        </div>
 
         <div className="hero-links">
           <a href="/resume/jiawei-chen-ai-agent-en.pdf" target="_blank" rel="noreferrer">English Resume</a>
