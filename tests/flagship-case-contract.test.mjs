@@ -156,3 +156,36 @@ test("flagship evidence sources contain no literal private identifiers", async (
     /\b1[3-9]\d{9}\b/,
   ]) assert.doesNotMatch(combined, pattern);
 });
+
+test("dynamic route selects the flagship renderer without regressing supporting projects", async () => {
+  const route = await read("app/projects/[slug]/page.tsx");
+  assert.match(route, /getFlagshipCaseStudy\(slug\)/);
+  assert.match(route, /if \(study\) \{[\s\S]*<FlagshipCasePage/);
+  assert.match(route, /<LegacyProjectPage project=\{project\} previous=\{previous\} next=\{next\}/);
+  assert.match(route, /return projects\.map\(\(project\) => \(\{ slug: project\.slug \}\)\)/);
+  assert.match(route, /if \(!project\) notFound\(\)/);
+  assert.match(route, /generateMetadata/);
+});
+
+test("flagship renderer exposes exactly six addressable server-rendered sections", async () => {
+  const page = await read("components/case-study/FlagshipCasePage.tsx");
+  const expected = [
+    '<CaseOverview id="overview"',
+    '<BusinessContext id="business"',
+    '<ProductDesign id="product"',
+    '<TechnicalImplementation id="technical"',
+    '<IterationPath id="iterations"',
+    '<CaseEvidenceGallery id="evidence"',
+  ];
+  const positions = expected.map((token) => page.indexOf(token));
+  assert.ok(positions.every((position) => position >= 0));
+  assert.deepEqual([...positions].sort((a, b) => a - b), positions);
+  assert.match(page, /<CaseSectionNav items=\{CASE_SECTIONS\}/);
+});
+
+test("product and technical sections use the same outer layout contract", async () => {
+  const product = await read("components/case-study/ProductDesign.tsx");
+  const technical = await read("components/case-study/TechnicalImplementation.tsx");
+  assert.match(product, /className="case-balanced-grid"/);
+  assert.match(technical, /className="case-balanced-grid"/);
+});
