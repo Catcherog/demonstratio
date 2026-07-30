@@ -259,7 +259,7 @@ function experienceDocuments(): PortfolioDocument[] {
   }));
 }
 
-const flagshipBySlug = new Map(flagshipCaseStudies.map((study) => [study.slug, study]));
+const flagshipBySlug = new Map<string, FlagshipCaseStudy>(flagshipCaseStudies.map((study) => [study.slug, study]));
 
 export const portfolioDocuments: PortfolioDocument[] = [
   ...projects.flatMap((project) => {
