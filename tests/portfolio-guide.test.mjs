@@ -182,8 +182,8 @@ test("guide preserves the current availability and schema boundaries", async () 
     "../content/portfolio-evidence.ts",
   ].map((path) => readFile(new URL(path, import.meta.url), "utf8")));
   const source = files.join("\n");
-  assert.match(source, /后端已上线 CloudBase Deploy 039（Phase G 验证通过），前端仍指向 Render 静态降级/);
-  assert.match(source, /前端仍指向 Render 静态降级，不调用 CloudBase Deploy 039/);
+  assert.match(source, /公网实时 Demo｜受控生产验证/);
+  assert.match(source, /公网前端已接入 CloudBase Deploy 039 后端并完成受控 E2E 验证/);
   assert.match(source, /历史 Test Base/);
   assert.match(source, /10 表[、\s\/]+216 字段/);
   assert.match(source, /生产 Schema 元数据只读检查/);

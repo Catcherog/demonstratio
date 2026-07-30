@@ -5,8 +5,8 @@ export const serviceAgentCase: FlagshipCaseStudy = {
   overview: {
     oneLine: "用风险优先的 Agent 工作流，在可回答、应澄清、应拒答和应转人工之间建立确定性边界。",
     responsibility: "负责场景与风险定义、Agent 工作流、检索与质量 Gate、评测方案、Demo 体验和迭代闭环。",
-    status: "Controlled Demo｜后端已上线 CloudBase Deploy 039（Phase G 验证通过），前端仍指向 Render 静态降级",
-    boundary: "后端与公开前端是两个可用性表面。Phase G 已验证，但安全结论仍为 provisional；前端尚未切换到 CloudBase，延迟、可用性和知识覆盖仍需生产加固。",
+    status: "公网实时 Demo｜受控生产验证",
+    boundary: "公网前端已接入 CloudBase Deploy 039 后端并完成受控 E2E 验证；安全结论仍为 provisional，延迟、可用性和知识覆盖仍需生产加固。",
     claimIds: [
       "SCS-WORKFLOW-SHAPE",
       "SCS-REGRESSION-COUNT",
@@ -44,7 +44,7 @@ export const serviceAgentCase: FlagshipCaseStudy = {
       },
     ],
     constraints: [
-      "公开前端仍是静态 B1/B2/B3 降级，不代表 CloudBase 后端已接入前端。",
+      "公网前端已接入 CloudBase 后端，但安全结论仍为 provisional，不主张生产 SLO。",
       "工程回归计数不能解释为回答准确率。",
       "生产观察显示可用性、延迟和知识覆盖仍需优化。",
     ],
@@ -77,14 +77,14 @@ export const serviceAgentCase: FlagshipCaseStudy = {
       },
       {
         title: "前后端可用性分开表达",
-        detail: "公开前端保留静态可解释降级，后端单独完成验证；切换 API 前不把两者合并成 Live Demo。",
+        detail: "公网前端已接入 CloudBase 后端并完成受控 E2E 验证；静态降级作为备用模式保留，不替代真实后端验证。",
         evidenceRefs: ["E-SCS-PRODUCTION", "E-SCS-DEPLOY-039"],
       },
     ],
     nonGoals: [
       "不追求所有问题自动回答。",
       "不把离线图级评测换算成线上回答质量。",
-      "不在前端 API 未切换前宣称完整公网实时体验。",
+      "不主张生产 SLO 或全面上线。",
     ],
   },
   technical: {
@@ -166,6 +166,15 @@ export const serviceAgentCase: FlagshipCaseStudy = {
       result: "Phase G 已验证，后端保持在线。",
       boundary: "安全为 provisional，前端切换和生产加固尚未完成。",
       evidenceRefs: ["E-SCS-DEPLOY-039"],
+    },
+    {
+      version: "Live Recovery · 公网实时 Demo 接入",
+      trigger: "需要把公网前端从静态降级切换到已验证的 CloudBase 后端。",
+      productChange: "前端 Live 模式开放真实问答，静态 B1/B2/B3 仅作为备用模式保留。",
+      technicalChange: "Vercel 环境变量切换到 live + 真实后端地址；代理超时从 20s 调整到 40s 适配后端 P50 延迟。",
+      result: "公网 Demo 完成受控浏览器 E2E：多轮追问、来源展示、高风险转人工、无知识拒答。",
+      boundary: "安全仍为 provisional，反馈接口联调为非阻塞债务。",
+      evidenceRefs: ["E-SCS-PRODUCTION", "E-SCS-DEPLOY-039"],
     },
     {
       version: "Production hardening · 进行中",

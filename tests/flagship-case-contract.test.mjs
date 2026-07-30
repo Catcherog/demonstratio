@@ -49,7 +49,7 @@ test("every flagship case defines the six-section narrative contract", async () 
 test("public status lines exactly match the R1.3 content contract", async () => {
   const expected = {
     "data-platform": "Portfolio Pilot｜真实测试 Base E2E 已验证，生产 V2 Schema 表级匹配通过（10/10），正式业务 Pilot 待启用",
-    "service-agent": "Controlled Demo｜后端已上线 CloudBase Deploy 039（Phase G 验证通过），前端仍指向 Render 静态降级",
+    "service-agent": "公网实时 Demo｜受控生产验证",
     "lumen-ink": "Live Demo｜真实 Provider 编辑已验证",
   };
   const projects = await read("content/projects.ts");
@@ -115,7 +115,7 @@ test("evidence catalog uses exact states and keeps planned items non-interactive
     "lumen-live-entry",
     "lumen-walkthrough",
   ]) assert.ok(source.includes(`id: "${id}"`), `missing evidence ${id}`);
-  for (const plannedId of ["data-platform-portal-entry", "data-platform-walkthrough", "service-agent-live-frontend", "service-agent-walkthrough", "lumen-walkthrough"]) {
+  for (const plannedId of ["data-platform-portal-entry", "data-platform-walkthrough", "service-agent-walkthrough", "lumen-walkthrough"]) {
     const start = source.indexOf(`id: "${plannedId}"`);
     const next = source.indexOf("\n  buildEvidence(", start + 1);
     const block = source.slice(start, next < 0 ? source.length : next);

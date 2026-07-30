@@ -212,15 +212,15 @@ export const projects: Project[] = [
     subtitle: "影像工作室 AI 辅助客服 Agent",
     summary:
       "面向影像工作室咨询与运营场景的 Agentic Workflow，通过 LangGraph 8 节点 11 边工作流编排知识检索、意图/风险判断、答案生成、质量检查、人工接管与反馈飞轮，以 fail-closed 策略控制高风险承诺。",
-    status: "Controlled Demo｜后端已上线 CloudBase Deploy 039（Phase G 验证通过），前端仍指向 Render 静态降级",
-    demoType: "controlled",
+    status: "公网实时 Demo｜受控生产验证",
+    demoType: "public",
     role: "产品定义 / Agent 架构 / 评估方案 / MVP 开发",
     team: "3 人创业团队",
     period: "2026.04 - 至今",
     featured: true,
     provisional: true,
     evidenceLabel:
-      "固定 90 样本用于离线图级审计，R2 runner 覆盖 7 个评测维度，但生成节点为 Stub 且知识库缺失，因此不公布路由或回答质量分数。CloudBase Deploy 039 已完成 Phase G 验证；公开前端仍指向 Render 静态 B1/B2/B3 降级。661 项 pytest 是工程回归计数，不代表准确率。安全状态为 provisional，可用性、延迟与知识覆盖仍需生产加固。",
+      "已接入真实 Service Agent 后端（CloudBase Deploy 039），支持知识检索、多轮追问、来源展示与安全转人工。高风险、低置信度及知识不足的问题不会强行回答。公网 Demo 完成受控浏览器 E2E 验证。固定 90 样本用于离线图级审计，R2 runner 覆盖 7 个评测维度，但生成节点为 Stub 且知识库缺失，因此不公布路由或回答质量分数。661 项 pytest 是工程回归计数，不代表准确率。安全状态为 provisional，可用性、延迟与知识覆盖仍需生产加固。",
     metrics: getPublicMetrics("service-agent"),
     caseModules: [
       {
@@ -259,7 +259,7 @@ export const projects: Project[] = [
     ],
     productStrategy: [
       "产品目标：用受控 Agent 工作流编排检索、风险分流、生成、质量检查与人工接管，完成 Web/API 端到端 MVP。",
-      "产品边界：CloudBase Deploy 039 后端已上线并完成 Phase G 验证；公开前端仍为 Render 静态 B1/B2/B3 降级，尚未切换实时 API。安全为 provisional，不主张生产 SLO。",
+      "产品边界：公网实时 Demo 已接入 CloudBase Deploy 039 后端并完成受控 E2E 验证；安全为 provisional，不主张生产 SLO，不声明全面上线或生产试点。",
       "方案选择：采用 LangGraph 确定性节点与 LLM 节点组合工作流，LLM 通过可配置的 OpenAI 兼容接口接入，未配置 Key 时回退本地模板匹配。",
       "暂不做：不追求无条件自动回复，不把内部小样本估算写成生产指标，不公开展示具体 LLM 型号。",
     ],
@@ -301,9 +301,9 @@ export const projects: Project[] = [
       "LLM 生成与模板回退双路径，牺牲部分回答质量以换取服务可用性（未配置 Key 时仍可运行）。",
     ],
     nextSteps: [
-      "将公开前端 API 从 Render 切换到已验证的 CloudBase 后端，并完成切换后的端到端回归。",
-      "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率与转人工率。",
       "在真实流量中做分阶段灰度，校准置信度阈值并记录误答成本。",
+      "建立覆盖 18 场景的固定评测集，分开统计召回率、答案采纳率与转人工率。",
+      "持续监测公网 Demo 后端健康与 P50/P95 延迟，并完善反馈数据回流。",
     ],
     verifiedCapabilities: [
       "LangGraph 8 节点 11 边工作流编排",
@@ -315,11 +315,13 @@ export const projects: Project[] = [
       "Web/API 端到端 MVP",
       "661 项 pytest 全量回归通过（含 Phase G 定向测试）",
       "三项生产写入安全门禁保持关闭",
+      "公网实时 Demo 接入真实 Service Agent 后端（CloudBase Deploy 039）",
+      "受控浏览器 E2E：多轮追问、来源展示、高风险转人工、无知识拒答",
     ],
     inProgressCapabilities: [
-      "公开前端 API 切换、可用性监控与失败回退验证",
       "生产加固：延迟优化、知识覆盖扩充与可观测性补齐",
       "持续评测：检索支持度、人工接管质量与多轮上下文回归",
+      "反馈接口公网联调（/api/feedback 非阻塞）",
     ],
     plannedCapabilities: [
       "真实流量灰度上线",
@@ -331,7 +333,7 @@ export const projects: Project[] = [
       { label: "661 Python + 55 Web 回归", type: "test", ref: "E-SCS-TESTS" },
       { label: "冻结 90 样本（仅作审计输入）", type: "data", ref: "E-SCS-EVAL-DATASET" },
       { label: "评测 runner 语义审计", type: "api", ref: "E-SCS-EVAL-RUNNER" },
-      { label: "Controlled Demo 与 503 fail-closed", type: "deploy", ref: "E-SCS-PRODUCTION" },
+      { label: "公网实时 Demo 已接入真实后端", type: "deploy", ref: "E-SCS-PRODUCTION" },
     ],
     myContribution: [
       { area: "用户与业务需求", detail: "影像工作室咨询与运营场景调研，定义 18 类咨询场景与 R0–R3 风险分级" },
@@ -341,7 +343,7 @@ export const projects: Project[] = [
       { area: "测试与验收", detail: "661 项 pytest 回归、固定 90 样本 R2 图级审计与 Phase G 安全门禁验证" },
       { area: "迭代决策", detail: "公网 Demo 与生产写动作分离（fail-closed + 安全开关始终 false）" },
     ],
-    lastVerifiedAt: "2026-07-30T11:15:00+08:00",
+    lastVerifiedAt: "2026-07-30T16:50:00+08:00",
     relationships: [
       { slug: "wechat-bot", label: "微信公众号机器人", detail: "机器人负责通道接入和会话归档，Agent 负责知识与质量。" },
       { slug: "lora-finetuning", label: "LoRA 微调", detail: "微调模型作为本地推理与云端 API 的备选后端。" },
@@ -349,7 +351,7 @@ export const projects: Project[] = [
     ],
     images: ["/evidence/service-agent/risk-workflow.svg"],
     imageMode: "desktop",
-    link: { label: "打开受控演示", href: "https://zehuai-customer-demo.vercel.app/", note: "公开前端提供静态 B1/B2/B3 降级并仍指向 Render；CloudBase Deploy 039 后端已完成 Phase G 验证，但前端尚未切换实时 API。" },
+    link: { label: "打开公网实时 Demo", href: "https://zehuai-customer-demo.vercel.app/", note: "已接入真实 Service Agent 后端，支持知识检索、多轮追问、来源展示与安全转人工。高风险、低置信度及知识不足的问题不会强行回答。" },
     fallbackLink: { label: "联系了解受控演示", href: "mailto:Jael_Chen@foxmail.com", note: "若页面内容加载失败或需要进一步确认，请重试或使用此备用入口；不承诺实时生产能力。" },
   },
   {

@@ -137,7 +137,7 @@ test("homepage and flagship details share the exact R1.3 status contract", async
   const featured = await read("components/home/FeaturedCases.tsx");
   const statuses = [
     "Portfolio Pilot｜真实测试 Base E2E 已验证，生产 V2 Schema 表级匹配通过（10/10），正式业务 Pilot 待启用",
-    "Controlled Demo｜后端已上线 CloudBase Deploy 039（Phase G 验证通过），前端仍指向 Render 静态降级",
+    "公网实时 Demo｜受控生产验证",
     "Live Demo｜真实 Provider 编辑已验证",
   ];
   for (const status of statuses) assert.ok(projects.includes(status), `missing status: ${status}`);
