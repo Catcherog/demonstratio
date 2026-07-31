@@ -21,13 +21,8 @@ export function Header() {
         </span>
       </a>
 
-      <a
-        className="header-mobile-resume"
-        href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf"
-        target="_blank"
-        rel="noreferrer"
-      >
-        查看简历 <span aria-hidden="true">↗</span>
+      <a className="header-mobile-resume" href="/resume" onClick={close}>
+        中 / EN 简历 <span aria-hidden="true">→</span>
       </a>
 
       <button
@@ -48,13 +43,8 @@ export function Header() {
         <a href="/#portfolio-guide" onClick={close}>AI 导览</a>
         <a href="/#projects" onClick={close}>案例库</a>
         <a href="/#experience" onClick={close}>经历</a>
-        <a
-          className="nav-resume"
-          href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf"
-          target="_blank"
-          rel="noreferrer"
-        >
-          查看简历 <span aria-hidden="true">↗</span>
+        <a className="nav-resume" href="/resume" onClick={close}>
+          中 / EN 简历 <span aria-hidden="true">→</span>
         </a>
       </nav>
     </header>

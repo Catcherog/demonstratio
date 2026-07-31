@@ -10,6 +10,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
+    {
+      url: "https://www.jaelchen.com/resume",
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
     ...featuredProjects.map((project) => ({
       url: `https://www.jaelchen.com/projects/${project.slug}`,
       lastModified,

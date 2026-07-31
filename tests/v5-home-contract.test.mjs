@@ -44,13 +44,18 @@ test("homepage keeps the approved section order and full guide", async () => {
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
 });
 
-test("three flagship cases stay data-driven and use the current two-page resume", async () => {
+test("three flagship cases stay data-driven and the bilingual resume hub exposes both PDFs", async () => {
   const projects = await read("content/projects.ts");
   const featured = await read("components/home/FeaturedCases.tsx");
   const hero = await read("components/home/Hero.tsx");
+  const header = await read("components/Header.tsx");
+  const resume = await read("app/resume/page.tsx");
   assert.match(projects, /\["data-platform", "service-agent", "lumen-ink"\]/);
   assert.match(featured, /projects\.map/);
-  assert.match(hero, /chen-jiawei-ai-agent-cn-two-page\.pdf/);
+  assert.match(hero, /href="\/resume"/);
+  assert.match(header, /href="\/resume"/);
+  assert.match(resume, /chen-jiawei-ai-agent-cn-two-page\.pdf/);
+  assert.match(resume, /jiawei-chen-ai-agent-en\.pdf/);
 });
 
 test("supporting library excludes the frontend-only Feishu Portal", async () => {

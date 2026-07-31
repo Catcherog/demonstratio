@@ -42,13 +42,8 @@ export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
             <i aria-hidden="true" />
             进入 AI 导览 <span aria-hidden="true">→</span>
           </a>
-          <a
-            className="button button-tertiary"
-            href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf"
-            target="_blank"
-            rel="noreferrer"
-          >
-            下载中文两页简历 <span aria-hidden="true">↗</span>
+          <a className="button button-tertiary" href="/resume">
+            查看中英文简历 <span aria-hidden="true">→</span>
           </a>
         </div>
 
@@ -76,6 +71,7 @@ export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
         </div>
 
         <div className="hero-links">
+          <a href="/resume/chen-jiawei-ai-agent-cn-two-page.pdf" target="_blank" rel="noreferrer">中文简历</a>
           <a href="/resume/jiawei-chen-ai-agent-en.pdf" target="_blank" rel="noreferrer">English Resume</a>
           <a href="https://github.com/Catcherog" target="_blank" rel="noreferrer">GitHub</a>
           <a href="mailto:Jael_Chen@foxmail.com">Email</a>

@@ -7,8 +7,8 @@ export function FeaturedCases({ projects }: Props) {
   return (
     <section className="section-shell section-block featured-section" id="featured">
       <div className="section-heading featured-heading">
-        <div><p className="eyebrow">THREE FLAGSHIP CASES</p><h2>三个主案例，同一优先级。</h2></div>
-        <p>飞书 AI 业务数据平台、Service Agent 与光砚分别证明业务系统设计、Agent 可靠性与多模态产品化能力。每个案例都公开当前证据与未完成边界。</p>
+        <div><p className="eyebrow">THREE FLAGSHIP CASES</p><h2>三个主案例，验证三类核心能力。</h2></div>
+        <p>飞书 AI 业务数据平台、Service Agent 与光砚，分别展示业务系统设计、Agent 可靠性与多模态产品化；每个案例同时公开可验证证据与当前能力边界。</p>
       </div>
 
       <div className="flagship-grid">
@@ -23,12 +23,9 @@ export function FeaturedCases({ projects }: Props) {
               <h3>{project.title}</h3>
               <p className="flagship-subtitle">{project.subtitle}</p>
               <p className="flagship-summary">{project.summary}</p>
-              <dl>
-                <div><dt>我的角色</dt><dd>{project.role}</dd></div>
-                <div><dt>核心决策</dt><dd>{project.decisions[0]}</dd></div>
-              </dl>
+              <p className="flagship-role"><span>我的角色</span><strong>{project.role}</strong></p>
               <div className="flagship-metrics">
-                {project.metrics.slice(0, 3).map((metric) => (
+                {project.metrics.slice(0, 2).map((metric) => (
                   <div key={metric.label} data-claim-id={metric.claimId} data-evidence-ref={metric.evidenceRef}>
                     <strong>{metric.value}</strong><span>{metric.label}{metric.note ? ` · ${metric.note}` : ""}</span>
                   </div>

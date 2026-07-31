@@ -218,11 +218,14 @@ const layout = read("app/layout.tsx");
 const sitemap = read("app/sitemap.ts");
 const robots = read("app/robots.ts");
 const header = read("components/Header.tsx");
+const resumePage = read("app/resume/page.tsx");
 assert(layout.includes(`metadataBase: new URL("${publicOrigin}")`), "metadata origin differs from authority");
 assert(sitemap.includes(publicOrigin), "sitemap origin differs from authority");
 assert(robots.includes(`${publicOrigin}/sitemap.xml`), "robots sitemap differs from authority");
 assert(routeSource.includes(`${publicOrigin}/projects/`), "case OpenGraph origin differs from authority");
-assert(header.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "resume CTA is not canonical");
+assert(header.includes('href="/resume"'), "resume CTA must route through the bilingual resume hub");
+assert(resumePage.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "Chinese resume is missing from the resume hub");
+assert(resumePage.includes("/resume/jiawei-chen-ai-agent-en.pdf"), "English resume is missing from the resume hub");
 for (const resume of [
   "public/resume/chen-jiawei-ai-agent-cn-two-page.pdf",
   "public/resume/chen-jiawei-ai-agent-cn-two-page.docx",
