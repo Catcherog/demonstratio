@@ -57,7 +57,7 @@ export function CaseEvidenceGallery({
             {backupInteractive && (
               <aside className="case-demo-fallback-note" role="note">
                 <strong>备用模式</strong>
-                <p>{backupInteractive.title}：{backupInteractive.summary} {demoStatus === "live" ? "实时入口异常时由 Demo 自身降级处理。" : "当前不作为主入口展示。"}</p>
+                <p>{backupInteractive.title}：{backupInteractive.summary} 当前仅作为备用模式说明，不作为主入口展示。</p>
               </aside>
             )}
             <dl>

@@ -246,8 +246,14 @@
 }
 
 .case-technical-card .case-narrative-card {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   box-sizing: border-box;
+}
+
+.case-technical-card small {
+  margin-top: auto;
 }
 
 .case-technical-card-wide {
@@ -596,7 +602,8 @@
 @media (max-width: 1279px) {
   .flagship-case .flagship-case-body {
     display: block;
-    width: 100%;
+    width: min(1120px, calc(100% - 48px));
+    margin-inline: auto;
     padding-top: 0;
   }
 
@@ -654,7 +661,8 @@
 @media (max-width: 1023px) {
   .flagship-case .flagship-case-body {
     display: block;
-    width: 100%;
+    width: min(1120px, calc(100% - 48px));
+    margin-inline: auto;
     padding-top: 0;
   }
 
