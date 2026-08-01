@@ -38,6 +38,16 @@ type WaitState = {
   detail: string;
 };
 
+const MOBILE_GUIDE_MEDIA_QUERY = "(max-width: 720px)";
+const GUIDE_FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "[tabindex]:not([tabindex='-1'])",
+].join(", ");
+
 const roles: Array<{ value: GuideRole; index: string; label: string; note: string }> = [
   { value: "recruiter", index: "01", label: "招聘官", note: "快速判断岗位匹配与交付证据" },
   { value: "product-lead", index: "02", label: "产品负责人", note: "追问判断、取舍与业务闭环" },
@@ -172,6 +182,8 @@ export function PortfolioGuide() {
   const transcriptRef = useRef<HTMLDivElement | null>(null);
   const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const guideShellRef = useRef<HTMLDivElement | null>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => () => abortRef.current?.abort(), []);
 
@@ -189,6 +201,19 @@ export function PortfolioGuide() {
       document.body.classList.remove("guide-sheet-open");
     };
   }, [sheetOpen]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(MOBILE_GUIDE_MEDIA_QUERY);
+    const handleViewportChange = (event: MediaQueryListEvent) => {
+      if (event.matches) return;
+
+      returnFocusRef.current = null;
+      setSheetOpen(false);
+    };
+
+    mediaQuery.addEventListener("change", handleViewportChange);
+    return () => mediaQuery.removeEventListener("change", handleViewportChange);
+  }, []);
 
   useEffect(() => {
     transcriptRef.current?.scrollTo({
@@ -229,18 +254,74 @@ export function PortfolioGuide() {
   }
 
   function openSheet() {
+    const activeElement = document.activeElement;
+    returnFocusRef.current =
+      activeElement instanceof HTMLElement && activeElement !== document.body
+        ? activeElement
+        : mobileTriggerRef.current;
     setSheetOpen(true);
   }
 
-  function closeSheet() {
+  function closeSheet(restoreFocus = true) {
+    const focusTarget = returnFocusRef.current ?? mobileTriggerRef.current;
+    returnFocusRef.current = null;
     setSheetOpen(false);
-    window.requestAnimationFrame(() => mobileTriggerRef.current?.focus());
+
+    if (restoreFocus) {
+      window.requestAnimationFrame(() => {
+        if (
+          focusTarget &&
+          document.contains(focusTarget) &&
+          !focusTarget.hasAttribute("disabled")
+        ) {
+          focusTarget.focus();
+        }
+      });
+    }
   }
 
   function handleSheetKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (!sheetOpen) return;
+
     if (event.key === "Escape") {
       event.preventDefault();
       closeSheet();
+      return;
+    }
+
+    if (event.key !== "Tab") return;
+
+    const shell = guideShellRef.current;
+    if (!shell) return;
+
+    const focusableElements = Array.from(
+      shell.querySelectorAll<HTMLElement>(GUIDE_FOCUSABLE_SELECTOR),
+    ).filter((element) => {
+      const styles = window.getComputedStyle(element);
+      return styles.display !== "none" && styles.visibility !== "hidden";
+    });
+
+    if (focusableElements.length === 0) {
+      event.preventDefault();
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    const activeElement = document.activeElement;
+
+    if (!activeElement || !shell.contains(activeElement)) {
+      event.preventDefault();
+      (event.shiftKey ? lastElement : firstElement).focus();
+      return;
+    }
+
+    if (event.shiftKey && activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+    } else if (!event.shiftKey && activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
     }
   }
 
@@ -428,12 +509,13 @@ export function PortfolioGuide() {
         <div
           className={"guide-window-shell" + (sheetOpen ? " is-open" : "")}
           id="guide-window"
+          ref={guideShellRef}
           role={sheetOpen ? "dialog" : undefined}
           aria-modal={sheetOpen ? "true" : undefined}
           aria-labelledby="guide-window-title"
           onKeyDown={handleSheetKeyDown}
         >
-          <button className="guide-sheet-backdrop" type="button" aria-label="关闭 AI 导览" onClick={closeSheet} />
+          <div className="guide-sheet-backdrop" aria-hidden="true" onClick={() => closeSheet()} />
           <div className="guide-window">
             <header className="guide-window-head">
               <div>
@@ -448,7 +530,7 @@ export function PortfolioGuide() {
                   <i aria-hidden="true" />
                   在线 · 可连续追问
                 </span>
-                <button className="guide-sheet-close" type="button" ref={closeButtonRef} onClick={closeSheet}>
+                <button className="guide-sheet-close" type="button" ref={closeButtonRef} onClick={() => closeSheet()}>
                   关闭
                 </button>
               </div>

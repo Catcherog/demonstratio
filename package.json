@@ -13,7 +13,8 @@
     "check:portfolio-ai": "node scripts/check-portfolio-ai-guide.mjs",
     "check:portfolio-model": "node scripts/check-portfolio-model.mjs",
     "check:portfolio-glm": "node scripts/check-portfolio-model.mjs",
-    "test:cases": "node --test tests/flagship-authority-contract.test.mjs tests/flagship-case-contract.test.mjs"
+    "test:cases": "node --test tests/flagship-authority-contract.test.mjs tests/flagship-case-contract.test.mjs",
+    "test": "node --test tests/homepage-editorial-responsive.test.mjs tests/v5-home-contract.test.mjs tests/homepage-mobile-first-pass.test.mjs tests/portfolio-guide-ux-r2.test.mjs tests/portfolio-guide.test.mjs"
   },
   "dependencies": {
     "next": "16.2.10",
@@ -25,6 +26,7 @@
     "@types/node": "24.10.1",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "@playwright/test": "1.62.1",
     "typescript": "6.0.2"
   },
   "overrides": {
