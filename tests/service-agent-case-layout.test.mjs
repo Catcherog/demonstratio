@@ -62,11 +62,43 @@ test("iteration path is a bounded 3/2/1 responsive grid", async () => {
   assert.doesNotMatch(css, /\.iteration-path[\s\S]*overflow-x:\s*auto/);
 });
 
-test("wide-screen section navigation owns a separate sticky layout column", async () => {
+test("wide screens use an editorial horizontal track instead of a left navigation column", async () => {
   const page = await read("components/case-study/FlagshipCasePage.tsx");
   const css = await read("app/case-study.css");
-  assert.match(page, /flagship-case-body/);
-  assert.match(page, /flagship-case-sections/);
-  assert.match(css, /@media \(min-width: 1280px\)[\s\S]*flagship-case-body[\s\S]*display:\s*grid/);
-  assert.match(css, /@media \(min-width: 1280px\)[\s\S]*case-section-nav[\s\S]*position:\s*sticky/);
+  assert.match(page, /CaseSectionNav/);
+  assert.match(css, /\.case-section-nav[\s\S]*position:\s*sticky/);
+  assert.match(css, /\.case-section-nav-inner[\s\S]*overflow-x:\s*(auto|scroll)/);
+  assert.doesNotMatch(css, /grid-template-columns:\s*168px\s+minmax\(0,\s*1fr\)/);
+  assert.doesNotMatch(css, /\.case-section-nav\s*\{[^}]*border-radius:\s*22px/);
+});
+
+test("homepage punctuation, Service Agent editorial structure and deterministic return links are explicit", async () => {
+  const hero = await read("components/home/Hero.tsx");
+  const caseHero = await read("components/case-study/CaseHero.tsx");
+  const nav = await read("components/case-study/CaseSectionNav.tsx");
+  const page = await read("components/case-study/FlagshipCasePage.tsx");
+  const header = await read("components/Header.tsx");
+
+  assert.doesNotMatch(hero, /AI 产品。/);
+  assert.match(caseHero, /project\.slug\s*===\s*["']service-agent["']/);
+  for (const label of ["理解问题", "检索证据", "生成回答", "拒答或转人工"]) {
+    assert.match(caseHero, new RegExp(label));
+  }
+  assert.match(nav, /window\.scrollTo/);
+  assert.match(nav, /history\.replaceState/);
+  assert.match(nav, /getBoundingClientRect/);
+  assert.match(nav, /prefers-reduced-motion/);
+  assert.match(page, /href=["']\/["'][^>]*>返回主页面/);
+  assert.match(header, /className=["']brand["'][^>]*href=["']\/["']/);
+});
+
+test("section navigation measures its offset and re-calibrates after layout changes", async () => {
+  const nav = await read("components/case-study/CaseSectionNav.tsx");
+  assert.match(nav, /getStickyOffset/);
+  assert.match(nav, /ResizeObserver/);
+  assert.match(nav, /requestAnimationFrame/);
+  assert.match(nav, /window\.history\.replaceState/);
+  for (const id of ["overview", "evidence", "business", "product", "technical", "iterations"]) {
+    assert.match(nav, new RegExp(`['"]${id}['"]`));
+  }
 });

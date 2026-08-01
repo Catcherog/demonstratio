@@ -14,24 +14,28 @@ export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
       <div className="hero-copy">
         <p className="availability"><span aria-hidden="true" /> OPEN TO AI PRODUCT OPPORTUNITIES</p>
         <p className="eyebrow">AI / AGENT 产品经理 · TECHNICAL BUILDER</p>
-        <h1 id="hero-title" aria-label="把复杂业务，做成可上线、可评估的 AI 产品。">
+        <h1 id="hero-title" aria-label="把复杂业务，做成可上线、可评估的 AI 产品">
           <span className="hero-title-desktop" aria-hidden="true">
             <span className="hero-title-line">把复杂业务，</span>
             <span className="hero-title-line hero-title-line-shift">
               做成<span className="hero-title-accent">可上线、可评估</span>的
             </span>
-            <span className="hero-title-line">AI 产品。</span>
+            <span className="hero-title-line">AI 产品</span>
           </span>
           <span className="hero-title-mobile" aria-hidden="true">
             <span className="hero-title-line">把复杂业务，</span>
             <span className="hero-title-line hero-title-line-shift">
               做成<span className="hero-title-accent">可上线、</span>
             </span>
-            <span className="hero-title-line">可评估的 AI 产品。</span>
+            <span className="hero-title-line">可评估的 AI 产品</span>
           </span>
         </h1>
-        <p className="hero-lead">
+        <p className="hero-lead hero-lead-desktop">
           我是陈嘉伟。曾在 TP-Link 管理复杂软硬件项目组合，现作为 3 人全职创业团队的创始人兼 AI 产品负责人，围绕飞书 AI 业务数据平台、Service Agent 与光砚构建可验证的 AI 产品；Collator 作为飞书子系统处理非结构化数据摄入。
+        </p>
+        <p className="hero-lead hero-lead-mobile">
+          把复杂业务做成可验证的 AI 产品闭环。<br />
+          3 人创业团队，主导产品判断与端到端交付。
         </p>
 
         <div className="hero-actions">
@@ -40,11 +44,21 @@ export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
           </a>
           <a className="button button-secondary hero-ai-button" href="#portfolio-guide">
             <i aria-hidden="true" />
-            进入 AI 导览 <span aria-hidden="true">→</span>
+            <span className="hero-ai-label-desktop">进入 AI 导览</span>
+            <span className="hero-ai-label-mobile">AI 快速判断</span>
+            <span aria-hidden="true">→</span>
           </a>
           <a className="button button-tertiary" href="/resume">
             查看中英文简历 <span aria-hidden="true">→</span>
           </a>
+        </div>
+
+        <div className="hero-mobile-proof" aria-label="手机端关键证据摘要">
+          {metrics.slice(0, 3).map((metric) => (
+            <div key={metric.claimId} data-claim-id={metric.claimId} data-evidence-ref={metric.evidenceRef}>
+              <strong>{metric.value}</strong><span>{metric.label}</span>
+            </div>
+          ))}
         </div>
 
         <div className="hero-ai-path">

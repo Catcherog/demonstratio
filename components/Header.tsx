@@ -8,7 +8,7 @@ export function Header() {
 
   return (
     <header className="site-header">
-      <a className="brand" href="/#top" onClick={close} aria-label="陈嘉伟作品集首页">
+      <a className="brand" href="/" onClick={close} aria-label="陈嘉伟作品集首页">
         <span className="brand-signature" aria-hidden="true">
           Jael
           <svg viewBox="0 0 84 12" focusable="false">
