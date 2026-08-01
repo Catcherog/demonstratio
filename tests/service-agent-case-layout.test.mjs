@@ -46,7 +46,11 @@ test("intermediate widths retain centered container gutters", async () => {
 test("technical card evidence stays pinned to the bottom", async () => {
   const css = await read("app/case-study.css");
   assert.match(css, /\.case-technical-card \.case-narrative-card\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*height:\s*100%;/);
-  assert.match(css, /\.case-technical-card small\s*\{[^}]*margin-top:\s*auto;/);
+  assert.match(css, /\.case-technical-card \.case-narrative-card small\s*\{[^}]*margin-top:\s*auto;/);
+  const sharedSmallRule = css.indexOf(".case-narrative-card small,");
+  const technicalSmallRule = css.indexOf(".case-technical-card .case-narrative-card small");
+  assert.ok(sharedSmallRule >= 0, "shared small rule should exist");
+  assert.ok(technicalSmallRule > sharedSmallRule, "technical small override must follow shared small rule");
 });
 
 test("iteration path is a bounded 3/2/1 responsive grid", async () => {

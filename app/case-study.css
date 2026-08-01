@@ -252,10 +252,6 @@
   box-sizing: border-box;
 }
 
-.case-technical-card small {
-  margin-top: auto;
-}
-
 .case-technical-card-wide {
   grid-column: 1 / -1;
 }
@@ -284,6 +280,10 @@
   color: var(--case-sage);
   font-size: 12px;
   line-height: 1.6;
+}
+
+.case-technical-card .case-narrative-card small {
+  margin-top: auto;
 }
 
 .case-boundary-card {
