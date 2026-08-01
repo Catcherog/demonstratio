@@ -609,7 +609,7 @@ main { background: var(--editorial-paper); }
   .hero-links { margin: 24px 0 0 12px; gap: 18px; font-size: 11px; }
 
   .capability-index { margin-top: 62px; display: block; }
-  .capability-index-head { font-size: 9px; }
+  .capability-index-head { font-size: 11px; }
   .capability-line, .capability-line:nth-of-type(2), .capability-line:nth-of-type(3) { min-height: 0; margin-top: 10px; padding: 52px 17px 21px; border-radius: 18px 27px 18px 18px; }
   .capability-line strong { font-size: 22px; }
   .capability-line p { font-size: 14px; }
