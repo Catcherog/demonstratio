@@ -1,4 +1,12 @@
 export type FlagshipSlug = "data-platform" | "service-agent" | "lumen-ink";
+export type DemoStatus = "live" | "fallback";
+
+export function resolveDemoStatus(
+  defaultStatus: DemoStatus,
+  override = process.env.NEXT_PUBLIC_DEMO_STATUS,
+): DemoStatus {
+  return override === "live" || override === "fallback" ? override : defaultStatus;
+}
 
 export type CaseSectionId =
   | "overview"
@@ -26,6 +34,7 @@ export interface IterationEntry {
 
 export interface FlagshipCaseStudy {
   slug: FlagshipSlug;
+  demoStatus?: DemoStatus;
   overview: {
     oneLine: string;
     responsibility: string;

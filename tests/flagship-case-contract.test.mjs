@@ -183,11 +183,12 @@ test("flagship renderer exposes exactly six addressable server-rendered sections
   assert.match(page, /<CaseSectionNav items=\{CASE_SECTIONS\}/);
 });
 
-test("product and technical sections use the same outer layout contract", async () => {
+test("product and technical sections expose bounded grid contracts", async () => {
   const product = await read("components/case-study/ProductDesign.tsx");
   const technical = await read("components/case-study/TechnicalImplementation.tsx");
   assert.match(product, /className="case-balanced-grid"/);
-  assert.match(technical, /className="case-balanced-grid"/);
+  assert.match(technical, /className="case-technical-grid"/);
+  assert.match(technical, /case-technical-card-wide/);
 });
 
 test("section navigation is ordered, active, scroll-aware and progressively enhanced", async () => {
@@ -242,12 +243,15 @@ test("case stylesheet implements the approved paper palette and responsive navig
   assert.match(css, /background:\s*rgba\(251, 248, 241, \.94\)/);
   assert.doesNotMatch(css, /\.case-section-nav\s*\{[^}]*(?:#000|#111|#171b27|#1C1820)/s);
   assert.match(css, /\.flagship-section\s*\{[^}]*scroll-margin-top:\s*112px;/s);
-  assert.match(css, /\.flagship-product-section \.case-balanced-grid,[\s\S]*\.flagship-technical-section \.case-balanced-grid\s*\{[^}]*grid-template-columns:/);
+  assert.match(css, /\.flagship-product-section \.case-balanced-grid[\s\S]*grid-template-columns:/);
+  assert.match(css, /\.case-technical-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2/);
+  assert.match(css, /\.case-technical-card-wide\s*\{[^}]*grid-column:\s*1 \/ -1;/);
   assert.match(css, /@media \(max-width: 1023px\)[\s\S]*\.case-section-nav\s*\{[^}]*top:\s*92px;[^}]*height:\s*44px;[^}]*max-height:\s*44px;/);
-  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*\.case-section-nav-inner\s*\{[^}]*flex-direction:\s*row;[^}]*overflow-x:\s*auto;/);
-  assert.match(css, /@media \(max-width: 900px\)[\s\S]*\.iteration-path\s*\{[^}]*grid-template-columns:\s*1fr;/);
+  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*\.case-section-nav-inner\s*\{[^}]*flex-direction:\s*row;[^}]*overflow-x:\s*scroll;/);
+  assert.match(css, /@media \(max-width: 900px\)[\s\S]*\.iteration-path\s*\{[^}]*grid-template-columns:\s*repeat\(2/);
   assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.case-section-nav\s*\{[^}]*top:\s*76px;/);
-  assert.match(css, /overflow-x:\s*auto/);
+  assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.iteration-path\s*\{[^}]*grid-template-columns:\s*repeat\(1/);
+  assert.match(css, /overflow-x:\s*scroll/);
   assert.match(css, /white-space:\s*nowrap/);
   assert.match(css, /min-height:\s*40px/);
   assert.match(css, /:focus-visible/);

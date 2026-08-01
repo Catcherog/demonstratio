@@ -2,6 +2,7 @@ import type { FlagshipCaseStudy } from "./types";
 
 export const serviceAgentCase: FlagshipCaseStudy = {
   slug: "service-agent",
+  demoStatus: "live",
   overview: {
     oneLine: "用风险优先的 Agent 工作流，在可回答、应澄清、应拒答和应转人工之间建立确定性边界。",
     responsibility: "负责场景与风险定义、Agent 工作流、检索与质量 Gate、评测方案、Demo 体验和迭代闭环。",

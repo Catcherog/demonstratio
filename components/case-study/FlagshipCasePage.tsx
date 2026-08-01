@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import type { Project } from "@/content/projects";
 import type { FlagshipCaseStudy } from "@/content/flagship-cases";
 import type { PortfolioEvidence } from "@/content/portfolio-evidence";
+import { resolveDemoStatus } from "@/content/flagship-cases/types";
 import { BusinessContext } from "./BusinessContext";
 import { CaseEvidenceGallery } from "./CaseEvidenceGallery";
 import { CaseHero } from "./CaseHero";
@@ -12,6 +13,8 @@ import { ProductDesign } from "./ProductDesign";
 import { TechnicalImplementation } from "./TechnicalImplementation";
 
 export function FlagshipCasePage({ project, study, evidence }: { project: Project; study: FlagshipCaseStudy; evidence: PortfolioEvidence[] }) {
+  const demoStatus = study.demoStatus ? resolveDemoStatus(study.demoStatus) : undefined;
+
   return (
     <main id="top" className="case-page flagship-case">
       <Header />
@@ -21,7 +24,7 @@ export function FlagshipCasePage({ project, study, evidence }: { project: Projec
           <CaseSectionNav items={CASE_SECTIONS} />
           <div className="flagship-case-sections">
             <CaseOverview id="overview" project={project} study={study} />
-            <CaseEvidenceGallery id="evidence" items={evidence} />
+            <CaseEvidenceGallery id="evidence" items={evidence} demoStatus={demoStatus} />
             <BusinessContext id="business" study={study} />
             <ProductDesign id="product" study={study} />
             <TechnicalImplementation id="technical" study={study} />
