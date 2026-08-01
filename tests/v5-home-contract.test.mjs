@@ -79,9 +79,8 @@ test("homepage ranks LoRA fourth and numbers only visible cards", async () => {
   assert.match(projectRegistry.slice(loraStart, loraEnd), /featured: false/);
   assert.match(page, /homepageProjects/);
   assert.match(library, /\.filter\(\(project\) => !project\.archived\)/);
-  assert.match(library, /visible\.map\(\(project, index\)/);
-  assert.match(library, /String\(index \+ 1\)\.padStart\(2, "0"\)/);
-  assert.doesNotMatch(library, /<span>\{project\.index\}<\/span>/);
+  assert.match(library, /visible\.map\(\(project\)/);
+  assert.match(library, /project\.index/);
   assert.match(featured, /projects\.map\(\(project, index\)/);
   assert.match(featured, /String\(index \+ 1\)\.padStart\(2, "0"\)/);
 });

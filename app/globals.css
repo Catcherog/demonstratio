@@ -596,7 +596,7 @@ img { max-width: 100%; }
   .layer-projects { grid-template-columns: 1fr; }
   .method-principles { grid-template-columns: 1fr; }
   .method-principles > div { min-height: 155px; }
-  .flywheel { min-height: 620px; transform: scale(.88); margin-top: -35px; margin-bottom: -35px; }
+  .flywheel { min-height: 0; }
   .filter-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 5px; }
   .filter-button { flex: 0 0 auto; }
   .library-grid { grid-template-columns: 1fr; }
@@ -1224,18 +1224,18 @@ img { max-width: 100%; }
   /* AI invite card: reduce padding and ensure prompt cards stack tightly */
   .hero-ai-invite { padding: 13px; border-radius: 13px; margin-top: 16px; }
   .hero-ai-invite-head { gap: 6px; }
-  .hero-ai-invite-head > span { font-size: 7px; letter-spacing: .06em; }
-  .hero-ai-invite-head > strong { font-size: 10px; line-height: 1.4; }
+  .hero-ai-invite-head > span { font-size: 11px; letter-spacing: .06em; }
+  .hero-ai-invite-head > strong { font-size: 14px; line-height: 1.4; }
   .hero-ai-prompts { gap: 6px; margin-top: 10px; }
   .hero-ai-prompts a { min-height: 54px; padding: 9px 10px; border-radius: 9px; }
-  .hero-ai-prompts strong { font-size: 8px; line-height: 1.4; }
-  .hero-ai-prompts span { font-size: 6px; }
-  .hero-ai-invite > small { font-size: 7px; margin-top: 9px; line-height: 1.5; }
+  .hero-ai-prompts strong { font-size: 14px; line-height: 1.4; }
+  .hero-ai-prompts span { font-size: 11px; }
+  .hero-ai-invite > small { font-size: 11px; margin-top: 9px; line-height: 1.5; }
 
   /* Hero proof strip: smaller cells */
   .hero-proof-strip div { min-height: 64px; padding: 11px 10px; }
   .hero-proof-strip strong { font-size: 15px; }
-  .hero-proof-strip span { font-size: 8px; }
+  .hero-proof-strip span { font-size: 11px; }
 
   /* Guide section: shrink intro heading and window padding */
   .guide-section { padding: 72px 0; }
@@ -1248,64 +1248,64 @@ img { max-width: 100%; }
   .guide-proof { margin-top: 22px; }
   .guide-proof div { padding: 12px 0; }
   .guide-proof strong { font-size: 12px; }
-  .guide-proof span { font-size: 7px; }
-  .guide-boundaries span { font-size: 7px; padding: 6px 8px; }
+  .guide-proof span { font-size: 11px; }
+  .guide-boundaries span { font-size: 11px; padding: 6px 8px; }
 
   /* Guide window: tighten head and form so nothing overflows */
   .guide-window { border-radius: 14px; }
   .guide-window-head { min-height: 64px; padding: 12px 14px; gap: 10px; }
   .guide-window-head > div { gap: 9px; min-width: 0; }
   .guide-window-head strong { font-size: 11px; }
-  .guide-window-head small { font-size: 6px; margin-top: 2px; }
+  .guide-window-head small { font-size: 11px; margin-top: 2px; }
   .guide-orb { width: 26px; height: 26px; }
-  .guide-online { padding: 5px 7px; font-size: 7px; }
+  .guide-online { padding: 5px 7px; font-size: 11px; }
 
   .guide-role-tabs button { padding: 13px 11px; }
-  .guide-role-tabs button > span { font-size: 6px; margin-bottom: 6px; }
-  .guide-role-tabs strong { font-size: 10px; }
-  .guide-role-tabs small { font-size: 6px; line-height: 1.35; }
+  .guide-role-tabs button > span { font-size: 11px; margin-bottom: 6px; }
+  .guide-role-tabs strong { font-size: 14px; }
+  .guide-role-tabs small { font-size: 11px; line-height: 1.35; }
 
   .guide-transcript { padding: 13px; min-height: 280px; }
   .guide-message { max-width: 96%; padding: 13px 14px; }
-  .guide-message > p { font-size: 9px; line-height: 1.65; }
-  .guide-answer-text { font-size: 9px; line-height: 1.7; }
-  .guide-answer-text h4 { font-size: 10px; }
+  .guide-message > p { font-size: 14px; line-height: 1.65; }
+  .guide-answer-text { font-size: 14px; line-height: 1.7; }
+  .guide-answer-text h4 { font-size: 15px; }
   .guide-answer-meta { gap: 4px; }
-  .guide-answer-meta small { font-size: 6px; padding: 3px 6px; }
+  .guide-answer-meta small { font-size: 11px; padding: 3px 6px; }
 
   .guide-wait { padding: 11px; border-radius: 11px; }
   .guide-wait-head { gap: 7px; }
-  .guide-wait-head strong { font-size: 9px; }
-  .guide-wait-head time { min-width: 28px; padding: 3px 5px; font-size: 7px; }
-  .guide-wait > p { font-size: 8px; line-height: 1.55; margin-top: 7px; }
-  .guide-wait > small { font-size: 6px; margin-top: 7px; }
+  .guide-wait-head strong { font-size: 14px; }
+  .guide-wait-head time { min-width: 28px; padding: 3px 5px; font-size: 11px; }
+  .guide-wait > p { font-size: 14px; line-height: 1.55; margin-top: 7px; }
+  .guide-wait > small { font-size: 11px; margin-top: 7px; }
   .guide-thinking-dots i { width: 4px; height: 4px; }
   .guide-wait-track { height: 2px; margin-top: 9px; }
-  .guide-stop { font-size: 7px; margin-top: 9px; }
+  .guide-stop { font-size: 12px; margin-top: 9px; }
 
   .guide-suggestions { padding: 11px 14px 13px; gap: 6px; }
-  .guide-suggestions > span { font-size: 7px; padding-top: 7px; }
-  .guide-suggestions button { max-width: 220px; padding: 7px 9px; font-size: 7px; line-height: 1.35; }
+  .guide-suggestions > span { font-size: 11px; padding-top: 7px; }
+  .guide-suggestions button { max-width: 220px; padding: 7px 9px; font-size: 12px; line-height: 1.35; }
 
   .guide-form { padding: 13px 14px 16px; }
   .guide-form > div { grid-template-columns: 1fr 56px; gap: 6px; }
-  .guide-form textarea { min-height: 54px; padding: 9px 11px; font-size: 9px; }
-  .guide-form button { font-size: 9px; }
-  .guide-form label { font-size: 7px; margin-bottom: 5px; }
-  .guide-form > small { font-size: 6px; margin-top: 4px; }
+  .guide-form textarea { min-height: 54px; padding: 9px 11px; font-size: 14px; }
+  .guide-form button { font-size: 14px; }
+  .guide-form label { font-size: 11px; margin-bottom: 5px; }
+  .guide-form > small { font-size: 11px; margin-top: 4px; }
 
   .guide-sources a { padding: 9px 10px; }
-  .guide-sources a span { font-size: 7px; }
-  .guide-sources a small { font-size: 6px; }
-  .guide-sources a em { font-size: 6px; }
+  .guide-sources a span { font-size: 12px; }
+  .guide-sources a small { font-size: 11px; }
+  .guide-sources a em { font-size: 11px; }
 
-  .guide-mode-note { font-size: 7px !important; padding: 8px 10px; }
+  .guide-mode-note { font-size: 11px !important; padding: 8px 10px; }
 
   .hero-links { gap: 10px 16px; font-size: 11px; }
   .capability-line { min-height: 110px; padding: 18px 0; grid-template-columns: 26px 1fr 22px; gap: 11px; }
   .capability-line strong { font-size: 17px; }
-  .capability-line p { font-size: 12px; }
-  .capability-line small { font-size: 9px; }
+  .capability-line p { font-size: 14px; }
+  .capability-line small { font-size: 11px; }
   .capability-line > span { font-size: 11px; }
 }
 /* PORTFOLIO_AI_GUIDE_UX_R2_END */

@@ -27,7 +27,7 @@
   --font-serif: "Noto Serif SC", "Songti SC", SimSun, serif;
 }
 
-body { overflow-x: hidden; color: var(--ink); background: var(--paper); font-family: var(--font-sans); font-size: 15px; line-height: 1.7; }
+body { overflow-x: clip; color: var(--ink); background: var(--paper); font-family: var(--font-sans); font-size: 15px; line-height: 1.7; }
 button, textarea { font: inherit; }
 :focus-visible { outline: 3px solid var(--deep); outline-offset: 4px; border-radius: 4px; }
 .section-shell { width: min(var(--max), calc(100% - 56px)); }

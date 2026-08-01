@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent, FormEvent, KeyboardEvent } from "react";
 import type { GuideRole } from "@/lib/portfolio-guide";
 
 type StreamMode = "live" | "guided" | "fallback";
@@ -165,12 +165,30 @@ export function PortfolioGuide() {
   const [loading, setLoading] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [error, setError] = useState("");
+  const [sheetOpen, setSheetOpen] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const lastSubmitAt = useRef(0);
   const startedAtRef = useRef<number | null>(null);
   const transcriptRef = useRef<HTMLDivElement | null>(null);
+  const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => () => abortRef.current?.abort(), []);
+
+  useEffect(() => {
+    if (!sheetOpen) {
+      document.body.classList.remove("guide-sheet-open");
+      return;
+    }
+
+    document.body.classList.add("guide-sheet-open");
+    const frame = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.body.classList.remove("guide-sheet-open");
+    };
+  }, [sheetOpen]);
 
   useEffect(() => {
     transcriptRef.current?.scrollTo({
@@ -202,10 +220,28 @@ export function PortfolioGuide() {
     hasAnswer: Boolean(streamingAnswer),
   });
 
+  const activeRole = roles.find((item) => item.value === role) ?? roles[0];
+
   function changeRole(nextRole: GuideRole) {
     setRole(nextRole);
     setQuestion(suggestions[nextRole][0]);
     setError("");
+  }
+
+  function openSheet() {
+    setSheetOpen(true);
+  }
+
+  function closeSheet() {
+    setSheetOpen(false);
+    window.requestAnimationFrame(() => mobileTriggerRef.current?.focus());
+  }
+
+  function handleSheetKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeSheet();
+    }
   }
 
   function stopGeneration() {
@@ -380,22 +416,43 @@ export function PortfolioGuide() {
             <span>流式回答</span>
             <span>确定性降级</span>
           </div>
+
+          <button className="guide-mobile-entry" type="button" ref={mobileTriggerRef} onClick={openSheet}>
+            <span className="guide-mobile-entry-label">AI 快速判断</span>
+            <strong>让 AI 用 90 秒判断我的岗位匹配度</strong>
+            <p>可继续追问项目判断、Agent 架构与个人贡献。</p>
+            <span className="guide-mobile-entry-action">开始对话 <span aria-hidden="true">→</span></span>
+          </button>
         </div>
 
-        <div className="guide-window" id="guide-window">
-          <header className="guide-window-head">
-            <div>
-              <span className="guide-orb" aria-hidden="true" />
+        <div
+          className={"guide-window-shell" + (sheetOpen ? " is-open" : "")}
+          id="guide-window"
+          role={sheetOpen ? "dialog" : undefined}
+          aria-modal={sheetOpen ? "true" : undefined}
+          aria-labelledby="guide-window-title"
+          onKeyDown={handleSheetKeyDown}
+        >
+          <button className="guide-sheet-backdrop" type="button" aria-label="关闭 AI 导览" onClick={closeSheet} />
+          <div className="guide-window">
+            <header className="guide-window-head">
               <div>
-                <strong>作品集 AI 导览</strong>
-                <small>EVIDENCE-GROUNDED · READ ONLY</small>
+                <span className="guide-orb" aria-hidden="true" />
+                <div>
+                  <strong id="guide-window-title">作品集 AI 导览</strong>
+                  <small>EVIDENCE-GROUNDED · READ ONLY</small>
+                </div>
               </div>
-            </div>
-            <span className="guide-online">
-              <i aria-hidden="true" />
-              在线 · 可连续追问
-            </span>
-          </header>
+              <div className="guide-window-head-actions">
+                <span className="guide-online">
+                  <i aria-hidden="true" />
+                  在线 · 可连续追问
+                </span>
+                <button className="guide-sheet-close" type="button" ref={closeButtonRef} onClick={closeSheet}>
+                  关闭
+                </button>
+              </div>
+            </header>
 
           <div className="guide-role-tabs" aria-label="选择导览视角">
             {roles.map((item) => (
@@ -411,6 +468,7 @@ export function PortfolioGuide() {
               </button>
             ))}
           </div>
+          <p className="guide-role-description" aria-live="polite">{activeRole.note}</p>
 
           <div className="guide-transcript" aria-live="polite" ref={transcriptRef}>
             <div className="guide-message guide-assistant guide-welcome">
@@ -537,6 +595,7 @@ export function PortfolioGuide() {
               {error}
             </p>
           ) : null}
+          </div>
         </div>
       </div>
     </section>
