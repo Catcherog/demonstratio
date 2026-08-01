@@ -21,9 +21,9 @@ export function CaseEvidenceGallery({ id, items }: { id: string; items: Portfoli
   return (
     <section id={id} className="flagship-section section-shell" aria-labelledby={`${id}-heading`}>
       <div className="flagship-section-heading">
-        <p className="eyebrow">06 · PROJECT EVIDENCE</p>
-        <h2 id={`${id}-heading`}>项目证据</h2>
-        <p>证据按可用、计划与不可用状态展示；缺少素材不会被包装成可播放或可点击体验。</p>
+        <p className="eyebrow">02 · PROJECT SHOWCASE</p>
+        <h2 id={`${id}-heading`}>项目展示</h2>
+        <p>集中展示已核验的产品界面、操作视频、体验入口与验证摘要；不可用素材会如实标注状态。</p>
       </div>
       <div className="case-evidence-grid">
         {safeItems.map((item, index) => (

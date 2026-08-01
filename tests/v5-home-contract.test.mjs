@@ -44,13 +44,20 @@ test("homepage keeps the approved section order and full guide", async () => {
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
 });
 
-test("three flagship cases stay data-driven and use the current two-page resume", async () => {
+test("three flagship cases stay data-driven and the shared resume entry exposes both languages", async () => {
   const projects = await read("content/projects.ts");
   const featured = await read("components/home/FeaturedCases.tsx");
   const hero = await read("components/home/Hero.tsx");
+  const header = await read("components/Header.tsx");
+  const resume = await read("app/resume/page.tsx");
+
   assert.match(projects, /\["data-platform", "service-agent", "lumen-ink"\]/);
   assert.match(featured, /projects\.map/);
-  assert.match(hero, /chen-jiawei-ai-agent-cn-two-page\.pdf/);
+  assert.match(hero, /href="\/resume"/);
+  assert.match(header, /href="\/resume"/);
+  assert.match(resume, /chen-jiawei-ai-agent-cn-two-page\.pdf/);
+  assert.match(resume, /jiawei-chen-ai-agent-en\.pdf/);
+  assert.match(resume, /download=\{resume\.fileName\}/);
 });
 
 test("homepage ranks LoRA fourth and numbers only visible cards", async () => {
@@ -136,6 +143,42 @@ test("continuous paper editorial layer unifies every homepage section", async ()
   assert.match(css, /\.guide-proof span\s*\{[^}]*color:\s*#59655d/s);
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.doesNotMatch(css, /#0c0f17|#0d1017|#191b18/);
+});
+
+test("public polish layer is loaded last and replaces large purple surfaces with forest and sand", async () => {
+  const layout = await read("app/layout.tsx");
+  const css = (await read("app/portfolio-polish.css")).toLowerCase();
+  const imports = [
+    'import "./globals.css"',
+    'import "./v5.css"',
+    'import "./editorial-responsive.css"',
+    'import "./case-study.css"',
+    'import "./portfolio-polish.css"',
+  ];
+  const positions = imports.map((token) => layout.indexOf(token));
+  assert.equal(positions.every((position) => position >= 0), true);
+  assert.deepEqual([...positions].sort((a, b) => a - b), positions);
+
+  for (const token of [
+    "--portfolio-paper: #f4efe6",
+    "--portfolio-ink: #202824",
+    "--portfolio-forest: #2f463b",
+    "--portfolio-sage: #728978",
+    "--portfolio-sand: #eadfce",
+  ]) {
+    assert.ok(css.includes(token), `missing public palette token: ${token}`);
+  }
+
+  assert.match(css, /\.system-section > \.section-shell,[\s\S]*background:\s*var\(--portfolio-forest\)/);
+  assert.match(css, /\.hero-proof-strip div:nth-child\(2\),[\s\S]*transform:\s*none\s*!important/);
+});
+
+test("flagship cards use outward-facing capability language and compact content", async () => {
+  const featured = await read("components/home/FeaturedCases.tsx");
+  assert.match(featured, /三个主案例，验证三类核心能力。/);
+  assert.doesNotMatch(featured, /同一优先级/);
+  assert.doesNotMatch(featured, /project\.decisions\[0\]/);
+  assert.match(featured, /project\.metrics\.slice\(0, 2\)/);
 });
 
 test("Jael identity and guide submit states stay legible at compact sizes", async () => {

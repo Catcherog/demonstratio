@@ -15,7 +15,7 @@ export function TechnicalImplementation({ id, study }: { id: string; study: Flag
   return (
     <section id={id} className="flagship-section section-shell flagship-technical-section" aria-labelledby={`${id}-heading`}>
       <div className="flagship-section-heading">
-        <p className="eyebrow">04 · TECHNICAL IMPLEMENTATION</p>
+        <p className="eyebrow">05 · TECHNICAL IMPLEMENTATION</p>
         <h2 id={`${id}-heading`}>技术实现</h2>
         <p>架构、关键机制和取舍都绑定到公开证据；实现数量不替代产品质量判断。</p>
       </div>

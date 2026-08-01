@@ -15,7 +15,7 @@ export function BusinessContext({ id, study }: { id: string; study: FlagshipCase
   return (
     <section id={id} className="flagship-section section-shell" aria-labelledby={`${id}-heading`}>
       <div className="flagship-section-heading">
-        <p className="eyebrow">02 · BUSINESS JUDGMENT</p>
+        <p className="eyebrow">03 · BUSINESS JUDGMENT</p>
         <h2 id={`${id}-heading`}>业务判断</h2>
         <p>{study.business.whyBuild}</p>
       </div>

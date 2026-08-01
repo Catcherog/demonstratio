@@ -28,6 +28,8 @@ const featuredSource = read("components/home/FeaturedCases.tsx");
 const routeSource = read("app/projects/[slug]/page.tsx");
 const guideSource = read("lib/portfolio-guide.ts");
 const evidenceSource = read("content/portfolio-evidence.ts");
+const heroSource = read("components/home/Hero.tsx");
+const resumeSource = read("app/resume/page.tsx");
 const caseSources = {
   "data-platform": read("content/flagship-cases/data-platform.ts"),
   "service-agent": read("content/flagship-cases/service-agent.ts"),
@@ -172,7 +174,7 @@ for (const forbidden of ["589", "后端修复中", "真实编辑待验证", "缺
 assert(!/(?:准确率|accuracy)\s*(?:为|[:：=])?\s*\d+(?:\.\d+)?%/i.test(publicCaseSurface), "public surface contains an unsupported accuracy percentage");
 const regressionClaim = publicClaims.find((claim) => claim.claimId === "SCS-REGRESSION-COUNT");
 assert.equal(regressionClaim?.note, "工程回归计数，不代表准确率或回答质量", "regression count boundary is missing");
-assert(publicCaseSurface.includes("前端仍指向 Render 静态降级"), "Service Agent frontend/backend boundary is missing");
+assert(publicCaseSurface.includes("公网前端已接入 CloudBase Deploy 039 后端"), "Service Agent frontend/backend boundary is missing");
 assert(publicCaseSurface.includes("历史 Test Base"), "Feishu historical baseline boundary is missing");
 assert(publicCaseSurface.includes("生产 Schema 元数据只读检查"), "Feishu production read-only boundary is missing");
 assert(publicCaseSurface.includes("液化、修复、消除和其他模式仍未验证"), "Lumen unverified mode boundary is missing");
@@ -222,7 +224,14 @@ assert(layout.includes(`metadataBase: new URL("${publicOrigin}")`), "metadata or
 assert(sitemap.includes(publicOrigin), "sitemap origin differs from authority");
 assert(robots.includes(`${publicOrigin}/sitemap.xml`), "robots sitemap differs from authority");
 assert(routeSource.includes(`${publicOrigin}/projects/`), "case OpenGraph origin differs from authority");
-assert(header.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "resume CTA is not canonical");
+assert(header.includes('href="/resume"'), "header resume CTA must use the shared resume selector");
+assert(heroSource.includes('href="/resume"'), "hero resume CTA must use the shared resume selector");
+for (const resumeHref of [
+  "/resume/chen-jiawei-ai-agent-cn-two-page.pdf",
+  "/resume/jiawei-chen-ai-agent-en.pdf",
+]) {
+  assert(resumeSource.includes(resumeHref), `resume selector is missing canonical asset: ${resumeHref}`);
+}
 for (const resume of [
   "public/resume/chen-jiawei-ai-agent-cn-two-page.pdf",
   "public/resume/chen-jiawei-ai-agent-cn-two-page.docx",

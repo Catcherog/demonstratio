@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 
 export const CASE_SECTIONS = [
   ["overview", "项目概览"],
+  ["evidence", "项目展示"],
   ["business", "业务判断"],
   ["product", "产品方案"],
   ["technical", "技术实现"],
   ["iterations", "迭代链路"],
-  ["evidence", "项目证据"],
 ] as const;
 
 type SectionItem = Readonly<{ id: string; label: string }> | readonly [string, string];

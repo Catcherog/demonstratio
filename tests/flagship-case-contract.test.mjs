@@ -171,11 +171,11 @@ test("flagship renderer exposes exactly six addressable server-rendered sections
   const page = await read("components/case-study/FlagshipCasePage.tsx");
   const expected = [
     '<CaseOverview id="overview"',
+    '<CaseEvidenceGallery id="evidence"',
     '<BusinessContext id="business"',
     '<ProductDesign id="product"',
     '<TechnicalImplementation id="technical"',
     '<IterationPath id="iterations"',
-    '<CaseEvidenceGallery id="evidence"',
   ];
   const positions = expected.map((token) => page.indexOf(token));
   assert.ok(positions.every((position) => position >= 0));
@@ -193,8 +193,8 @@ test("product and technical sections use the same outer layout contract", async 
 test("section navigation is ordered, active, scroll-aware and progressively enhanced", async () => {
   const source = await read("components/case-study/CaseSectionNav.tsx");
   assert.match(source, /^"use client";/);
-  const labels = ["项目概览", "业务判断", "产品方案", "技术实现", "迭代链路", "项目证据"];
-  const ids = ["overview", "business", "product", "technical", "iterations", "evidence"];
+  const labels = ["项目概览", "项目展示", "业务判断", "产品方案", "技术实现", "迭代链路"];
+  const ids = ["overview", "evidence", "business", "product", "technical", "iterations"];
   const positions = labels.map((label) => source.indexOf(`"${label}"`));
   assert.ok(positions.every((position) => position >= 0));
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
@@ -236,11 +236,15 @@ test("case stylesheet implements the approved paper palette and responsive navig
   for (const color of ["#f2eee4", "#fbf8f1", "#1c1820", "#4f4054", "#b9a7c1", "#e7dde9", "#718c7b", "#d4ccc1"]) {
     assert.ok(lower.includes(color), `missing color ${color}`);
   }
-  assert.match(css, /\.case-section-nav\s*\{[^}]*top:\s*92px;[^}]*height:\s*44px;[^}]*max-height:\s*44px;/s);
+  assert.match(css, /\.flagship-case-body\s*\{[^}]*grid-template-columns:\s*176px minmax\(0, 1fr\);/s);
+  assert.match(css, /\.case-section-nav\s*\{[^}]*top:\s*106px;[^}]*max-height:\s*calc\(100vh - 132px\);/s);
+  assert.match(css, /\.case-section-nav-inner\s*\{[^}]*flex-direction:\s*column;/s);
   assert.match(css, /background:\s*rgba\(251, 248, 241, \.94\)/);
   assert.doesNotMatch(css, /\.case-section-nav\s*\{[^}]*(?:#000|#111|#171b27|#1C1820)/s);
-  assert.match(css, /\.flagship-section\s*\{[^}]*scroll-margin-top:\s*148px;/s);
+  assert.match(css, /\.flagship-section\s*\{[^}]*scroll-margin-top:\s*112px;/s);
   assert.match(css, /\.flagship-product-section \.case-balanced-grid,[\s\S]*\.flagship-technical-section \.case-balanced-grid\s*\{[^}]*grid-template-columns:/);
+  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*\.case-section-nav\s*\{[^}]*top:\s*92px;[^}]*height:\s*44px;[^}]*max-height:\s*44px;/);
+  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*\.case-section-nav-inner\s*\{[^}]*flex-direction:\s*row;[^}]*overflow-x:\s*auto;/);
   assert.match(css, /@media \(max-width: 900px\)[\s\S]*\.iteration-path\s*\{[^}]*grid-template-columns:\s*1fr;/);
   assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.case-section-nav\s*\{[^}]*top:\s*76px;/);
   assert.match(css, /overflow-x:\s*auto/);

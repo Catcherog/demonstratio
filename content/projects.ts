@@ -550,7 +550,7 @@ export const projects: Project[] = [
     subtitle: "把聊天、图片、语音与文档转成可校验的业务数据",
     summary:
       "以感知、理解、执行三层 Agent 处理多源非结构化输入，通过四步清洗、五重约束与人工确认，将资料稳定写入数据中台。",
-    status: "Controlled Demo｜测试环境真实链路",
+    status: "Internal Pilot｜测试环境真实链路",
     demoType: "controlled",
     role: "产品架构 / Schema 设计 / MVP 开发",
     team: "个人主导",
