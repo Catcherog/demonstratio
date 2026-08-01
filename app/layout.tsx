@@ -3,6 +3,7 @@ import "./globals.css";
 import "./v5.css";
 import "./editorial-responsive.css";
 import "./case-study.css";
+import "./portfolio-polish.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.jaelchen.com"),

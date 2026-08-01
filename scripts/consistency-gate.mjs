@@ -28,6 +28,8 @@ const featuredSource = read("components/home/FeaturedCases.tsx");
 const routeSource = read("app/projects/[slug]/page.tsx");
 const guideSource = read("lib/portfolio-guide.ts");
 const evidenceSource = read("content/portfolio-evidence.ts");
+const heroSource = read("components/home/Hero.tsx");
+const resumeSource = read("app/resume/page.tsx");
 const caseSources = {
   "data-platform": read("content/flagship-cases/data-platform.ts"),
   "service-agent": read("content/flagship-cases/service-agent.ts"),
@@ -222,7 +224,14 @@ assert(layout.includes(`metadataBase: new URL("${publicOrigin}")`), "metadata or
 assert(sitemap.includes(publicOrigin), "sitemap origin differs from authority");
 assert(robots.includes(`${publicOrigin}/sitemap.xml`), "robots sitemap differs from authority");
 assert(routeSource.includes(`${publicOrigin}/projects/`), "case OpenGraph origin differs from authority");
-assert(header.includes("/resume/chen-jiawei-ai-agent-cn-two-page.pdf"), "resume CTA is not canonical");
+assert(header.includes('href="/resume"'), "header resume CTA must use the shared resume selector");
+assert(heroSource.includes('href="/resume"'), "hero resume CTA must use the shared resume selector");
+for (const resumeHref of [
+  "/resume/chen-jiawei-ai-agent-cn-two-page.pdf",
+  "/resume/jiawei-chen-ai-agent-en.pdf",
+]) {
+  assert(resumeSource.includes(resumeHref), `resume selector is missing canonical asset: ${resumeHref}`);
+}
 for (const resume of [
   "public/resume/chen-jiawei-ai-agent-cn-two-page.pdf",
   "public/resume/chen-jiawei-ai-agent-cn-two-page.docx",

@@ -1,0 +1,582 @@
+/*
+ * PORTFOLIO-WEBSITE-POLISH-01
+ * Loaded after all existing style layers.
+ * Keeps legacy variable names as compatibility aliases while replacing
+ * the public-facing purple system with paper, forest, sage and warm sand.
+ */
+
+:root {
+  --portfolio-paper: #f4efe6;
+  --portfolio-paper-high: #fffaf2;
+  --portfolio-ink: #202824;
+  --portfolio-forest: #2f463b;
+  --portfolio-forest-deep: #25372f;
+  --portfolio-sage: #728978;
+  --portfolio-sage-soft: #dfe8df;
+  --portfolio-sand: #eadfce;
+  --portfolio-copper: #a96f4d;
+  --portfolio-line: rgba(32, 40, 36, .16);
+  --portfolio-shadow: 0 26px 72px rgba(37, 55, 47, .12);
+
+  --editorial-paper: var(--portfolio-paper);
+  --editorial-paper-high: var(--portfolio-paper-high);
+  --editorial-ink: var(--portfolio-ink);
+  --editorial-plum: var(--portfolio-forest);
+  --editorial-sage: var(--portfolio-sage);
+  --editorial-sage-soft: var(--portfolio-sage-soft);
+  --editorial-lilac-soft: var(--portfolio-sand);
+  --editorial-line: var(--portfolio-line);
+  --editorial-shadow: var(--portfolio-shadow);
+
+  --paper: var(--portfolio-paper);
+  --paper-2: #e8e0d3;
+  --paper-3: var(--portfolio-paper-high);
+  --ink: var(--portfolio-ink);
+  --muted: #667068;
+  --lilac: #c9d7ca;
+  --lilac-soft: var(--portfolio-sand);
+  --deep: var(--portfolio-forest);
+  --action: var(--portfolio-forest);
+  --bg: var(--portfolio-paper);
+  --surface: var(--portfolio-paper-high);
+  --surface-alt: #ece5d9;
+  --text: var(--portfolio-ink);
+  --line: #d6cec1;
+  --line-strong: #b9c2b9;
+  --accent: var(--portfolio-forest);
+  --accent-dark: var(--portfolio-forest-deep);
+  --accent-soft: var(--portfolio-sage-soft);
+  --dark: var(--portfolio-ink);
+  --dark-2: #29342e;
+  --dark-line: #53655a;
+  --shadow: var(--portfolio-shadow);
+}
+
+body {
+  background:
+    radial-gradient(circle at 76% 10%, rgba(114, 137, 120, .20), transparent 27%),
+    radial-gradient(circle at 24% 17%, rgba(234, 223, 206, .56), transparent 29%),
+    var(--portfolio-paper);
+}
+
+::selection {
+  color: var(--portfolio-ink);
+  background: #d7e2d7;
+}
+
+.site-header {
+  border-color: rgba(47, 70, 59, .16);
+  background: rgba(255, 250, 242, .88);
+  box-shadow: 0 16px 44px rgba(37, 55, 47, .08);
+}
+
+.brand-signature,
+.availability,
+.hero .eyebrow,
+.capability-index-head,
+.capability-line > span,
+.capability-line small,
+.flagship-meta,
+.flagship-body dt {
+  color: var(--portfolio-forest);
+}
+
+.brand-signature svg,
+.hero-guide-route path {
+  stroke: var(--portfolio-sage);
+}
+
+.hero-wash {
+  background:
+    radial-gradient(circle at 40% 40%, rgba(169, 111, 77, .18), transparent 35%),
+    radial-gradient(circle, rgba(114, 137, 120, .22), rgba(244, 239, 230, 0) 69%);
+}
+
+.hero-title-accent::after {
+  border-top-color: var(--portfolio-forest);
+}
+
+.hero .button-primary,
+.nav-resume,
+.header-mobile-resume,
+.guide-form button {
+  border-color: var(--portfolio-forest) !important;
+  background: var(--portfolio-forest) !important;
+}
+
+.hero .button-primary {
+  box-shadow: 0 13px 28px rgba(37, 55, 47, .16);
+}
+
+.hero-ai-button {
+  border-color: rgba(47, 70, 59, .46);
+  background: rgba(255, 250, 242, .62);
+}
+
+.hero-ai-invite {
+  border-color: var(--portfolio-line);
+  background: linear-gradient(140deg, rgba(255, 252, 246, .95), rgba(244, 239, 230, .92));
+  box-shadow: 0 24px 65px rgba(37, 55, 47, .11), inset 0 1px rgba(255, 255, 255, .72);
+}
+
+.hero-ai-invite::after {
+  border-color: rgba(47, 70, 59, .09);
+  background: linear-gradient(110deg, rgba(234, 223, 206, .46), rgba(223, 232, 223, .42));
+}
+
+.hero-ai-invite-head > span,
+.hero-ai-prompts span {
+  color: var(--portfolio-sage);
+}
+
+.hero-ai-prompts span b {
+  background: var(--portfolio-sage-soft);
+}
+
+/* Evidence strip: remove the intentional stagger that made labels collide with rules. */
+.capability-index {
+  border-bottom: 0;
+}
+
+.hero-proof-strip {
+  min-height: 0;
+  align-items: stretch;
+  gap: 0;
+  padding: 24px 0 8px;
+  border-top: 1px solid var(--portfolio-line);
+  border-bottom: 1px solid var(--portfolio-line);
+  background: transparent;
+}
+
+.hero-proof-strip div,
+.hero-proof-strip div:nth-child(2),
+.hero-proof-strip div:nth-child(4) {
+  min-height: 112px;
+  padding: 0 18px 18px;
+  justify-content: flex-start;
+  transform: none !important;
+  background: transparent;
+}
+
+.hero-proof-strip div:first-child {
+  padding-left: 0;
+}
+
+.hero-proof-strip div + div {
+  border-left: 1px solid var(--portfolio-line);
+}
+
+.hero-proof-strip div::before {
+  width: 36px;
+  height: 3px;
+  margin-bottom: 14px;
+  background: var(--portfolio-sand);
+}
+
+.hero-proof-strip div:nth-child(2)::before,
+.hero-proof-strip div:nth-child(4)::before {
+  background: var(--portfolio-sage);
+}
+
+.hero-proof-strip strong {
+  line-height: 1.1;
+}
+
+.hero-proof-strip span {
+  margin-top: 8px;
+  font-size: 10px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+/* Flagship cards: shorter media, less repetition and a stable action baseline. */
+.featured-heading h2 {
+  max-width: 820px;
+}
+
+.flagship-grid {
+  align-items: stretch;
+  gap: 20px;
+}
+
+.flagship-card {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  border-color: var(--portfolio-line);
+  background: rgba(255, 250, 242, .72);
+  box-shadow: 0 16px 42px rgba(37, 55, 47, .055);
+}
+
+.flagship-card:hover {
+  border-color: rgba(47, 70, 59, .34);
+  box-shadow: var(--portfolio-shadow);
+}
+
+.flagship-media {
+  aspect-ratio: 16 / 10;
+}
+
+.flagship-media > span {
+  color: var(--portfolio-paper-high);
+  background: rgba(37, 55, 47, .88);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flagship-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 22px 22px 24px;
+}
+
+.flagship-body h3 {
+  margin-top: 16px;
+}
+
+.flagship-subtitle {
+  min-height: 0;
+}
+
+.flagship-summary {
+  min-height: 0;
+  margin-top: 14px;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.flagship-body dl {
+  margin: 18px 0 16px;
+  border-top: 1px solid var(--portfolio-line);
+  border-bottom: 1px solid var(--portfolio-line);
+}
+
+.flagship-body dl div {
+  padding: 11px 0 12px;
+  border: 0;
+}
+
+.flagship-body dd {
+  margin-top: 5px;
+  -webkit-line-clamp: 2;
+}
+
+.flagship-metrics {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.flagship-metrics div {
+  padding-top: 10px;
+  border-top-color: var(--portfolio-line);
+}
+
+.flagship-metrics strong {
+  color: var(--portfolio-forest-deep);
+  font-size: 17px;
+}
+
+.flagship-metrics span {
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.flagship-body > .editorial-link {
+  margin-top: auto;
+  color: var(--portfolio-forest-deep);
+}
+
+/* Replace the large purple blocks while preserving the editorial composition. */
+.system-section > .section-shell,
+.contact-section > .contact-layout,
+.contact-section > .footer-bottom {
+  background: var(--portfolio-forest);
+}
+
+.system-section > .section-shell {
+  box-shadow: 18px 22px 0 rgba(114, 137, 120, .16);
+}
+
+.system-section .eyebrow,
+.contact-section .eyebrow,
+.layer-projects span {
+  color: #d7e3d8;
+}
+
+.system-heading > p,
+.layer-heading p,
+.layer-projects i,
+.contact-layout > div:first-child p:last-child,
+.contact-actions span,
+.footer-bottom {
+  color: #d5dfd6;
+}
+
+.layer-heading > span {
+  color: var(--portfolio-forest-deep);
+  background: #d7e3d8;
+}
+
+.method-section .eyebrow {
+  color: var(--portfolio-forest);
+}
+
+.flywheel-ring {
+  border-color: rgba(47, 70, 59, .24);
+}
+
+.flywheel-center {
+  border-color: rgba(47, 70, 59, .2);
+  background: var(--portfolio-forest);
+  box-shadow: 14px 16px 0 var(--portfolio-sage-soft);
+}
+
+.flywheel-center span,
+.flywheel-step > span {
+  color: #d7e3d8;
+}
+
+.guide-section {
+  --action: var(--portfolio-forest);
+  --deep: var(--portfolio-sage);
+  --lilac-soft: var(--portfolio-sand);
+}
+
+.guide-user,
+.guide-user p {
+  background: var(--portfolio-sand) !important;
+}
+
+.experience-section > .section-shell {
+  border-color: rgba(47, 70, 59, .12);
+  background: rgba(234, 223, 206, .50);
+}
+
+/* Resume selector route */
+.resume-page {
+  min-height: 100vh;
+  background: transparent;
+}
+
+.resume-hero {
+  padding-top: 154px;
+  padding-bottom: 96px;
+}
+
+.resume-back {
+  display: inline-flex;
+  margin-bottom: 54px;
+  color: var(--portfolio-forest);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.resume-hero h1 {
+  max-width: 860px;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 6vw, 82px);
+  font-weight: 560;
+  line-height: 1.06;
+  letter-spacing: -.055em;
+}
+
+.resume-intro {
+  max-width: 720px;
+  margin: 28px 0 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 58px;
+}
+
+.resume-card {
+  min-height: 380px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--portfolio-line);
+  border-radius: 24px 38px 24px 24px;
+  background: rgba(255, 250, 242, .78);
+  box-shadow: 0 18px 50px rgba(37, 55, 47, .07);
+}
+
+.resume-card:nth-child(2) {
+  background: rgba(223, 232, 223, .72);
+}
+
+.resume-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--portfolio-forest);
+  font-size: 11px;
+  font-weight: 780;
+  letter-spacing: .1em;
+}
+
+.resume-card-head span {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(47, 70, 59, .25);
+  border-radius: 50%;
+}
+
+.resume-card-head p,
+.resume-card > p {
+  margin: 0;
+}
+
+.resume-card h2 {
+  margin: 70px 0 14px;
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 560;
+  line-height: 1.25;
+}
+
+.resume-card > p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.resume-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 34px;
+}
+
+.resume-card-actions .button-secondary {
+  border-color: rgba(47, 70, 59, .34);
+  background: transparent;
+}
+
+.resume-contact {
+  margin-top: 42px;
+  padding-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border-top: 1px solid var(--portfolio-line);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.resume-contact a {
+  color: var(--portfolio-forest);
+  font-weight: 750;
+}
+
+@media (max-width: 1050px) {
+  .flagship-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .flagship-card {
+    display: grid;
+    grid-template-columns: minmax(280px, .82fr) minmax(0, 1.18fr);
+  }
+
+  .flagship-media {
+    min-height: 100%;
+    aspect-ratio: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-proof-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .hero-proof-strip div,
+  .hero-proof-strip div:first-child {
+    min-height: 116px;
+    padding: 20px 15px;
+    border-right: 0;
+    border-bottom: 1px solid var(--portfolio-line);
+  }
+
+  .hero-proof-strip div + div {
+    border-left: 1px solid var(--portfolio-line);
+  }
+
+  .hero-proof-strip div:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .hero-proof-strip div:nth-child(n + 3) {
+    border-bottom: 0;
+  }
+
+  .flagship-card {
+    display: flex;
+  }
+
+  .flagship-media {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+
+  .flagship-media > span {
+    white-space: normal;
+  }
+
+  .resume-hero {
+    width: calc(100% - 24px);
+    padding-top: 118px;
+    padding-bottom: 72px;
+  }
+
+  .resume-back {
+    margin-bottom: 38px;
+  }
+
+  .resume-hero h1 {
+    font-size: clamp(40px, 12vw, 52px);
+  }
+
+  .resume-intro {
+    font-size: 15px;
+  }
+
+  .resume-grid {
+    grid-template-columns: 1fr;
+    margin-top: 42px;
+  }
+
+  .resume-card {
+    min-height: 350px;
+    padding: 24px;
+  }
+
+  .resume-card h2 {
+    margin-top: 52px;
+  }
+
+  .resume-card-actions .button {
+    width: 100%;
+  }
+
+  .resume-contact {
+    flex-direction: column;
+  }
+}
