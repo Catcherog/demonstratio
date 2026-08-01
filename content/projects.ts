@@ -422,8 +422,72 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: "wechat-bot",
+    slug: "lora-finetuning",
     index: "04",
+    category: "Model Training",
+    categoryLabel: "MODEL FINE-TUNING · LOCAL INFERENCE",
+    title: "LoRA 客服 Agent 微调",
+    subtitle: "从业务语料、QLoRA 训练到 OpenAI 兼容本地推理",
+    summary:
+      "将 30+ 篇业务文档清洗为单轮与多轮 SFT 数据，在 16GB 单卡上完成 Qwen 1.5B / 7B 双基座 QLoRA，并封装本地 RAG 与推理服务。",
+    status: "训练与本地验证完成",
+    role: "产品验证 / 数据准备 / 训练与推理工程",
+    team: "个人主导",
+    period: "2026.06 - 2026.07",
+    featured: false,
+    metrics: [
+      { value: "2", label: "个微调基座" },
+      { value: "4bit", label: "QLoRA 量化" },
+      { value: "2.377 → 1.369", label: "1.5B 训练 loss" },
+      { value: "2.732 → 1.524", label: "7B 训练 loss" },
+    ],
+    tags: ["模型微调", "本地推理", "QLoRA"],
+    stack: ["Python", "PyTorch", "LLaMA-Factory", "PEFT", "bitsandbytes", "FastAPI", "bge-small-zh-v1.5"],
+    problem: [
+      "通用模型不了解业务术语、服务流程和客服语气，RAG 检索失败时仍可能给出通用或编造回答。",
+      "云端 API 受成本、延迟与数据边界约束，需要验证本地模型能否作为可替换后端。",
+    ],
+    decisions: [
+      "将 30+ 篇飞书文档清洗为 Alpaca 单轮与 ShareGPT 多轮数据，分离知识表达与对话风格学习。",
+      "选择 QLoRA 4bit、LoRA rank 16 与双基座策略，在 16GB 单卡约束下平衡训练可行性、时延和质量。",
+      "推理层遵循 OpenAI 兼容协议，提供流式 SSE、会话管理、本地 RAG 和输出护栏，便于接入现有 Agent。",
+    ],
+    outcomes: [
+      "Qwen2-1.5B loss 从 2.377 收敛至 1.369；Qwen2.5-7B 从 2.732 收敛至 1.524。",
+      "完成数据准备、训练、Adapter 导出、模型合并、本地检索和 FastAPI 服务的端到端链路。",
+      "本地模型可作为 Service Agent 与微信机器人的备选后端，但业务效果仍需独立评测集验证。",
+    ],
+    architecture: [
+      { label: "数据准备", detail: "飞书提取、去重、分块和格式转换" },
+      { label: "双基座训练", detail: "Qwen 1.5B / 7B、QLoRA 4bit、LoRA rank 16" },
+      { label: "模型导出", detail: "Adapter 检查点、基座合并和版本管理" },
+      { label: "本地 RAG", detail: "向量检索、上下文注入与输出护栏" },
+      { label: "兼容服务", detail: "FastAPI、SSE、会话和 OpenAI 协议" },
+    ],
+    tradeoffs: [
+      "训练 loss 只能证明优化过程收敛，不等于业务回答质量；网站明确区分训练证据与产品效果。",
+      "小模型时延更低、部署更轻，7B 质量潜力更高；通过统一 API 保持可替换性。",
+    ],
+    nextSteps: [
+      "构建涵盖事实准确、拒答、语气、流程与敏感边界的独立测试集，对比基座、LoRA、RAG 和 LoRA+RAG。",
+      "统计首字时延、吞吐、显存和单次推理成本，建立双基座路由策略。",
+    ],
+    relationships: [
+      { slug: "service-agent", label: "Service Agent", detail: "优质知识与会话可进入训练集，本地模型可作为推理后端。" },
+      { slug: "wechat-bot", label: "微信公众号机器人", detail: "OpenAI 兼容接口便于在云端 API 失效时降级。" },
+      { slug: "collator", label: "Collator", detail: "结构化和清洗能力可用于训练语料准备。" },
+    ],
+    images: [
+      "/projects/lora-finetuning/01.png",
+      "/projects/lora-finetuning/02.png",
+      "/projects/lora-finetuning/03.png",
+      "/projects/lora-finetuning/04.png",
+    ],
+    imageMode: "desktop",
+  },
+  {
+    slug: "wechat-bot",
+    index: "05",
     category: "Agent / RAG",
     categoryLabel: "WECHAT · AI CUSTOMER SERVICE",
     title: "微信公众号 AI 客服机器人",
@@ -479,7 +543,7 @@ export const projects: Project[] = [
   },
   {
     slug: "collator",
-    index: "05",
+    index: "06",
     category: "Data / Automation",
     categoryLabel: "DATA AGENT · MULTIMODAL",
     title: "Collator（飞书子系统）数据摄入 Agent",
@@ -543,7 +607,7 @@ export const projects: Project[] = [
   },
   {
     slug: "content-research",
-    index: "06",
+    index: "07",
     category: "Growth",
     categoryLabel: "AUTOMATION · CONTENT RESEARCH",
     title: "多平台爆款内容调研工具",
@@ -602,7 +666,7 @@ export const projects: Project[] = [
   },
   {
     slug: "mini-program",
-    index: "07",
+    index: "08",
     category: "User Product",
     categoryLabel: "MINI PROGRAM · CONVERSION",
     title: "泽怀影像微信小程序",
@@ -661,7 +725,7 @@ export const projects: Project[] = [
   },
   {
     slug: "brand-website",
-    index: "08",
+    index: "09",
     category: "User Product",
     categoryLabel: "BRAND SITE · WEB EXPERIENCE",
     title: "泽怀影像品牌官网",
@@ -718,69 +782,6 @@ export const projects: Project[] = [
     imageMode: "desktop",
     link: { label: "访问品牌官网", href: "https://zehuai-image.vercel.app/" },
   },
-  {
-    slug: "lora-finetuning",
-    index: "09",
-    category: "Model Training",
-    categoryLabel: "MODEL FINE-TUNING · LOCAL INFERENCE",
-    title: "LoRA 客服 Agent 微调",
-    subtitle: "从业务语料、QLoRA 训练到 OpenAI 兼容本地推理",
-    summary:
-      "将 30+ 篇业务文档清洗为单轮与多轮 SFT 数据，在 16GB 单卡上完成 Qwen 1.5B / 7B 双基座 QLoRA，并封装本地 RAG 与推理服务。",
-    status: "训练与本地验证完成",
-    role: "产品验证 / 数据准备 / 训练与推理工程",
-    team: "个人主导",
-    period: "2026.06 - 2026.07",
-    metrics: [
-      { value: "2", label: "个微调基座" },
-      { value: "4bit", label: "QLoRA 量化" },
-      { value: "2.377 → 1.369", label: "1.5B 训练 loss" },
-      { value: "2.732 → 1.524", label: "7B 训练 loss" },
-    ],
-    tags: ["模型微调", "本地推理", "QLoRA"],
-    stack: ["Python", "PyTorch", "LLaMA-Factory", "PEFT", "bitsandbytes", "FastAPI", "bge-small-zh-v1.5"],
-    problem: [
-      "通用模型不了解业务术语、服务流程和客服语气，RAG 检索失败时仍可能给出通用或编造回答。",
-      "云端 API 受成本、延迟与数据边界约束，需要验证本地模型能否作为可替换后端。",
-    ],
-    decisions: [
-      "将 30+ 篇飞书文档清洗为 Alpaca 单轮与 ShareGPT 多轮数据，分离知识表达与对话风格学习。",
-      "选择 QLoRA 4bit、LoRA rank 16 与双基座策略，在 16GB 单卡约束下平衡训练可行性、时延和质量。",
-      "推理层遵循 OpenAI 兼容协议，提供流式 SSE、会话管理、本地 RAG 和输出护栏，便于接入现有 Agent。",
-    ],
-    outcomes: [
-      "Qwen2-1.5B loss 从 2.377 收敛至 1.369；Qwen2.5-7B 从 2.732 收敛至 1.524。",
-      "完成数据准备、训练、Adapter 导出、模型合并、本地检索和 FastAPI 服务的端到端链路。",
-      "本地模型可作为 Service Agent 与微信机器人的备选后端，但业务效果仍需独立评测集验证。",
-    ],
-    architecture: [
-      { label: "数据准备", detail: "飞书提取、去重、分块和格式转换" },
-      { label: "双基座训练", detail: "Qwen 1.5B / 7B、QLoRA 4bit、LoRA rank 16" },
-      { label: "模型导出", detail: "Adapter 检查点、基座合并和版本管理" },
-      { label: "本地 RAG", detail: "向量检索、上下文注入与输出护栏" },
-      { label: "兼容服务", detail: "FastAPI、SSE、会话和 OpenAI 协议" },
-    ],
-    tradeoffs: [
-      "训练 loss 只能证明优化过程收敛，不等于业务回答质量；网站明确区分训练证据与产品效果。",
-      "小模型时延更低、部署更轻，7B 质量潜力更高；通过统一 API 保持可替换性。",
-    ],
-    nextSteps: [
-      "构建涵盖事实准确、拒答、语气、流程与敏感边界的独立测试集，对比基座、LoRA、RAG 和 LoRA+RAG。",
-      "统计首字时延、吞吐、显存和单次推理成本，建立双基座路由策略。",
-    ],
-    relationships: [
-      { slug: "service-agent", label: "Service Agent", detail: "优质知识与会话可进入训练集，本地模型可作为推理后端。" },
-      { slug: "wechat-bot", label: "微信公众号机器人", detail: "OpenAI 兼容接口便于在云端 API 失效时降级。" },
-      { slug: "collator", label: "Collator", detail: "结构化和清洗能力可用于训练语料准备。" },
-    ],
-    images: [
-      "/projects/lora-finetuning/01.png",
-      "/projects/lora-finetuning/02.png",
-      "/projects/lora-finetuning/03.png",
-      "/projects/lora-finetuning/04.png",
-    ],
-    imageMode: "desktop",
-  },
 ];
 
 export const categories: (ProjectCategory | "全部")[] = [
@@ -793,9 +794,12 @@ export const categories: (ProjectCategory | "全部")[] = [
   "Model Training",
 ];
 
+export const homepageProjects = projects.filter((project) => !project.archived);
+
 export const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
   .map((slug) => projects.find((project) => project.slug === slug))
-  .filter((project): project is Project => Boolean(project));
+  .filter((project): project is Project => Boolean(project))
+  .filter((project) => !project.archived);
 
 export const publicProjects = featuredProjects;
 

@@ -11,10 +11,7 @@ export function ProjectLibrary({ projects }: Props) {
 
   const visible = useMemo(() => {
     const filtered = active === "全部" ? projects : projects.filter((project) => project.category === active);
-    return [...filtered].sort((left, right) => {
-      if (Boolean(left.featured) !== Boolean(right.featured)) return left.featured ? -1 : 1;
-      return left.index.localeCompare(right.index, "zh-CN", { numeric: true });
-    });
+    return filtered.filter((project) => !project.archived);
   }, [active, projects]);
 
   return (
@@ -41,7 +38,7 @@ export function ProjectLibrary({ projects }: Props) {
       </div>
 
       <div className="library-grid">
-        {visible.map((project) => (
+        {visible.map((project, index) => (
           <a
             className={project.featured ? "library-card library-card-featured" : "library-card library-card-supporting"}
             href={`/projects/${project.slug}`}
@@ -60,7 +57,7 @@ export function ProjectLibrary({ projects }: Props) {
 
             <div className="library-body">
               <div className="library-meta">
-                <span>{project.index}</span>
+                <span>{String(index + 1).padStart(2, "0")}</span>
                 <span>{project.category}</span>
               </div>
               <h3>{project.title}</h3>

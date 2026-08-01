@@ -12,14 +12,14 @@ export function FeaturedCases({ projects }: Props) {
       </div>
 
       <div className="flagship-grid">
-        {projects.map((project) => (
+        {projects.map((project, index) => (
           <article className="flagship-card" key={project.slug}>
             <a className="flagship-media" href={`/projects/${project.slug}`} aria-label={`查看 ${project.title} 案例`}>
               <Image src={project.images[0]} alt={`${project.title} 产品界面`} fill sizes="(max-width: 900px) 100vw, 33vw" />
               <span>{project.status}</span>
             </a>
             <div className="flagship-body">
-              <div className="flagship-meta"><span>{project.index}</span><strong>{project.category}</strong></div>
+              <div className="flagship-meta"><span>{String(index + 1).padStart(2, "0")}</span><strong>{project.category}</strong></div>
               <h3>{project.title}</h3>
               <p className="flagship-subtitle">{project.subtitle}</p>
               <p className="flagship-summary">{project.summary}</p>

@@ -6,11 +6,7 @@ import { Header } from "@/components/Header";
 import { PortfolioGuide } from "@/components/PortfolioGuide";
 import { ProjectLibrary } from "@/components/ProjectLibrary";
 import { SystemMap } from "@/components/SystemMap";
-import { getPublicMetrics, projects } from "@/content/projects";
-
-const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
-  .map((slug) => projects.find((project) => project.slug === slug))
-  .filter((project): project is (typeof projects)[number] => Boolean(project));
+import { featuredProjects, getPublicMetrics, homepageProjects } from "@/content/projects";
 
 const heroMetrics = getPublicMetrics("hero");
 
@@ -28,8 +24,8 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "陈嘉伟 AI 产品案例",
-    numberOfItems: projects.length,
-    itemListElement: projects.map((project, index) => ({
+    numberOfItems: homepageProjects.length,
+    itemListElement: homepageProjects.map((project, index) => ({
       "@type": "CreativeWork",
       position: index + 1,
       name: project.title,
@@ -63,7 +59,7 @@ export default function Home() {
           <div><p className="eyebrow">ALL PROJECTS</p><h2>完整项目库</h2></div>
           <p>三个主案例继续承担核心叙事；另外六个案例保留独立详情、当前状态和能力边界，可按 Agent、数据、多模态、用户产品、增长与模型训练筛选。</p>
         </div>
-        <ProjectLibrary projects={projects} />
+        <ProjectLibrary projects={homepageProjects} />
       </section>
 
       <ExperienceContact />

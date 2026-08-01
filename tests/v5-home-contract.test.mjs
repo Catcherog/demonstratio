@@ -53,6 +53,32 @@ test("three flagship cases stay data-driven and use the current two-page resume"
   assert.match(hero, /chen-jiawei-ai-agent-cn-two-page\.pdf/);
 });
 
+test("homepage ranks LoRA fourth and numbers only visible cards", async () => {
+  const projectsSource = await read("content/projects.ts");
+  const page = await read("app/page.tsx");
+  const library = await read("components/ProjectLibrary.tsx");
+  const featured = await read("components/home/FeaturedCases.tsx");
+  const projectRegistry = projectsSource.slice(
+    projectsSource.indexOf("export const projects"),
+    projectsSource.indexOf("export const categories"),
+  );
+  const slugs = [...projectRegistry.matchAll(/^    slug: "([^"]+)"/gm)].map((match) => match[1]);
+  const featuredTrueCount = (projectRegistry.match(/^    featured: true,$/gm) ?? []).length;
+  const loraStart = projectRegistry.indexOf('    slug: "lora-finetuning"');
+  const loraEnd = projectRegistry.indexOf("\n  },", loraStart);
+
+  assert.equal(featuredTrueCount, 3);
+  assert.deepEqual(slugs.slice(0, 4), ["data-platform", "service-agent", "lumen-ink", "lora-finetuning"]);
+  assert.match(projectRegistry.slice(loraStart, loraEnd), /featured: false/);
+  assert.match(page, /homepageProjects/);
+  assert.match(library, /\.filter\(\(project\) => !project\.archived\)/);
+  assert.match(library, /visible\.map\(\(project, index\)/);
+  assert.match(library, /String\(index \+ 1\)\.padStart\(2, "0"\)/);
+  assert.doesNotMatch(library, /<span>\{project\.index\}<\/span>/);
+  assert.match(featured, /projects\.map\(\(project, index\)/);
+  assert.match(featured, /String\(index \+ 1\)\.padStart\(2, "0"\)/);
+});
+
 test("supporting library excludes the frontend-only Feishu Portal", async () => {
   const projects = await read("content/projects.ts");
   assert.doesNotMatch(projects, /slug:\s*"feishu-portal"/);
