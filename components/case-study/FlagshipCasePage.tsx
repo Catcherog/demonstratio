@@ -33,7 +33,7 @@ export function FlagshipCasePage({ project, study, evidence }: { project: Projec
         </div>
       </article>
       <nav className="flagship-footer-nav section-shell" aria-label="案例后续操作">
-        <a href="/#featured">返回三个主案例</a>
+        <a href="/">返回主页面</a>
         <a href="mailto:Jael_Chen@foxmail.com">联系讨论案例</a>
       </nav>
     </main>

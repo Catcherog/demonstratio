@@ -14,20 +14,20 @@ export function Hero({ metrics }: { metrics: BoundPublicMetric[] }) {
       <div className="hero-copy">
         <p className="availability"><span aria-hidden="true" /> OPEN TO AI PRODUCT OPPORTUNITIES</p>
         <p className="eyebrow">AI / AGENT 产品经理 · TECHNICAL BUILDER</p>
-        <h1 id="hero-title" aria-label="把复杂业务，做成可上线、可评估的 AI 产品。">
+        <h1 id="hero-title" aria-label="把复杂业务，做成可上线、可评估的 AI 产品">
           <span className="hero-title-desktop" aria-hidden="true">
             <span className="hero-title-line">把复杂业务，</span>
             <span className="hero-title-line hero-title-line-shift">
               做成<span className="hero-title-accent">可上线、可评估</span>的
             </span>
-            <span className="hero-title-line">AI 产品。</span>
+            <span className="hero-title-line">AI 产品</span>
           </span>
           <span className="hero-title-mobile" aria-hidden="true">
             <span className="hero-title-line">把复杂业务，</span>
             <span className="hero-title-line hero-title-line-shift">
               做成<span className="hero-title-accent">可上线、</span>
             </span>
-            <span className="hero-title-line">可评估的 AI 产品。</span>
+            <span className="hero-title-line">可评估的 AI 产品</span>
           </span>
         </h1>
         <p className="hero-lead hero-lead-desktop">

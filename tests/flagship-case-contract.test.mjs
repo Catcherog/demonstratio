@@ -201,12 +201,17 @@ test("section navigation is ordered, active, scroll-aware and progressively enha
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
   for (const id of ids) assert.ok(source.includes(`"${id}"`));
   assert.match(source, /new IntersectionObserver/);
-  assert.match(source, /rootMargin: "-132px 0px -58% 0px"/);
+  assert.match(source, /rootMargin: `-\$\{offset\}px 0px -55% 0px`/);
   assert.match(source, /threshold: \[0, 0\.2, 0\.6\]/);
   assert.match(source, /!\("IntersectionObserver" in window\)/);
   assert.match(source, /aria-current=\{activeId === item\.id \? "location" : undefined\}/);
   assert.match(source, /aria-label="案例板块导航"/);
-  assert.doesNotMatch(source, /preventDefault/);
+  assert.match(source, /getStickyOffset/);
+  assert.match(source, /ResizeObserver/);
+  assert.match(source, /requestAnimationFrame/);
+  assert.match(source, /window\.scrollTo/);
+  assert.match(source, /window\.history\.replaceState/);
+  assert.match(source, /preventDefault/);
 });
 
 test("evidence gallery renders bounded media, links and explicit missing states", async () => {
@@ -237,21 +242,21 @@ test("case stylesheet implements the approved paper palette and responsive navig
   for (const color of ["#f2eee4", "#fbf8f1", "#1c1820", "#4f4054", "#b9a7c1", "#e7dde9", "#718c7b", "#d4ccc1"]) {
     assert.ok(lower.includes(color), `missing color ${color}`);
   }
-  assert.match(css, /\.flagship-case-body\s*\{[^}]*grid-template-columns:\s*176px minmax\(0, 1fr\);/s);
-  assert.match(css, /\.case-section-nav\s*\{[^}]*top:\s*106px;[^}]*max-height:\s*calc\(100vh - 132px\);/s);
-  assert.match(css, /\.case-section-nav-inner\s*\{[^}]*flex-direction:\s*column;/s);
-  assert.match(css, /background:\s*rgba\(251, 248, 241, \.94\)/);
+  assert.match(css, /\.flagship-case-body\s*\{[^}]*display:\s*block;/s);
+  assert.match(css, /\.case-section-nav\s*\{[^}]*top:\s*106px;[^}]*max-height:\s*none;/s);
+  assert.match(css, /\.case-section-nav-inner\s*\{[^}]*overflow-x:\s*auto;/s);
+  assert.match(css, /background:\s*rgba\(251, 248, 241, \.82\)/);
   assert.doesNotMatch(css, /\.case-section-nav\s*\{[^}]*(?:#000|#111|#171b27|#1C1820)/s);
-  assert.match(css, /\.flagship-section\s*\{[^}]*scroll-margin-top:\s*112px;/s);
+  assert.match(css, /\.flagship-section\s*\{[^}]*scroll-margin-top:\s*178px;/s);
   assert.match(css, /\.flagship-product-section \.case-balanced-grid[\s\S]*grid-template-columns:/);
   assert.match(css, /\.case-technical-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2/);
   assert.match(css, /\.case-technical-card-wide\s*\{[^}]*grid-column:\s*1 \/ -1;/);
-  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*\.case-section-nav\s*\{[^}]*top:\s*92px;[^}]*height:\s*44px;[^}]*max-height:\s*44px;/);
-  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*\.case-section-nav-inner\s*\{[^}]*flex-direction:\s*row;[^}]*overflow-x:\s*scroll;/);
+  assert.match(css, /@media \(max-width: 1279px\)[\s\S]*\.case-section-nav\s*\{[^}]*top:\s*92px;[^}]*height:\s*auto;[^}]*max-height:\s*none;/);
+  assert.match(css, /@media \(max-width: 1279px\)[\s\S]*\.case-section-nav-inner\s*\{[^}]*min-height:\s*50px;/);
   assert.match(css, /@media \(max-width: 900px\)[\s\S]*\.iteration-path\s*\{[^}]*grid-template-columns:\s*repeat\(2/);
   assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.case-section-nav\s*\{[^}]*top:\s*76px;/);
   assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.iteration-path\s*\{[^}]*grid-template-columns:\s*repeat\(1/);
-  assert.match(css, /overflow-x:\s*scroll/);
+  assert.match(css, /overflow-x:\s*auto/);
   assert.match(css, /white-space:\s*nowrap/);
   assert.match(css, /min-height:\s*40px/);
   assert.match(css, /:focus-visible/);
