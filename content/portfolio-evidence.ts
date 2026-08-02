@@ -178,7 +178,7 @@ export const portfolioEvidence: PortfolioEvidence[] = [
     evidenceRefs: ["E-SCS-PRODUCTION"],
     scope: "公开前端的静态受控体验（备用模式）",
     boundary: "Live 模式已启用，静态降级仅在 NEXT_PUBLIC_DEMO_STATUS≠live 时显示。",
-    href: "https://zehuai-customer-demo.vercel.app/",
+    href: "https://zehuai-customer-demo.vercel.app/controlled",
     tags: ["agent", "demo", "b1", "b2", "b3", "体验"],
     roleWeights: { recruiter: 6, "product-lead": 5, technical: 4 },
   }),

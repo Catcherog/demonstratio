@@ -58,6 +58,11 @@ export function CaseEvidenceGallery({
               <aside className="case-demo-fallback-note" role="note">
                 <strong>备用模式</strong>
                 <p>{backupInteractive.title}：{backupInteractive.summary} 当前仅作为备用模式说明，不作为主入口展示。</p>
+                {demoStatus === "live" && backupInteractive.id === "service-agent-controlled-demo" && backupInteractive.href && (
+                  <a className="button button-ghost" href={backupInteractive.href} target="_blank" rel="noreferrer">
+                    打开 B1 / B2 / B3 备用演示 <span aria-hidden="true">↗</span>
+                  </a>
+                )}
               </aside>
             )}
             <dl>
