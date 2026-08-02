@@ -108,20 +108,32 @@ test("evidence catalog uses exact states and keeps planned items non-interactive
     "service-agent-phase-g-summary",
     "service-agent-controlled-demo",
     "service-agent-live-frontend",
-    "service-agent-walkthrough",
+    "service-agent-live-demo-01",
+    "service-agent-live-demo-02",
     "lumen-workbench",
     "lumen-provider-boundary",
     "lumen-edit-verification",
     "lumen-live-entry",
     "lumen-walkthrough",
   ]) assert.ok(source.includes(`id: "${id}"`), `missing evidence ${id}`);
-  for (const plannedId of ["data-platform-portal-entry", "data-platform-walkthrough", "service-agent-walkthrough", "lumen-walkthrough"]) {
+  for (const plannedId of ["data-platform-portal-entry", "data-platform-walkthrough", "lumen-walkthrough"]) {
     const start = source.indexOf(`id: "${plannedId}"`);
     const next = source.indexOf("\n  buildEvidence(", start + 1);
     const block = source.slice(start, next < 0 ? source.length : next);
     assert.match(block, /state: "planned"/);
     assert.doesNotMatch(block, /\bhref:/);
     assert.doesNotMatch(block, /\bassetUrl:/);
+  }
+  for (const [videoId, assetName] of [
+    ["service-agent-live-demo-01", "live-demo-01"],
+    ["service-agent-live-demo-02", "live-demo-02"],
+  ]) {
+    const start = source.indexOf(`id: "${videoId}"`);
+    const next = source.indexOf("\n  buildEvidence(", start + 1);
+    const block = source.slice(start, next < 0 ? source.length : next);
+    assert.match(block, /state: "available"/);
+    assert.ok(block.includes(`assetUrl: "/evidence/service-agent/${assetName}.mp4"`));
+    assert.ok(block.includes(`thumbnailUrl: "/evidence/service-agent/${assetName}.webp"`));
   }
 });
 
@@ -226,6 +238,7 @@ test("evidence gallery renders bounded media, links and explicit missing states"
   assert.match(media, /if \(item\.state !== "available"\) return null/);
   assert.match(media, /<video[\s\S]*controls[\s\S]*preload="metadata"[\s\S]*poster=\{item\.thumbnailUrl\}/);
   assert.doesNotMatch(media, /autoPlay/);
+  assert.match(media, /playsInline/);
   assert.doesNotMatch(media, /<iframe/);
   assert.match(media, /item\.transcript \?\? item\.summary/);
   assert.match(media, /target="_blank" rel="noreferrer"/);

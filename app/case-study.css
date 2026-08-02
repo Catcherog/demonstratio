@@ -607,6 +607,32 @@
   background: var(--case-lilac-soft);
 }
 
+.evidence-video-shell video {
+  object-fit: contain;
+  background: #17131b;
+}
+
+.evidence-video-shell > small {
+  display: block;
+  margin-top: 12px;
+  color: #746d77;
+  line-height: 1.5;
+}
+
+.evidence-video-shell details {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--case-line);
+  color: #5f5962;
+  line-height: 1.65;
+}
+
+.evidence-video-shell summary {
+  color: var(--case-plum);
+  font-weight: 800;
+  cursor: pointer;
+}
+
 .evidence-zoom {
   position: fixed;
   inset: 0;

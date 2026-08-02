@@ -46,8 +46,10 @@ export function EvidenceMedia({ item }: { item: PortfolioEvidence }) {
         <video
           src={item.assetUrl}
           controls
+          playsInline
           preload="metadata"
           poster={item.thumbnailUrl}
+          aria-label={`${item.title} 视频`}
           onError={() => setFailed(true)}
         >
           <p>{item.transcript ?? item.summary}</p>

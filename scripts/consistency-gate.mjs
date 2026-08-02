@@ -107,7 +107,7 @@ for (const status of statusContract.values()) {
 }
 
 // Homepage and route selection remain data-driven; supporting projects preserve the legacy renderer.
-assert(homeSource.includes('const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]'), "flagship homepage order changed");
+assert(projectsSource.includes('const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]'), "flagship homepage order changed");
 assert(homeSource.includes('const heroMetrics = getPublicMetrics("hero")'), "hero metrics must use the public manifest");
 assert(routeSource.includes("return projects.map"), "static params must derive from projects");
 assert(routeSource.includes("if (!project) notFound()"), "unknown project routes must fail closed");

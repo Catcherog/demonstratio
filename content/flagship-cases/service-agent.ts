@@ -192,6 +192,7 @@ export const serviceAgentCase: FlagshipCaseStudy = {
     "service-agent-phase-g-summary",
     "service-agent-controlled-demo",
     "service-agent-live-frontend",
-    "service-agent-walkthrough",
+    "service-agent-live-demo-01",
+    "service-agent-live-demo-02",
   ],
 };
