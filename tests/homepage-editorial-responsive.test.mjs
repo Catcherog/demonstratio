@@ -40,5 +40,5 @@ test("mobile header keeps a direct resume action while retaining the existing me
   const header = await read("components/Header.tsx");
   assert.match(header, /header-mobile-resume/);
   assert.match(header, /menu-button/);
-  assert.match(header, /chen-jiawei-ai-agent-cn-two-page\.pdf/);
+  assert.match(header, /href="\/resume"/);
 });
