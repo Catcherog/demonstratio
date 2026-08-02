@@ -352,7 +352,7 @@ export const projects: Project[] = [
     images: ["/evidence/service-agent/risk-workflow.svg"],
     imageMode: "desktop",
     link: { label: "打开公网实时 Demo", href: "https://zehuai-customer-demo.vercel.app/", note: "已接入真实 Service Agent 后端，支持知识检索、多轮追问、来源展示与安全转人工。高风险、低置信度及知识不足的问题不会强行回答。" },
-    fallbackLink: { label: "联系了解受控演示", href: "mailto:Jael_Chen@foxmail.com", note: "若页面内容加载失败或需要进一步确认，请重试或使用此备用入口；不承诺实时生产能力。" },
+    fallbackLink: { label: "打开 B1 / B2 / B3 备用演示", href: "https://zehuai-customer-demo.vercel.app/controlled", note: "若实时入口加载失败，可使用 B1 / B2 / B3 静态受控演示；该入口不代表实时生产能力。" },
   },
   {
     slug: "lumen-ink",

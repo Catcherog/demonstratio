@@ -28,6 +28,28 @@ test("Service Agent uses a live data default and collapses duplicate interactive
   assert.match(gallery, /kind !== "interactive"/);
 });
 
+test("Service Agent keeps the live entry and B1/B2/B3 fallback entry distinct", async () => {
+  const evidence = await read("content/portfolio-evidence.ts");
+  const projects = await read("content/projects.ts");
+  const gallery = await read("components/case-study/CaseEvidenceGallery.tsx");
+
+  assert.match(
+    evidence,
+    /id: "service-agent-controlled-demo"[\s\S]*?href: "https:\/\/zehuai-customer-demo\.vercel\.app\/controlled"/,
+  );
+  assert.match(
+    evidence,
+    /id: "service-agent-live-frontend"[\s\S]*?href: "https:\/\/zehuai-customer-demo\.vercel\.app\/"/,
+  );
+  assert.match(
+    projects,
+    /link:\s*\{[\s\S]*?href: "https:\/\/zehuai-customer-demo\.vercel\.app\/"[\s\S]*?fallbackLink:\s*\{\s*label: "打开 B1 \/ B2 \/ B3 备用演示",\s*href: "https:\/\/zehuai-customer-demo\.vercel\.app\/controlled"/,
+  );
+  assert.match(gallery, /href=\{backupInteractive\.href\}/);
+  assert.match(gallery, /target="_blank" rel="noreferrer"/);
+  assert.match(gallery, /打开 B1 \/ B2 \/ B3 备用演示/);
+});
+
 test("technical implementation keeps the seven-point grid and wide final card", async () => {
   const component = await read("components/case-study/TechnicalImplementation.tsx");
   const css = await read("app/case-study.css");
