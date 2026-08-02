@@ -68,6 +68,8 @@ test("wide screens use an editorial horizontal track instead of a left navigatio
   assert.match(page, /CaseSectionNav/);
   assert.match(css, /\.case-section-nav[\s\S]*position:\s*sticky/);
   assert.match(css, /\.case-section-nav-inner[\s\S]*overflow-x:\s*(auto|scroll)/);
+  assert.match(css, /\.case-section-nav-inner\s*\{[^}]*min-width:\s*0;/s);
+  assert.match(css, /\.case-section-nav a\s*\{[^}]*flex:\s*0 0 auto;/s);
   assert.doesNotMatch(css, /grid-template-columns:\s*168px\s+minmax\(0,\s*1fr\)/);
   assert.doesNotMatch(css, /\.case-section-nav\s*\{[^}]*border-radius:\s*22px/);
 });
@@ -81,6 +83,10 @@ test("homepage punctuation, Service Agent editorial structure and deterministic 
 
   assert.doesNotMatch(hero, /AI 产品。/);
   assert.match(caseHero, /project\.slug\s*===\s*["']service-agent["']/);
+  assert.match(caseHero, /aria-label=\{project\.title\}/);
+  assert.match(caseHero, /aria-hidden="true" className="case-editorial-title__scene"/);
+  assert.match(caseHero, /aria-hidden="true" className="case-editorial-title__main"/);
+  assert.match(caseHero, /aria-hidden="true" className="case-editorial-title__tail">Service Agent/);
   for (const label of ["理解问题", "检索证据", "生成回答", "拒答或转人工"]) {
     assert.match(caseHero, new RegExp(label));
   }
@@ -88,6 +94,7 @@ test("homepage punctuation, Service Agent editorial structure and deterministic 
   assert.match(nav, /history\.replaceState/);
   assert.match(nav, /getBoundingClientRect/);
   assert.match(nav, /prefers-reduced-motion/);
+  assert.match(nav, /scrollIntoView\(\{ block: "nearest", inline: "nearest" \}\)/);
   assert.match(page, /href=["']\/["'][^>]*>返回主页面/);
   assert.match(header, /className=["']brand["'][^>]*href=["']\/["']/);
 });

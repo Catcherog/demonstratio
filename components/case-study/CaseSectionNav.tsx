@@ -118,6 +118,9 @@ export function CaseSectionNav({ items = CASE_SECTIONS }: { items?: ReadonlyArra
               const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
               if (scrollToSection(item.id, reducedMotion ? "auto" : "smooth")) setActiveId(item.id);
             }}
+            onFocus={(event) => {
+              event.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest" });
+            }}
           >
             <span className="case-section-nav__index">{String(index + 1).padStart(2, "0")}</span>
             <span>{item.label}</span>

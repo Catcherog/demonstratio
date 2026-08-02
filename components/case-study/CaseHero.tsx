@@ -21,10 +21,10 @@ export function CaseHero({ project, study }: { project: Project; study: Flagship
         <div className="flagship-hero-copy">
           <p className="eyebrow">{project.categoryLabel}</p>
           {isServiceAgent ? (
-            <h1 className="case-editorial-title">
-              <span className="case-editorial-title__scene">Studio</span>
-              <span className="case-editorial-title__main">Customer</span>
-              <span className="case-editorial-title__tail">Service</span>
+            <h1 className="case-editorial-title" aria-label={project.title}>
+              <span aria-hidden="true" className="case-editorial-title__scene">Studio</span>
+              <span aria-hidden="true" className="case-editorial-title__main">Customer</span>
+              <span aria-hidden="true" className="case-editorial-title__tail">Service Agent</span>
             </h1>
           ) : (
             <h1>{project.title}</h1>

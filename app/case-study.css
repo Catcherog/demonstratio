@@ -149,7 +149,7 @@
   justify-content: space-between;
   gap: 6px;
   width: 100%;
-  min-width: max-content;
+  min-width: 0;
   min-height: 54px;
   padding: 6px 8px;
   overflow-x: auto;
@@ -161,6 +161,7 @@
 
 .case-section-nav a {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: baseline;
   gap: 8px;
   min-height: 40px;
@@ -781,6 +782,15 @@
   .iteration-path > li { min-width: 0; }
   .case-evidence-grid { grid-template-columns: 1fr; }
   .case-evidence-card.evidence-featured { grid-column: auto; }
+
+  .case-section-nav-inner {
+    justify-content: flex-start;
+  }
+
+  .case-section-nav a {
+    min-width: 120px;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 720px) {
