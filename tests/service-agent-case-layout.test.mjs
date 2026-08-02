@@ -94,7 +94,9 @@ test("homepage punctuation, Service Agent editorial structure and deterministic 
   assert.match(nav, /history\.replaceState/);
   assert.match(nav, /getBoundingClientRect/);
   assert.match(nav, /prefers-reduced-motion/);
-  assert.match(nav, /scrollIntoView\(\{ block: "nearest", inline: "nearest" \}\)/);
+  assert.match(nav, /function revealNavLink/);
+  assert.match(nav, /rail\.scrollTo\(\{ left: nextLeft, behavior: "auto" \}\)/);
+  assert.doesNotMatch(nav, /scrollIntoView/);
   assert.match(page, /href=["']\/["'][^>]*>返回主页面/);
   assert.match(header, /className=["']brand["'][^>]*href=["']\/["']/);
 });

@@ -37,6 +37,18 @@ function scrollToSection(id: string, behavior: ScrollBehavior): boolean {
   return true;
 }
 
+function revealNavLink(link: HTMLAnchorElement): void {
+  const rail = link.closest<HTMLElement>(".case-section-nav-inner");
+  if (!rail) return;
+
+  const desiredLeft = link.offsetLeft - (rail.clientWidth - link.offsetWidth) / 2;
+  const maxLeft = Math.max(0, rail.scrollWidth - rail.clientWidth);
+  const nextLeft = Math.min(maxLeft, Math.max(0, desiredLeft));
+  if (Math.abs(rail.scrollLeft - nextLeft) < 0.5) return;
+
+  rail.scrollTo({ left: nextLeft, behavior: "auto" });
+}
+
 export function CaseSectionNav({ items = CASE_SECTIONS }: { items?: ReadonlyArray<SectionItem> }) {
   const normalizedItems = items.map(normalizeItem);
   const itemKey = normalizedItems.map((item) => item.id).join("|");
@@ -44,11 +56,10 @@ export function CaseSectionNav({ items = CASE_SECTIONS }: { items?: ReadonlyArra
 
   useEffect(() => {
     const ids = normalizedItems.map((item) => item.id);
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const revealActiveLink = (id: string) => {
       const link = Array.from(document.querySelectorAll<HTMLAnchorElement>(".case-section-nav a"))
         .find((candidate) => candidate.getAttribute("href") === `#${id}`);
-      link?.scrollIntoView({ block: "nearest", inline: "center" });
+      if (link) revealNavLink(link);
     };
     const setActive = (id: string) => {
       if (!ids.includes(id)) return;
@@ -116,10 +127,13 @@ export function CaseSectionNav({ items = CASE_SECTIONS }: { items?: ReadonlyArra
             onClick={(event) => {
               event.preventDefault();
               const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-              if (scrollToSection(item.id, reducedMotion ? "auto" : "smooth")) setActiveId(item.id);
+              if (scrollToSection(item.id, reducedMotion ? "auto" : "smooth")) {
+                setActiveId(item.id);
+                revealNavLink(event.currentTarget);
+              }
             }}
             onFocus={(event) => {
-              event.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest" });
+              revealNavLink(event.currentTarget);
             }}
           >
             <span className="case-section-nav__index">{String(index + 1).padStart(2, "0")}</span>
