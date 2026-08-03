@@ -92,6 +92,33 @@ const PROJECT_ALIASES: Record<string, string[]> = {
   ],
 };
 
+// Strong subject aliases identify which project the user is *asking about*.
+// Technology words (LangGraph, RAG, ChromaDB, Embedding, 向量数据库) are
+// intentionally excluded — they should inform scoring, but never force-switch
+// the retrieval scope to a different project when the conversation is already
+// anchored on a project subject.
+const STRONG_PROJECT_SUBJECT_ALIASES: Record<string, string[]> = {
+  "data-platform": ["飞书数据平台", "数据中台", "feishu data platform"],
+  "service-agent": ["service agent", "serviceagent", "service-agent", "客服 agent", "客服agent", "studio customer service"],
+  "lumen-ink": ["光砚", "lumen ink"],
+  "wechat-bot": ["微信公众号机器人", "微信机器人客服", "wechat bot", "wechat-bot"],
+  collator: ["collator", "摄入 agent", "摄入agent", "数据摄入"],
+  "content-research": ["内容调研", "增长工具"],
+  "mini-program": ["微信小程序", "小程序"],
+  "brand-website": ["品牌官网", "泽怀官网"],
+  "lora-finetuning": ["lora", "qlora"],
+  "portfolio-guide": [
+    "ai 导览",
+    "ai导览",
+    "作品集导览",
+    "作品集助手",
+    "官网机器人",
+    "导览机器人",
+    "portfolio guide",
+    "ai guide",
+  ],
+};
+
 const CROSS_PROJECT_TERMS = [...BROAD_PROJECT_TERMS, "对比", "区别", "关系"];
 
 function compact(items: Array<string | undefined | null>): string[] {
@@ -440,32 +467,99 @@ function scoreDocument(document: PortfolioDocument, question: string, terms: str
 
 const FOLLOW_UP_PRONOUNS = ["它", "它的", "它用", "它是", "它有", "这个", "那个", "这", "那", "其", "该"];
 
+// “这个/这/那/该” only counts as a pronoun follow-up when it opens a short
+// follow-up question. A longer question that merely contains “这个” (e.g.
+// “飞书这个项目怎么写入？”) is treated as a new explicit subject, not a
+// follow-up — otherwise the prior AI-guide topic would leak into the feishu
+// question.
 function isPronounFollowUp(message: string): boolean {
   const trimmed = message.trim();
   if (trimmed.length === 0) return false;
-  if (trimmed.length <= 24) {
-    return FOLLOW_UP_PRONOUNS.some((pronoun) => trimmed.includes(pronoun));
-  }
-  return FOLLOW_UP_PRONOUNS.some((pronoun) => trimmed.startsWith(pronoun));
+  if (trimmed.length > 24) return false;
+  const startsWithPronoun = FOLLOW_UP_PRONOUNS.some((pronoun) => trimmed.startsWith(pronoun));
+  if (startsWithPronoun) return true;
+  // Bare pronoun + technology word (e.g. “它用了 LangGraph 吗？”) also counts.
+  return /^(它|它的|它用|它是|它有)\b/.test(trimmed);
 }
 
-function lastUserMessage(history: GuideHistoryMessage[] | undefined): string | undefined {
+// For pronoun follow-ups, walk back through history to find the most recent
+// user message that establishes a strong project subject. This handles double
+// follow-ups where the immediate previous user turn is itself a pronoun
+// follow-up (e.g. "它用了 LangGraph 吗？") with no strong subject of its own.
+function lastAnchoredUserMessage(
+  history: GuideHistoryMessage[] | undefined,
+): { message: string; subjectSlugs: string[] } | undefined {
   if (!history || history.length === 0) return undefined;
   for (let index = history.length - 1; index >= 0; index -= 1) {
-    if (history[index].role === "user") return history[index].content;
+    if (history[index].role !== "user") continue;
+    const slugs = findStrongProjectSubjects(history[index].content);
+    if (slugs.length > 0) {
+      return { message: history[index].content, subjectSlugs: slugs };
+    }
   }
   return undefined;
 }
 
+function findStrongProjectSubjects(text: string): string[] {
+  if (!text) return [];
+  const lower = text.toLowerCase();
+  const slugs = new Set<string>();
+  for (const [slug, aliases] of Object.entries(STRONG_PROJECT_SUBJECT_ALIASES)) {
+    if (aliases.some((alias) => lower.includes(alias.toLowerCase()))) {
+      slugs.add(slug);
+    }
+  }
+  return [...slugs];
+}
+
+export type ResolvedSearchContext = {
+  searchQuery: string;
+  scopedProjectSlugs: string[];
+};
+
+export function resolveSearchContext(
+  message: string,
+  history?: GuideHistoryMessage[],
+): ResolvedSearchContext {
+  // 1. Current message explicitly names a project subject → stay on current
+  //    subject, do not inherit history. Technology words alone (LangGraph/RAG)
+  //    do NOT count as strong subjects.
+  const currentStrongSlugs = findStrongProjectSubjects(message);
+  if (currentStrongSlugs.length > 0) {
+    return {
+      searchQuery: message,
+      scopedProjectSlugs: currentStrongSlugs,
+    };
+  }
+
+  // 2. Only a real pronoun follow-up inherits the prior anchor. This avoids
+  //    leaking the prior topic into explicit new questions. Walk back to the
+  //    most recent user message that establishes a strong project subject, so
+  //    double follow-ups (Q3 is a pronoun follow-up of Q2 which was itself a
+  //    pronoun follow-up of Q1) still inherit Q1's subject.
+  if (isPronounFollowUp(message) && history && history.length > 0) {
+    const anchor = lastAnchoredUserMessage(history);
+    if (anchor) {
+      return {
+        searchQuery: `${anchor.message} ${message}`,
+        scopedProjectSlugs: anchor.subjectSlugs,
+      };
+    }
+  }
+
+  return {
+    searchQuery: message,
+    scopedProjectSlugs: [],
+  };
+}
+
+// Backwards-compatible string resolver. Tests and callers that only need the
+// merged query string can keep using this.
 export function resolveSearchQuery(
   message: string,
   history: GuideHistoryMessage[] | undefined,
 ): string {
-  if (!history || history.length === 0) return message;
-  if (!isPronounFollowUp(message)) return message;
-  const lastUser = lastUserMessage(history);
-  if (!lastUser) return message;
-  return `${lastUser} ${message}`;
+  return resolveSearchContext(message, history).searchQuery;
 }
 
 export function retrievePortfolioSources(
@@ -474,7 +568,7 @@ export function retrievePortfolioSources(
   limit = 8,
   history?: GuideHistoryMessage[],
 ): PortfolioSource[] {
-  const searchQuery = resolveSearchQuery(question, history);
+  const { searchQuery, scopedProjectSlugs } = resolveSearchContext(question, history);
   const terms = queryTerms(searchQuery, role);
   const broadProjectQuestion = BROAD_PROJECT_TERMS.some((term) => searchQuery.toLowerCase().includes(term));
   const crossProject = CROSS_PROJECT_TERMS.some((term) => searchQuery.toLowerCase().includes(term));
@@ -497,14 +591,14 @@ export function retrievePortfolioSources(
     });
   }
 
-  const normalizedQuestion = searchQuery.toLowerCase();
-  const explicitProjectSlugs = Object.entries(PROJECT_ALIASES)
-    .filter(([, aliases]) => aliases.some((alias) => normalizedQuestion.includes(alias.toLowerCase())))
-    .map(([slug]) => slug);
-
-  const candidateDocuments = explicitProjectSlugs.length > 0
-    ? portfolioDocuments.filter((document) => explicitProjectSlugs.includes(document.projectSlug))
+  // Use strong subject scoping (resolveSearchContext) instead of raw
+  // PROJECT_ALIASES matching. Technology words (LangGraph/RAG) no longer
+  // force-switch the retrieval scope to a different project when the
+  // conversation is already anchored on a project subject.
+  const candidateDocuments = scopedProjectSlugs.length > 0
+    ? portfolioDocuments.filter((document) => scopedProjectSlugs.includes(document.projectSlug))
     : portfolioDocuments;
+  const explicitProjectSlugs = scopedProjectSlugs;
 
   const ranked = candidateDocuments
     .map((document) => ({ ...document, score: scoreDocument(document, searchQuery, terms) }))
