@@ -288,18 +288,25 @@ export const portfolioEvidence: PortfolioEvidence[] = [
     roleWeights: { recruiter: 10, "product-lead": 8, technical: 6 },
   }),
   buildEvidence(lumenInk, {
-    id: "lumen-walkthrough",
-    kind: "video",
-    title: "光砚任务与结果回看 Walkthrough",
-    summary: "计划录制建立任务、调用 Provider、复核结果和回到历史记录的完整操作。",
-    state: "planned",
+    id: "lumen-live-demo",
+    kind: "interactive",
+    title: "在线体验光砚工作台",
+    summary:
+      "打开公开工作台，体验当前已完成真实验证的 Seedream 4.5 文生图与图生图路径。",
+    state: "available",
     publicSafe: true,
-    evidenceRefs: ["E-LUMEN-SOURCE", "E-LUMEN-EDIT"],
-    scope: "真实编辑任务工作流说明",
-    boundary: "待补素材；未录制前不显示播放器或播放按钮。",
-    transcript: "计划内容：建立任务、结构化提示、Provider 调用、结果复核与任务历史。",
-    tags: ["光砚", "视频", "任务", "历史", "planned"],
-    roleWeights: { recruiter: 6, "product-lead": 5, technical: 3 },
+    evidenceRefs: ["E-LUMEN-PRODUCTION", "E-LUMEN-EDIT"],
+    scope: "公开工作台与真实 Provider 编辑入口",
+    boundary:
+      "仅文生图与图生图完成真实验证；液化、修复、消除及其他模式仍不作为已验证能力。",
+    href: "https://lumen-ink.vercel.app/",
+    verifiedAt: "2026-08-03",
+    tags: ["光砚", "live demo", "在线体验", "seedream"],
+    roleWeights: {
+      recruiter: 10,
+      "product-lead": 9,
+      technical: 7,
+    },
   }),
 ];
 

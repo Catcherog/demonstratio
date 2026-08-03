@@ -171,6 +171,6 @@ export const lumenInkCase: FlagshipCaseStudy = {
     "lumen-provider-boundary",
     "lumen-edit-verification",
     "lumen-live-entry",
-    "lumen-walkthrough",
+    "lumen-live-demo",
   ],
 };

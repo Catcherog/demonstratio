@@ -114,9 +114,9 @@ test("evidence catalog uses exact states and keeps planned items non-interactive
     "lumen-provider-boundary",
     "lumen-edit-verification",
     "lumen-live-entry",
-    "lumen-walkthrough",
+    "lumen-live-demo",
   ]) assert.ok(source.includes(`id: "${id}"`), `missing evidence ${id}`);
-  for (const plannedId of ["data-platform-portal-entry", "data-platform-walkthrough", "lumen-walkthrough"]) {
+  for (const plannedId of ["data-platform-portal-entry", "data-platform-walkthrough"]) {
     const start = source.indexOf(`id: "${plannedId}"`);
     const next = source.indexOf("\n  buildEvidence(", start + 1);
     const block = source.slice(start, next < 0 ? source.length : next);
@@ -135,6 +135,74 @@ test("evidence catalog uses exact states and keeps planned items non-interactive
     assert.ok(block.includes(`assetUrl: "/evidence/service-agent/${assetName}.mp4"`));
     assert.ok(block.includes(`thumbnailUrl: "/evidence/service-agent/${assetName}.webp"`));
   }
+});
+
+test("lumen-live-demo evidence is an available interactive entry pointing to the public workbench", async () => {
+  const source = await read("content/portfolio-evidence.ts");
+  assert.ok(source.includes('id: "lumen-live-demo"'), "lumen-live-demo evidence must exist");
+  assert.ok(!source.includes('id: "lumen-walkthrough"'), "lumen-walkthrough must be fully removed");
+
+  const start = source.indexOf('id: "lumen-live-demo"');
+  const next = source.indexOf("\n  buildEvidence(", start + 1);
+  const block = source.slice(start, next < 0 ? source.length : next);
+  assert.match(block, /kind: "interactive"/, "lumen-live-demo must be interactive");
+  assert.match(block, /state: "available"/, "lumen-live-demo must be available");
+  assert.ok(
+    block.includes('href: "https://lumen-ink.vercel.app/"'),
+    "lumen-live-demo href must be exactly https://lumen-ink.vercel.app/",
+  );
+  assert.match(block, /verifiedAt: "2026-08-03"/, "lumen-live-demo must carry verifiedAt from HTTP verification");
+});
+
+test("lumen-ink public evidence catalog has no planned items", async () => {
+  const source = await read("content/portfolio-evidence.ts");
+  const lumenBlocks = [...source.matchAll(/buildEvidence\(lumenInk,\s*\{([\s\S]*?)\n\s*\}\),/g)];
+  assert.ok(lumenBlocks.length >= 5, "lumen-ink must have at least 5 evidence items");
+  for (const block of lumenBlocks) {
+    assert.doesNotMatch(block[1], /state: "planned"/, "lumen-ink must not expose planned public evidence");
+  }
+});
+
+test("lumen-ink case binds lumen-live-demo and drops lumen-walkthrough from evidenceIds", async () => {
+  const source = await read("content/flagship-cases/lumen-ink.ts");
+  const evidenceBlock = source.slice(source.indexOf("evidenceIds:"));
+  assert.ok(evidenceBlock.includes('"lumen-live-demo"'), "lumen-ink evidenceIds must include lumen-live-demo");
+  assert.ok(!evidenceBlock.includes('"lumen-walkthrough"'), "lumen-ink evidenceIds must not include lumen-walkthrough");
+  const expectedIds = ["lumen-workbench", "lumen-provider-boundary", "lumen-edit-verification", "lumen-live-entry", "lumen-live-demo"];
+  for (const id of expectedIds) {
+    assert.ok(evidenceBlock.includes(`"${id}"`), `lumen-ink evidenceIds missing ${id}`);
+  }
+});
+
+test("CaseHero applies editorial-flow to both Service Agent and Lumen with intact decision chains", async () => {
+  const source = await readFile(new URL("../components/case-study/CaseHero.tsx", import.meta.url), "utf8");
+  assert.match(source, /const SERVICE_AGENT_DECISION_CHAIN/);
+  assert.match(source, /const LUMEN_DECISION_CHAIN/);
+  assert.match(source, /const isEditorialFlow = isServiceAgent \|\| isLumen/);
+  assert.match(source, /isEditorialFlow \? " flagship-hero--editorial-flow"/);
+  // Service Agent title stays unchanged
+  assert.match(source, /case-editorial-title__scene">Studio/);
+  assert.match(source, /case-editorial-title__main">Customer/);
+  assert.match(source, /case-editorial-title__tail">Service Agent/);
+  // Lumen title uses the --lumen modifier
+  assert.match(source, /case-editorial-title--lumen/);
+  assert.match(source, /case-editorial-title__tail--lumen/);
+  assert.match(source, /case-editorial-title__main">\s*光砚/);
+  assert.ok(source.includes("AI 图像编辑工作台"), "Lumen tail text must be present");
+  // Decision chain renders for both via decisionChain variable
+  assert.match(source, /\{decisionChain && \(/);
+  assert.match(source, /case-decision-chain--lumen/);
+  // Both chains have 4 steps
+  const saSteps = (source.match(/index: "0[1-4]"/g) ?? []).length;
+  assert.ok(saSteps >= 8, "Service Agent + Lumen decision chains must have 8 step entries total");
+});
+
+test("case stylesheet scopes Lumen-only title and decision chain variants", async () => {
+  const css = await read("app/case-study.css");
+  assert.match(css, /\.case-editorial-title--lumen \.case-editorial-title__main\s*\{/);
+  assert.match(css, /\.case-editorial-title__tail--lumen\s*\{/);
+  assert.match(css, /\.case-decision-chain--lumen li:last-child/);
+  assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.case-editorial-title--lumen \.case-editorial-title__tail--lumen/);
 });
 
 test("available local assets are public-safe diagrams or the reviewed Lumen UI", async () => {

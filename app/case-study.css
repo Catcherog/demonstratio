@@ -234,6 +234,25 @@
   transform: translateX(.02em);
 }
 
+.case-editorial-title--lumen .case-editorial-title__main {
+  font-style: normal;
+  letter-spacing: -.08em;
+}
+
+.case-editorial-title__tail--lumen {
+  max-width: 9em;
+  font-family: "Noto Serif SC", "Songti SC", STSong, SimSun, serif;
+  font-size: .34em;
+  line-height: 1.12;
+  letter-spacing: -.045em;
+  text-align: right;
+}
+
+.case-decision-chain--lumen li:last-child .case-decision-chain__index,
+.case-decision-chain--lumen li:last-child strong {
+  color: var(--case-sage);
+}
+
 .case-home-link {
   display: inline-flex;
   align-items: center;
@@ -864,6 +883,12 @@
   .case-decision-chain li {
     grid-template-columns: 30px minmax(0, 1fr);
   }
+  .case-editorial-title--lumen .case-editorial-title__tail--lumen {
+    max-width: 7.5em;
+    font-size: .3em;
+    line-height: 1.15;
+  }
+
 
   .iteration-path {
     grid-template-columns: repeat(1, minmax(0, 1fr));
