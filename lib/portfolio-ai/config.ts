@@ -13,6 +13,7 @@ export type PortfolioAiConfig = {
   timeoutMs: number;
   rateLimit: number;
   promptVersion: string;
+  knowledgeVersion: string;
   disabled: boolean;
 };
 
@@ -98,7 +99,14 @@ export function resolveConfig(): PortfolioAiConfig {
     temperature: boundedTemperature(process.env.PORTFOLIO_AI_TEMPERATURE),
     timeoutMs: boundedInteger(process.env.PORTFOLIO_AI_TIMEOUT_MS, 55_000, 5_000, 58_000),
     rateLimit: Math.max(1, Number.parseInt(process.env.PORTFOLIO_AI_RATE_LIMIT ?? "12", 10) || 12),
-    promptVersion: process.env.PORTFOLIO_AI_PROMPT_VERSION ?? "portfolio-guide-r1",
+    promptVersion:
+      process.env.PORTFOLIO_AI_PROMPT_VERSION ??
+      "portfolio-guide-r2",
+
+    knowledgeVersion:
+      process.env.PORTFOLIO_AI_KNOWLEDGE_VERSION ??
+      "portfolio-kb-2026-08-03-r2",
+
     disabled: process.env.PORTFOLIO_AI_DISABLED === "1",
   };
 }

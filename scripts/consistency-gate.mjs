@@ -179,6 +179,53 @@ assert(publicCaseSurface.includes("历史 Test Base"), "Feishu historical baseli
 assert(publicCaseSurface.includes("生产 Schema 元数据只读检查"), "Feishu production read-only boundary is missing");
 assert(publicCaseSurface.includes("液化、修复、消除和其他模式仍未验证"), "Lumen unverified mode boundary is missing");
 
+// Public fact conflict checks for R2 knowledge sync.
+assert(
+  !publicCaseSurface.includes("公开前端仍为静态降级"),
+  "Service Agent contains stale static-frontend wording",
+);
+
+assert(
+  publicCaseSurface.includes("N03.5 多轮查询解析与改写"),
+  "Service Agent query rewrite stage is missing",
+);
+
+assert(
+  publicCaseSurface.includes("N04.5 候选重排与上下文构建"),
+  "Service Agent rerank stage is missing",
+);
+
+assert(
+  publicCaseSurface.includes("Portal 前端可公开访问"),
+  "Feishu public Portal boundary is missing",
+);
+
+assert(
+  publicCaseSurface.includes("不作为成功写入案例"),
+  "Feishu partial-write boundary is missing",
+);
+
+assert(
+  publicCaseSurface.includes("登录链路仍可能"),
+  "Lumen login availability boundary is missing",
+);
+
+// AI guide self-description checks.
+assert(
+  guideSource.includes('projectSlug: "portfolio-guide"'),
+  "guide self-description documents are missing",
+);
+
+assert(
+  guideSource.includes("不使用 ChromaDB、Embedding 或向量数据库"),
+  "guide retrieval implementation boundary is missing",
+);
+
+assert(
+  guideSource.includes("没有长期记忆"),
+  "guide memory boundary is missing",
+);
+
 // Evidence source and derived diagrams are public-safe and avoid legacy screenshots.
 for (const legacyAsset of [
   "/projects/service-agent/01.webp",

@@ -84,6 +84,38 @@ test("Lumen limits verification to two Seedream operations", async () => {
   assert.match(source, /仅 Seedream 4\.5 文生图与图生图两项操作完成真实验证/);
   assert.match(source, /液化、修复、消除/);
   assert.match(source, /LUMEN-EDIT-VERIFY/);
+  assert.match(source, /登录链路仍可能/);
+  assert.match(source, /fail-closed 返回 503/);
+  assert.match(source, /不能表述为全面可用/);
+});
+
+test("Service Agent public workflow distinguishes core nodes from auxiliary stages", async () => {
+  const projects = await read("content/projects.ts");
+  const caseSource = await read(
+    "content/flagship-cases/service-agent.ts",
+  );
+
+  const combined = `${projects}\n${caseSource}`;
+
+  for (const label of [
+    "N01 输入与 Stage 初始化",
+    "N02 意图识别",
+    "N03 R0–R3 风险分级",
+    "N03.5 多轮查询解析与改写",
+    "N04 知识检索",
+    "N04.5 候选重排与上下文构建",
+    "N05 标准话术或 LLM 回答生成",
+    "N06 回答质量与证据检查",
+    "Aux-01 单次反思",
+    "Aux-02 失败升级",
+    "N07 fail-closed 人工接管",
+    "N08 输出与执行轨迹",
+  ]) {
+    assert.ok(combined.includes(label), `missing workflow stage: ${label}`);
+  }
+
+  assert.match(combined, /8 个核心节点、11 条主边/);
+  assert.doesNotMatch(combined, /公开前端仍为静态降级/);
 });
 
 test("shared project summaries contain no superseded flagship language", async () => {
@@ -116,7 +148,7 @@ test("evidence catalog uses exact states and keeps planned items non-interactive
     "lumen-live-entry",
     "lumen-walkthrough",
   ]) assert.ok(source.includes(`id: "${id}"`), `missing evidence ${id}`);
-  for (const plannedId of ["data-platform-portal-entry", "data-platform-walkthrough", "lumen-walkthrough"]) {
+  for (const plannedId of ["data-platform-walkthrough", "lumen-walkthrough"]) {
     const start = source.indexOf(`id: "${plannedId}"`);
     const next = source.indexOf("\n  buildEvidence(", start + 1);
     const block = source.slice(start, next < 0 ? source.length : next);
@@ -124,6 +156,19 @@ test("evidence catalog uses exact states and keeps planned items non-interactive
     assert.doesNotMatch(block, /\bhref:/);
     assert.doesNotMatch(block, /\bassetUrl:/);
   }
+  const portalStart = source.indexOf('id: "data-platform-portal-entry"');
+  const portalNext = source.indexOf("\n  buildEvidence(", portalStart + 1);
+  const portalBlock = source.slice(
+    portalStart,
+    portalNext < 0 ? source.length : portalNext,
+  );
+
+  assert.match(portalBlock, /state: "available"/);
+  assert.match(
+    portalBlock,
+    /href: "https:\/\/portal-seven-jade-47\.vercel\.app\/"/,
+  );
+  assert.match(portalBlock, /不作为成功写入案例/);
   for (const [videoId, assetName] of [
     ["service-agent-live-demo-01", "live-demo-01"],
     ["service-agent-live-demo-02", "live-demo-02"],

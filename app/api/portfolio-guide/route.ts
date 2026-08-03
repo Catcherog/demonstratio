@@ -120,6 +120,10 @@ ${roleInstruction(role)}
 8. 推荐结构：结论 → 具体机制/案例 → 证据 → 当前边界。不要机械重复标题，也不要写空泛评价。
 9. 可以在正文中用“【项目名｜章节】”标示依据，但不要伪造 URL 或证据编号。
 10. 结尾最多给出 2 个有价值的追问方向，不要替招聘方作最终录用判断。
+11. 当用户询问"这个 AI 导览、作品集助手或官网机器人"时，必须依据"作品集 AI 导览"证据回答，并明确它与 Studio Customer Service 的区别。
+12. 不得声称作品集 AI 导览使用 LangGraph、ChromaDB、Embedding 或向量数据库；当前实现是代码事实源上的关键词、别名与规则排序。
+13. 导览没有长期记忆、工具调用或外部写入能力；多轮历史仅限当前请求携带的最近 6 条消息。
+14. 当项目资料存在运行边界时，必须同时说明已验证能力和当前未闭合部分。
 
 公开证据上下文：
 ${context}`;
@@ -203,6 +207,7 @@ export async function POST(request: Request): Promise<Response> {
             note,
             retrievedCount: sources.length,
             promptVersion: config.promptVersion,
+            knowledgeVersion: config.knowledgeVersion,
           }),
         );
       };

@@ -36,6 +36,18 @@ const SYNONYMS: Record<string, string[]> = {
   微调: ["微调", "lora", "qlora", "训练", "本地模型", "推理"],
   风险: ["风险", "fail-closed", "人工接管", "置信度", "拒答", "边界"],
   证据: ["证据", "验证", "测试", "状态", "评测", "指标", "回归"],
+  导览: [
+    "ai 导览",
+    "ai导览",
+    "作品集导览",
+    "作品集助手",
+    "官网机器人",
+    "导览机器人",
+    "作品集机器人",
+    "portfolio guide",
+    "ai guide",
+    "招聘官助手",
+  ],
 };
 
 const BROAD_PROJECT_TERMS = [
@@ -63,6 +75,16 @@ const PROJECT_ALIASES: Record<string, string[]> = {
   "mini-program": ["微信小程序", "小程序"],
   "brand-website": ["品牌官网", "泽怀官网"],
   "lora-finetuning": ["lora", "qlora", "微调", "本地推理"],
+  "portfolio-guide": [
+    "ai 导览",
+    "ai导览",
+    "作品集导览",
+    "作品集助手",
+    "官网机器人",
+    "导览机器人",
+    "portfolio guide",
+    "ai guide",
+  ],
 };
 
 const CROSS_PROJECT_TERMS = [...BROAD_PROJECT_TERMS, "对比", "区别", "关系"];
@@ -223,6 +245,97 @@ function flagshipDocuments(study: FlagshipCaseStudy): PortfolioDocument[] {
   ];
 }
 
+const PORTFOLIO_GUIDE_SOURCE_IDS = [
+  "app/api/portfolio-guide/route.ts",
+  "lib/portfolio-guide.ts",
+  "lib/portfolio-ai/config.ts",
+  "components/PortfolioGuide.tsx",
+];
+
+function portfolioGuideDocuments(): PortfolioDocument[] {
+  const title = "作品集 AI 导览";
+  const status = "Production｜证据约束型实时导览";
+
+  const sections: Array<{
+    id: string;
+    section: string;
+    content: string;
+  }> = [
+    {
+      id: "overview",
+      section: "系统定位",
+      content: [
+        "作品集 AI 导览是内嵌在官网中的只读证据导览系统。",
+        "它不是 Studio Customer Service，不复用 Service Agent 的 LangGraph 工作流。",
+        "它的目标是帮助招聘官、产品负责人和技术面试官理解项目事实、产品判断、技术实现、本人贡献和当前能力边界。",
+        "系统不会修改飞书、知识库、项目数据或任何外部系统。",
+      ].join("\n"),
+    },
+    {
+      id: "retrieval",
+      section: "知识源与检索",
+      content: [
+        "导览知识由官网代码中的公开内容动态构建，主要来源包括 content/projects.ts、content/flagship-cases、content/portfolio-evidence.ts，以及公开工作与教育经历。",
+        "当前检索使用关键词、项目别名、角色提示和规则加权排序，不使用 ChromaDB、Embedding 或向量数据库。",
+        "每次问题默认最多选择 8 个公开证据片段，并把完整片段作为上下文交给模型。",
+        "计划中、不可公开或没有权威引用的证据不会进入旗舰案例知识上下文。",
+      ].join("\n"),
+    },
+    {
+      id: "runtime",
+      section: "模型与运行链路",
+      content: [
+        "服务端通过火山引擎方舟的 OpenAI-compatible Chat Completions 接口调用模型，默认模型配置为 GLM-5.2。",
+        "回答通过 NDJSON 流式返回，同时返回命中的项目来源、项目状态和章节。",
+        "系统支持 live、guided 和 fallback 三种模式；主模型不可用时可以尝试备用模型，全部失败时使用离线证据回答。",
+        "单次问题最多 600 个字符；当前会话最多携带最近 6 条 user/assistant 历史消息。",
+      ].join("\n"),
+    },
+    {
+      id: "safety",
+      section: "安全与能力边界",
+      content: [
+        "导览只允许基于公开证据回答，不得补写未公开的客户、收入、准确率、生产效果或模型评测结果。",
+        "它没有长期记忆；最近 6 条消息只用于当前浏览器会话中的连续追问。",
+        "它没有工具调用、外部写入或业务操作能力。",
+        "工程测试数量只能证明代码回归，不能解释为模型回答准确率。",
+        "当前没有正式发布的 AI 导览回答质量分数。",
+      ].join("\n"),
+    },
+    {
+      id: "maintenance",
+      section: "资料更新机制",
+      content: [
+        "导览知识与官网公开事实共用同一套 TypeScript 内容源。",
+        "项目状态、证据、工作流或能力边界发生变化时，需要同时更新官网事实文件、检索别名和合同测试。",
+        "当前没有独立向量索引，因此更新资料后不需要执行文档切分、Embedding 或向量库重建。",
+        "知识更新通过代码审查、自动测试、Preview 问答回归和 Production 发布完成。",
+      ].join("\n"),
+    },
+  ];
+
+  return sections.map(({ id, section, content }) => ({
+    evidenceId: `portfolio-guide:${id}`,
+    evidenceIds: PORTFOLIO_GUIDE_SOURCE_IDS,
+    projectSlug: "portfolio-guide",
+    title,
+    status,
+    href: "/#portfolio-guide",
+    section,
+    excerpt: content.slice(0, 320),
+    content,
+    searchText: [
+      title,
+      status,
+      section,
+      content,
+      "AI 导览 作品集助手 官网机器人 portfolio guide evidence grounded read only",
+    ]
+      .join("\n")
+      .toLowerCase(),
+  }));
+}
+
 function experienceDocuments(): PortfolioDocument[] {
   const items = [
     {
@@ -266,6 +379,7 @@ export const portfolioDocuments: PortfolioDocument[] = [
     const study = flagshipBySlug.get(project.slug);
     return study ? flagshipDocuments(study) : flattenSupportingProject(project);
   }),
+  ...portfolioGuideDocuments(),
   ...experienceDocuments(),
 ];
 
@@ -470,7 +584,7 @@ export function staticPortfolioAnswer(
   const crossProject = CROSS_PROJECT_TERMS.some((term) => question.toLowerCase().includes(term));
 
   const conclusion = crossProject
-    ? "结论：这份作品集不是只有三个项目。三个主案例负责集中证明核心能力，另外六个案例展示通道、增长、用户产品和模型训练等支撑能力。"
+    ? "结论：这份作品集以三个旗舰案例集中证明核心能力，并由其余公开案例补充通道、增长、用户产品、数据摄入和模型训练等支撑能力。"
     : `结论：与这个问题最相关的是${top
         .slice(0, 3)
         .map((source) => `「${source.title}」`)

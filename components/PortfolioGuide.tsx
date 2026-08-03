@@ -24,6 +24,7 @@ type Turn = {
   model?: string;
   retrievedCount?: number;
   note?: string;
+  knowledgeVersion?: string;
 };
 
 type MetaState = {
@@ -31,6 +32,7 @@ type MetaState = {
   model?: string;
   retrievedCount?: number;
   note?: string;
+  knowledgeVersion?: string;
 };
 
 type WaitState = {
@@ -82,6 +84,13 @@ function modelLabel(model?: string): string {
   if (!model) return "";
   const [, name = model] = model.split("/");
   return name.replaceAll("-", " ");
+}
+
+function knowledgeLabel(version?: string): string {
+  if (!version) return "";
+
+  const date = version.match(/\d{4}-\d{2}-\d{2}/)?.[0];
+  return date ? `资料版本 ${date}` : `资料版本 ${version}`;
 }
 
 function getWaitState({
@@ -399,6 +408,7 @@ export function PortfolioGuide() {
             text?: string;
             items?: SourceItem[];
             message?: string;
+            knowledgeVersion?: string;
           };
 
           if (streamEvent.type === "meta") {
@@ -407,6 +417,8 @@ export function PortfolioGuide() {
               model: streamEvent.model ?? meta.model,
               note: streamEvent.note ?? meta.note,
               retrievedCount: streamEvent.retrievedCount ?? meta.retrievedCount,
+              knowledgeVersion:
+                streamEvent.knowledgeVersion ?? meta.knowledgeVersion,
             };
             setStreamingMeta(meta);
           }
@@ -445,6 +457,7 @@ export function PortfolioGuide() {
             model: meta.model,
             retrievedCount: meta.retrievedCount,
             note: meta.note,
+            knowledgeVersion: meta.knowledgeVersion,
           },
         ]);
         setQuestion("");
@@ -572,6 +585,9 @@ export function PortfolioGuide() {
                     <small>{modeLabel(turn.mode)}</small>
                     {turn.model ? <small>{modelLabel(turn.model)}</small> : null}
                     {turn.retrievedCount ? <small>检索 {turn.retrievedCount} 条证据</small> : null}
+                    {turn.knowledgeVersion ? (
+                      <small>{knowledgeLabel(turn.knowledgeVersion)}</small>
+                    ) : null}
                   </div>
                   <GuideAnswer text={turn.answer} />
                   {turn.note ? <p className="guide-mode-note">{turn.note}</p> : null}
@@ -598,6 +614,9 @@ export function PortfolioGuide() {
                   {streamingMeta.model ? <small>{modelLabel(streamingMeta.model)}</small> : null}
                   {streamingMeta.retrievedCount ? (
                     <small>检索 {streamingMeta.retrievedCount} 条证据</small>
+                  ) : null}
+                  {streamingMeta.knowledgeVersion ? (
+                    <small>{knowledgeLabel(streamingMeta.knowledgeVersion)}</small>
                   ) : null}
                 </div>
 

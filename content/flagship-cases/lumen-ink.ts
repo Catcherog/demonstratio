@@ -6,7 +6,7 @@ export const lumenInkCase: FlagshipCaseStudy = {
     oneLine: "把一次性图像生成收敛为有任务状态、Provider 边界、结果复核和历史回看的专业工作台。",
     responsibility: "负责产品定义、交互设计、Provider 抽象、任务与持久化边界、全栈 MVP 和真实编辑验证。",
     status: "Live Demo｜真实 Provider 编辑已验证",
-    boundary: "仅 Seedream 4.5 文生图与图生图两项操作完成真实验证；液化、修复、消除及其他模式仍未验证。",
+    boundary: "仅 Seedream 4.5 文生图与图生图两项操作完成真实验证；液化、修复、消除及其他模式仍未验证。公开工作台与健康接口当前可访问，但登录链路仍可能因 auth throttle 或 CloudBase 可达性 fail-closed 返回 503，因此不能表述为全面可用。",
     claimIds: [
       "LUMEN-PROVIDER-COUNT",
       "LUMEN-TOOL-COUNT",
@@ -152,8 +152,10 @@ export const lumenInkCase: FlagshipCaseStudy = {
       trigger: "需要确认公开入口、健康状态和授权边界。",
       productChange: "公开页面显示真实服务状态和失败反馈。",
       technicalChange: "核验根页、健康接口和未授权请求。",
-      result: "生产入口与授权边界完成受控验证。",
-      boundary: "仍未证明具体编辑操作。",
+      result:
+        "生产入口和健康接口完成受控验证，未授权与依赖失败会返回明确错误。",
+      boundary:
+        "当前登录链路仍可能因 auth throttle 或 CloudBase 可达性 fail-closed 返回 503；不主张全面可用。",
       evidenceRefs: ["E-LUMEN-PRODUCTION"],
     },
     {
@@ -164,6 +166,15 @@ export const lumenInkCase: FlagshipCaseStudy = {
       result: "两项核心操作完成真实验证。",
       boundary: "液化、修复、消除和其他模式仍关闭声明。",
       evidenceRefs: ["E-LUMEN-EDIT"],
+    },
+    {
+      version: "Login hardening · 进行中",
+      trigger: "生产环境登录链路出现 auth throttle 和 CloudBase 可达性问题。",
+      productChange: "公开工作台维持可用但增加 fail-closed 边界提示。",
+      technicalChange: "排查 auth throttle 和 CloudBase 依赖问题，加固登录链路、CloudBase 限流依赖与 fail-closed 503 可用性。",
+      result: "尚未闭合。",
+      boundary: "登录链路仍可能因 auth throttle 或 CloudBase 可达性 fail-closed 返回 503；不主张全面可用。",
+      evidenceRefs: ["E-LUMEN-PRODUCTION"],
     },
   ],
   evidenceIds: [
