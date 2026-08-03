@@ -191,7 +191,7 @@ export async function POST(request: Request): Promise<Response> {
     return errorResponse(`问题最多 ${MAX_QUESTION_LENGTH} 个字符。`, 400);
   }
 
-  const sources = retrievePortfolioSources(message, role, 8);
+  const sources = retrievePortfolioSources(message, role, 8, history);
   const context = contextForSources(sources);
   const modelCandidates = uniqueModels(config.model, config.fallbackModels);
   const legacyKey = isLegacyKeySource();
@@ -328,7 +328,7 @@ export async function POST(request: Request): Promise<Response> {
         sendMeta("guided", undefined, "实时模型尚未配置，当前使用离线证据导览。");
       }
 
-      const fallback = staticPortfolioAnswer(message, role, sources);
+      const fallback = staticPortfolioAnswer(message, role, sources, history);
       for (const chunk of splitForStreaming(fallback)) {
         if (request.signal.aborted) break;
         controller.enqueue(ndjson({ type: "delta", text: chunk }));

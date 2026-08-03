@@ -21,6 +21,11 @@ export type PortfolioDocument = Omit<PortfolioSource, "score"> & {
   evidenceIds: string[];
 };
 
+export type GuideHistoryMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 const ROLE_HINTS: Record<GuideRole, string[]> = {
   recruiter: ["角色", "职责", "交付", "成果", "经历", "岗位", "能力", "负责", "团队"],
   "product-lead": ["产品", "决策", "取舍", "业务", "闭环", "用户", "流程", "指标", "边界"],
@@ -433,14 +438,46 @@ function scoreDocument(document: PortfolioDocument, question: string, terms: str
   return score;
 }
 
+const FOLLOW_UP_PRONOUNS = ["它", "它的", "它用", "它是", "它有", "这个", "那个", "这", "那", "其", "该"];
+
+function isPronounFollowUp(message: string): boolean {
+  const trimmed = message.trim();
+  if (trimmed.length === 0) return false;
+  if (trimmed.length <= 24) {
+    return FOLLOW_UP_PRONOUNS.some((pronoun) => trimmed.includes(pronoun));
+  }
+  return FOLLOW_UP_PRONOUNS.some((pronoun) => trimmed.startsWith(pronoun));
+}
+
+function lastUserMessage(history: GuideHistoryMessage[] | undefined): string | undefined {
+  if (!history || history.length === 0) return undefined;
+  for (let index = history.length - 1; index >= 0; index -= 1) {
+    if (history[index].role === "user") return history[index].content;
+  }
+  return undefined;
+}
+
+export function resolveSearchQuery(
+  message: string,
+  history: GuideHistoryMessage[] | undefined,
+): string {
+  if (!history || history.length === 0) return message;
+  if (!isPronounFollowUp(message)) return message;
+  const lastUser = lastUserMessage(history);
+  if (!lastUser) return message;
+  return `${lastUser} ${message}`;
+}
+
 export function retrievePortfolioSources(
   question: string,
   role: GuideRole,
   limit = 8,
+  history?: GuideHistoryMessage[],
 ): PortfolioSource[] {
-  const terms = queryTerms(question, role);
-  const broadProjectQuestion = BROAD_PROJECT_TERMS.some((term) => question.toLowerCase().includes(term));
-  const crossProject = CROSS_PROJECT_TERMS.some((term) => question.toLowerCase().includes(term));
+  const searchQuery = resolveSearchQuery(question, history);
+  const terms = queryTerms(searchQuery, role);
+  const broadProjectQuestion = BROAD_PROJECT_TERMS.some((term) => searchQuery.toLowerCase().includes(term));
+  const crossProject = CROSS_PROJECT_TERMS.some((term) => searchQuery.toLowerCase().includes(term));
 
   if (broadProjectQuestion) {
     return projects.map((project) => {
@@ -455,12 +492,12 @@ export function retrievePortfolioSources(
         href: `/projects/${project.slug}`,
         section: "项目概览",
         excerpt: overview?.excerpt ?? project.summary,
-        score: overview ? scoreDocument(overview, question, terms) : 0,
+        score: overview ? scoreDocument(overview, searchQuery, terms) : 0,
       };
     });
   }
 
-  const normalizedQuestion = question.toLowerCase();
+  const normalizedQuestion = searchQuery.toLowerCase();
   const explicitProjectSlugs = Object.entries(PROJECT_ALIASES)
     .filter(([, aliases]) => aliases.some((alias) => normalizedQuestion.includes(alias.toLowerCase())))
     .map(([slug]) => slug);
@@ -470,7 +507,7 @@ export function retrievePortfolioSources(
     : portfolioDocuments;
 
   const ranked = candidateDocuments
-    .map((document) => ({ ...document, score: scoreDocument(document, question, terms) }))
+    .map((document) => ({ ...document, score: scoreDocument(document, searchQuery, terms) }))
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title, "zh-CN"));
 
   const selected: PortfolioSource[] = [];
@@ -570,6 +607,7 @@ export function staticPortfolioAnswer(
   question: string,
   role: GuideRole,
   sources: PortfolioSource[],
+  history?: GuideHistoryMessage[],
 ): string {
   // Deduplicate by project slug: each project appears at most once in the offline answer.
   // This prevents "微信公众号 AI 客服机器人" from appearing 3+ times when retrieval
@@ -581,7 +619,8 @@ export function staticPortfolioAnswer(
     return true;
   });
   const top = dedupedSources.slice(0, 4);
-  const crossProject = CROSS_PROJECT_TERMS.some((term) => question.toLowerCase().includes(term));
+  const searchQuery = resolveSearchQuery(question, history);
+  const crossProject = CROSS_PROJECT_TERMS.some((term) => searchQuery.toLowerCase().includes(term));
 
   const conclusion = crossProject
     ? "结论：这份作品集以三个旗舰案例集中证明核心能力，并由其余公开案例补充通道、增长、用户产品、数据摄入和模型训练等支撑能力。"
