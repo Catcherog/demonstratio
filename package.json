@@ -9,25 +9,26 @@
     "lint": "tsc --noEmit",
     "check:portfolio": "node scripts/consistency-gate.mjs",
     "test:v5": "node --test tests/v5-home-contract.test.mjs",
-    "test:guide": "node --test tests/portfolio-guide.test.mjs",
+    "test:guide": "node --import tsx --test tests/portfolio-guide.test.mjs tests/portfolio-guide-followup.test.ts",
     "check:portfolio-ai": "node scripts/check-portfolio-ai-guide.mjs",
     "check:portfolio-model": "node scripts/check-portfolio-model.mjs",
     "check:portfolio-glm": "node scripts/check-portfolio-model.mjs",
     "test:cases": "node --test tests/flagship-authority-contract.test.mjs tests/flagship-case-contract.test.mjs",
     "test:case-browser": "playwright test tests/service-agent-case-navigation.spec.mjs",
-    "test": "node --test tests/homepage-editorial-responsive.test.mjs tests/v5-home-contract.test.mjs tests/homepage-mobile-first-pass.test.mjs tests/portfolio-guide-ux-r2.test.mjs tests/portfolio-guide.test.mjs"
+    "test": "node --import tsx --test tests/homepage-editorial-responsive.test.mjs tests/v5-home-contract.test.mjs tests/homepage-mobile-first-pass.test.mjs tests/portfolio-guide-ux-r2.test.mjs tests/portfolio-guide.test.mjs tests/portfolio-guide-followup.test.ts"
   },
   "dependencies": {
+    "ai": "^6.0.34",
     "next": "16.2.10",
     "react": "19.2.7",
-    "react-dom": "19.2.7",
-    "ai": "^6.0.34"
+    "react-dom": "19.2.7"
   },
   "devDependencies": {
+    "@playwright/test": "1.62.1",
     "@types/node": "24.10.1",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@playwright/test": "1.62.1",
+    "tsx": "^4.23.5",
     "typescript": "6.0.2"
   },
   "overrides": {

@@ -21,6 +21,11 @@ export type PortfolioDocument = Omit<PortfolioSource, "score"> & {
   evidenceIds: string[];
 };
 
+export type GuideHistoryMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 const ROLE_HINTS: Record<GuideRole, string[]> = {
   recruiter: ["角色", "职责", "交付", "成果", "经历", "岗位", "能力", "负责", "团队"],
   "product-lead": ["产品", "决策", "取舍", "业务", "闭环", "用户", "流程", "指标", "边界"],
@@ -36,6 +41,18 @@ const SYNONYMS: Record<string, string[]> = {
   微调: ["微调", "lora", "qlora", "训练", "本地模型", "推理"],
   风险: ["风险", "fail-closed", "人工接管", "置信度", "拒答", "边界"],
   证据: ["证据", "验证", "测试", "状态", "评测", "指标", "回归"],
+  导览: [
+    "ai 导览",
+    "ai导览",
+    "作品集导览",
+    "作品集助手",
+    "官网机器人",
+    "导览机器人",
+    "作品集机器人",
+    "portfolio guide",
+    "ai guide",
+    "招聘官助手",
+  ],
 };
 
 const BROAD_PROJECT_TERMS = [
@@ -63,6 +80,43 @@ const PROJECT_ALIASES: Record<string, string[]> = {
   "mini-program": ["微信小程序", "小程序"],
   "brand-website": ["品牌官网", "泽怀官网"],
   "lora-finetuning": ["lora", "qlora", "微调", "本地推理"],
+  "portfolio-guide": [
+    "ai 导览",
+    "ai导览",
+    "作品集导览",
+    "作品集助手",
+    "官网机器人",
+    "导览机器人",
+    "portfolio guide",
+    "ai guide",
+  ],
+};
+
+// Strong subject aliases identify which project the user is *asking about*.
+// Technology words (LangGraph, RAG, ChromaDB, Embedding, 向量数据库) are
+// intentionally excluded — they should inform scoring, but never force-switch
+// the retrieval scope to a different project when the conversation is already
+// anchored on a project subject.
+const STRONG_PROJECT_SUBJECT_ALIASES: Record<string, string[]> = {
+  "data-platform": ["飞书数据平台", "数据中台", "feishu data platform"],
+  "service-agent": ["service agent", "serviceagent", "service-agent", "客服 agent", "客服agent", "studio customer service"],
+  "lumen-ink": ["光砚", "lumen ink"],
+  "wechat-bot": ["微信公众号机器人", "微信机器人客服", "wechat bot", "wechat-bot"],
+  collator: ["collator", "摄入 agent", "摄入agent", "数据摄入"],
+  "content-research": ["内容调研", "增长工具"],
+  "mini-program": ["微信小程序", "小程序"],
+  "brand-website": ["品牌官网", "泽怀官网"],
+  "lora-finetuning": ["lora", "qlora"],
+  "portfolio-guide": [
+    "ai 导览",
+    "ai导览",
+    "作品集导览",
+    "作品集助手",
+    "官网机器人",
+    "导览机器人",
+    "portfolio guide",
+    "ai guide",
+  ],
 };
 
 const CROSS_PROJECT_TERMS = [...BROAD_PROJECT_TERMS, "对比", "区别", "关系"];
@@ -223,6 +277,97 @@ function flagshipDocuments(study: FlagshipCaseStudy): PortfolioDocument[] {
   ];
 }
 
+const PORTFOLIO_GUIDE_SOURCE_IDS = [
+  "app/api/portfolio-guide/route.ts",
+  "lib/portfolio-guide.ts",
+  "lib/portfolio-ai/config.ts",
+  "components/PortfolioGuide.tsx",
+];
+
+function portfolioGuideDocuments(): PortfolioDocument[] {
+  const title = "作品集 AI 导览";
+  const status = "Production｜证据约束型实时导览";
+
+  const sections: Array<{
+    id: string;
+    section: string;
+    content: string;
+  }> = [
+    {
+      id: "overview",
+      section: "系统定位",
+      content: [
+        "作品集 AI 导览是内嵌在官网中的只读证据导览系统。",
+        "它不是 Studio Customer Service，不复用 Service Agent 的 LangGraph 工作流。",
+        "它的目标是帮助招聘官、产品负责人和技术面试官理解项目事实、产品判断、技术实现、本人贡献和当前能力边界。",
+        "系统不会修改飞书、知识库、项目数据或任何外部系统。",
+      ].join("\n"),
+    },
+    {
+      id: "retrieval",
+      section: "知识源与检索",
+      content: [
+        "导览知识由官网代码中的公开内容动态构建，主要来源包括 content/projects.ts、content/flagship-cases、content/portfolio-evidence.ts，以及公开工作与教育经历。",
+        "当前检索使用关键词、项目别名、角色提示和规则加权排序，不使用 ChromaDB、Embedding 或向量数据库。",
+        "每次问题默认最多选择 8 个公开证据片段，并把完整片段作为上下文交给模型。",
+        "计划中、不可公开或没有权威引用的证据不会进入旗舰案例知识上下文。",
+      ].join("\n"),
+    },
+    {
+      id: "runtime",
+      section: "模型与运行链路",
+      content: [
+        "服务端通过火山引擎方舟的 OpenAI-compatible Chat Completions 接口调用模型，默认模型配置为 GLM-5.2。",
+        "回答通过 NDJSON 流式返回，同时返回命中的项目来源、项目状态和章节。",
+        "系统支持 live、guided 和 fallback 三种模式；主模型不可用时可以尝试备用模型，全部失败时使用离线证据回答。",
+        "单次问题最多 600 个字符；当前会话最多携带最近 6 条 user/assistant 历史消息。",
+      ].join("\n"),
+    },
+    {
+      id: "safety",
+      section: "安全与能力边界",
+      content: [
+        "导览只允许基于公开证据回答，不得补写未公开的客户、收入、准确率、生产效果或模型评测结果。",
+        "它没有长期记忆；最近 6 条消息只用于当前浏览器会话中的连续追问。",
+        "它没有工具调用、外部写入或业务操作能力。",
+        "工程测试数量只能证明代码回归，不能解释为模型回答准确率。",
+        "当前没有正式发布的 AI 导览回答质量分数。",
+      ].join("\n"),
+    },
+    {
+      id: "maintenance",
+      section: "资料更新机制",
+      content: [
+        "导览知识与官网公开事实共用同一套 TypeScript 内容源。",
+        "项目状态、证据、工作流或能力边界发生变化时，需要同时更新官网事实文件、检索别名和合同测试。",
+        "当前没有独立向量索引，因此更新资料后不需要执行文档切分、Embedding 或向量库重建。",
+        "知识更新通过代码审查、自动测试、Preview 问答回归和 Production 发布完成。",
+      ].join("\n"),
+    },
+  ];
+
+  return sections.map(({ id, section, content }) => ({
+    evidenceId: `portfolio-guide:${id}`,
+    evidenceIds: PORTFOLIO_GUIDE_SOURCE_IDS,
+    projectSlug: "portfolio-guide",
+    title,
+    status,
+    href: "/#portfolio-guide",
+    section,
+    excerpt: content.slice(0, 320),
+    content,
+    searchText: [
+      title,
+      status,
+      section,
+      content,
+      "AI 导览 作品集助手 官网机器人 portfolio guide evidence grounded read only",
+    ]
+      .join("\n")
+      .toLowerCase(),
+  }));
+}
+
 function experienceDocuments(): PortfolioDocument[] {
   const items = [
     {
@@ -266,6 +411,7 @@ export const portfolioDocuments: PortfolioDocument[] = [
     const study = flagshipBySlug.get(project.slug);
     return study ? flagshipDocuments(study) : flattenSupportingProject(project);
   }),
+  ...portfolioGuideDocuments(),
   ...experienceDocuments(),
 ];
 
@@ -319,14 +465,113 @@ function scoreDocument(document: PortfolioDocument, question: string, terms: str
   return score;
 }
 
+const FOLLOW_UP_PRONOUNS = ["它", "它的", "它用", "它是", "它有", "这个", "那个", "这", "那", "其", "该"];
+
+// “这个/这/那/该” only counts as a pronoun follow-up when it opens a short
+// follow-up question. A longer question that merely contains “这个” (e.g.
+// “飞书这个项目怎么写入？”) is treated as a new explicit subject, not a
+// follow-up — otherwise the prior AI-guide topic would leak into the feishu
+// question.
+function isPronounFollowUp(message: string): boolean {
+  const trimmed = message.trim();
+  if (trimmed.length === 0) return false;
+  if (trimmed.length > 24) return false;
+  const startsWithPronoun = FOLLOW_UP_PRONOUNS.some((pronoun) => trimmed.startsWith(pronoun));
+  if (startsWithPronoun) return true;
+  // Bare pronoun + technology word (e.g. “它用了 LangGraph 吗？”) also counts.
+  return /^(它|它的|它用|它是|它有)\b/.test(trimmed);
+}
+
+// For pronoun follow-ups, walk back through history to find the most recent
+// user message that establishes a strong project subject. This handles double
+// follow-ups where the immediate previous user turn is itself a pronoun
+// follow-up (e.g. "它用了 LangGraph 吗？") with no strong subject of its own.
+function lastAnchoredUserMessage(
+  history: GuideHistoryMessage[] | undefined,
+): { message: string; subjectSlugs: string[] } | undefined {
+  if (!history || history.length === 0) return undefined;
+  for (let index = history.length - 1; index >= 0; index -= 1) {
+    if (history[index].role !== "user") continue;
+    const slugs = findStrongProjectSubjects(history[index].content);
+    if (slugs.length > 0) {
+      return { message: history[index].content, subjectSlugs: slugs };
+    }
+  }
+  return undefined;
+}
+
+function findStrongProjectSubjects(text: string): string[] {
+  if (!text) return [];
+  const lower = text.toLowerCase();
+  const slugs = new Set<string>();
+  for (const [slug, aliases] of Object.entries(STRONG_PROJECT_SUBJECT_ALIASES)) {
+    if (aliases.some((alias) => lower.includes(alias.toLowerCase()))) {
+      slugs.add(slug);
+    }
+  }
+  return [...slugs];
+}
+
+export type ResolvedSearchContext = {
+  searchQuery: string;
+  scopedProjectSlugs: string[];
+};
+
+export function resolveSearchContext(
+  message: string,
+  history?: GuideHistoryMessage[],
+): ResolvedSearchContext {
+  // 1. Current message explicitly names a project subject → stay on current
+  //    subject, do not inherit history. Technology words alone (LangGraph/RAG)
+  //    do NOT count as strong subjects.
+  const currentStrongSlugs = findStrongProjectSubjects(message);
+  if (currentStrongSlugs.length > 0) {
+    return {
+      searchQuery: message,
+      scopedProjectSlugs: currentStrongSlugs,
+    };
+  }
+
+  // 2. Only a real pronoun follow-up inherits the prior anchor. This avoids
+  //    leaking the prior topic into explicit new questions. Walk back to the
+  //    most recent user message that establishes a strong project subject, so
+  //    double follow-ups (Q3 is a pronoun follow-up of Q2 which was itself a
+  //    pronoun follow-up of Q1) still inherit Q1's subject.
+  if (isPronounFollowUp(message) && history && history.length > 0) {
+    const anchor = lastAnchoredUserMessage(history);
+    if (anchor) {
+      return {
+        searchQuery: `${anchor.message} ${message}`,
+        scopedProjectSlugs: anchor.subjectSlugs,
+      };
+    }
+  }
+
+  return {
+    searchQuery: message,
+    scopedProjectSlugs: [],
+  };
+}
+
+// Backwards-compatible string resolver. Tests and callers that only need the
+// merged query string can keep using this.
+export function resolveSearchQuery(
+  message: string,
+  history: GuideHistoryMessage[] | undefined,
+): string {
+  return resolveSearchContext(message, history).searchQuery;
+}
+
 export function retrievePortfolioSources(
   question: string,
   role: GuideRole,
   limit = 8,
+  history?: GuideHistoryMessage[],
 ): PortfolioSource[] {
-  const terms = queryTerms(question, role);
-  const broadProjectQuestion = BROAD_PROJECT_TERMS.some((term) => question.toLowerCase().includes(term));
-  const crossProject = CROSS_PROJECT_TERMS.some((term) => question.toLowerCase().includes(term));
+  const { searchQuery, scopedProjectSlugs } = resolveSearchContext(question, history);
+  const terms = queryTerms(searchQuery, role);
+  const broadProjectQuestion = BROAD_PROJECT_TERMS.some((term) => searchQuery.toLowerCase().includes(term));
+  const crossProject = CROSS_PROJECT_TERMS.some((term) => searchQuery.toLowerCase().includes(term));
 
   if (broadProjectQuestion) {
     return projects.map((project) => {
@@ -341,22 +586,22 @@ export function retrievePortfolioSources(
         href: `/projects/${project.slug}`,
         section: "项目概览",
         excerpt: overview?.excerpt ?? project.summary,
-        score: overview ? scoreDocument(overview, question, terms) : 0,
+        score: overview ? scoreDocument(overview, searchQuery, terms) : 0,
       };
     });
   }
 
-  const normalizedQuestion = question.toLowerCase();
-  const explicitProjectSlugs = Object.entries(PROJECT_ALIASES)
-    .filter(([, aliases]) => aliases.some((alias) => normalizedQuestion.includes(alias.toLowerCase())))
-    .map(([slug]) => slug);
-
-  const candidateDocuments = explicitProjectSlugs.length > 0
-    ? portfolioDocuments.filter((document) => explicitProjectSlugs.includes(document.projectSlug))
+  // Use strong subject scoping (resolveSearchContext) instead of raw
+  // PROJECT_ALIASES matching. Technology words (LangGraph/RAG) no longer
+  // force-switch the retrieval scope to a different project when the
+  // conversation is already anchored on a project subject.
+  const candidateDocuments = scopedProjectSlugs.length > 0
+    ? portfolioDocuments.filter((document) => scopedProjectSlugs.includes(document.projectSlug))
     : portfolioDocuments;
+  const explicitProjectSlugs = scopedProjectSlugs;
 
   const ranked = candidateDocuments
-    .map((document) => ({ ...document, score: scoreDocument(document, question, terms) }))
+    .map((document) => ({ ...document, score: scoreDocument(document, searchQuery, terms) }))
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title, "zh-CN"));
 
   const selected: PortfolioSource[] = [];
@@ -456,6 +701,7 @@ export function staticPortfolioAnswer(
   question: string,
   role: GuideRole,
   sources: PortfolioSource[],
+  history?: GuideHistoryMessage[],
 ): string {
   // Deduplicate by project slug: each project appears at most once in the offline answer.
   // This prevents "微信公众号 AI 客服机器人" from appearing 3+ times when retrieval
@@ -467,10 +713,11 @@ export function staticPortfolioAnswer(
     return true;
   });
   const top = dedupedSources.slice(0, 4);
-  const crossProject = CROSS_PROJECT_TERMS.some((term) => question.toLowerCase().includes(term));
+  const searchQuery = resolveSearchQuery(question, history);
+  const crossProject = CROSS_PROJECT_TERMS.some((term) => searchQuery.toLowerCase().includes(term));
 
   const conclusion = crossProject
-    ? "结论：这份作品集不是只有三个项目。三个主案例负责集中证明核心能力，另外六个案例展示通道、增长、用户产品和模型训练等支撑能力。"
+    ? "结论：这份作品集以三个旗舰案例集中证明核心能力，并由其余公开案例补充通道、增长、用户产品、数据摄入和模型训练等支撑能力。"
     : `结论：与这个问题最相关的是${top
         .slice(0, 3)
         .map((source) => `「${source.title}」`)

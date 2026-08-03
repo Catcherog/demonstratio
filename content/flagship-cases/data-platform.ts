@@ -157,6 +157,15 @@ export const dataPlatformCase: FlagshipCaseStudy = {
       evidenceRefs: ["E-FEISHU-LIVE-SCHEMA"],
     },
     {
+      version: "Public Portal UI · 公开产品入口",
+      trigger: "需要让招聘方直接理解候选确认、治理 Gate 和受控写入计划的产品交互。",
+      productChange: "发布飞书智能录入台公开前端，展示从来源输入到结果回读的操作流程。",
+      technicalChange: "前端部署至 Vercel；Collator 与 SOP 服务继续保持受控连接和写入边界。",
+      result: "公开 Portal UI 已可访问。",
+      boundary: "公开入口不等于正式业务 Base 已开放写入；本轮 partial 运行不能作为成功案例。",
+      evidenceRefs: ["E-FEISHU-SOURCES", "E-FEISHU-PILOT-TESTS"],
+    },
+    {
       version: "Pilot · 待启用",
       trigger: "字段差异、权限和回滚方案闭合后才能进入真实业务验证。",
       productChange: "限定 Pilot 范围、操作角色和异常升级路径。",

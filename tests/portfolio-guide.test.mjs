@@ -188,3 +188,45 @@ test("guide preserves the current availability and schema boundaries", async () 
   assert.match(source, /10 表[、\s\/]+216 字段/);
   assert.match(source, /生产 Schema 元数据只读检查/);
 });
+
+test("guide contains self-describing knowledge without borrowing Service Agent architecture", async () => {
+  const source = await readFile(
+    new URL("../lib/portfolio-guide.ts", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(source, /projectSlug: "portfolio-guide"/);
+  assert.match(source, /作品集 AI 导览是内嵌在官网中的只读证据导览系统/);
+  assert.match(source, /不使用 ChromaDB、Embedding 或向量数据库/);
+  assert.match(source, /没有长期记忆/);
+  assert.match(source, /没有工具调用、外部写入或业务操作能力/);
+  assert.match(source, /portfolioGuideDocuments\(\)/);
+});
+
+test("guide knowledge aliases cover natural questions about the website assistant", async () => {
+  const source = await readFile(
+    new URL("../lib/portfolio-guide.ts", import.meta.url),
+    "utf8",
+  );
+
+  for (const alias of [
+    "AI 导览",
+    "作品集助手",
+    "官网机器人",
+    "导览机器人",
+    "portfolio guide",
+    "ai guide",
+  ]) {
+    assert.ok(source.toLowerCase().includes(alias.toLowerCase()));
+  }
+});
+
+test("offline cross-project answer does not hardcode supporting project count", async () => {
+  const source = await readFile(
+    new URL("../lib/portfolio-guide.ts", import.meta.url),
+    "utf8",
+  );
+
+  assert.doesNotMatch(source, /另外六个案例/);
+  assert.match(source, /其余公开案例/);
+});

@@ -39,11 +39,18 @@ try {
 }
 
 check(page.includes("<PortfolioGuide"), "首页应渲染 PortfolioGuide");
-check(page.includes("<ProjectLibrary projects={projects}"), "完整项目库应接收全部 projects");
+check(
+  /<ProjectLibrary\s+projects=\{homepageProjects\}\s*\/>/.test(page),
+  "完整项目库应接收 homepageProjects",
+);
+check(
+  /export const homepageProjects\s*=\s*projects\.filter\(\(project\)\s*=>\s*!project\.archived\)/.test(projects),
+  "homepageProjects 应覆盖全部未归档项目",
+);
 check(!page.includes("<ProjectLibrary projects={featuredProjects}"), "完整项目库不能只接收 featuredProjects");
 check(!page.includes("开始 90 秒导览"), "主入口不应继续叫“开始 90 秒导览”");
-check(guide.includes("开始 AI 导览"), "导览组件应使用“开始 AI 导览”");
-check(guide.includes("LLM · EVIDENCE RETRIEVAL · READ ONLY"), "导览组件应展示技术能力标识");
+check(guide.includes("AI 快速判断"), "导览组件应展示 R2 移动端入口“AI 快速判断”");
+check(guide.includes("EVIDENCE-GROUNDED · READ ONLY"), "导览窗口应展示 R2 证据约束与只读标识");
 check(guide.includes('/api/portfolio-guide'), "导览组件应调用 Portfolio Guide API");
 check(route.includes("streamText") || route.includes("callVolcengineArk") || (route.includes("chat/completions") && route.includes("text/event-stream")), "API 应接入流式模型调用（通过适配器或直接调用）");
 check(route.includes("retrievePortfolioSources"), "API 应先执行作品集证据检索");
@@ -77,5 +84,5 @@ if (failures.length > 0) {
   for (const item of failures) console.error(`  ✗ ${item}`);
   process.exitCode = 1;
 } else {
-  console.log("\nPORTFOLIO_AI_GUIDE_AND_FULL_LIBRARY_R1 CHECK PASS");
+  console.log("\nPORTFOLIO_AI_GUIDE_AND_FULL_LIBRARY_R2 CHECK PASS");
 }

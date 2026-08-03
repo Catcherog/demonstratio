@@ -1,22 +1,140 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
   <title id="title">Service Agent 风险优先工作流图</title>
-  <desc id="desc">输入经过风险分类、查询解析、检索和支持度检查，最终进入有证据回答或人工接管。</desc>
-  <rect width="1200" height="640" fill="#F2EEE4"/>
-  <text x="72" y="82" fill="#1C1820" font-size="34" font-family="sans-serif" font-weight="700">Service Agent · risk-first workflow</text>
-  <text x="72" y="122" fill="#4F4054" font-size="20" font-family="sans-serif">模型建议不能覆盖确定性硬风险与人工确认 Gate</text>
+  <desc id="desc">N01 输入到 N08 输出的完整工作流，包含 N03.5 查询改写、N04.5 候选重排、Aux-01 单次反思和 Aux-02 失败升级等辅助 Stage，N07 为 fail-closed 人工接管。</desc>
+  <rect width="1200" height="820" fill="#F2EEE4"/>
+  <text x="72" y="62" fill="#1C1820" font-size="30" font-family="sans-serif" font-weight="700">Service Agent · risk-first workflow</text>
+  <text x="72" y="96" fill="#4F4054" font-size="18" font-family="sans-serif">工程基线 8 个核心节点、11 条主边；N03.5 / N04.5 / Aux 为辅助 Stage</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4F4054"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#B85450"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#718C7B"/>
+    </marker>
+  </defs>
+
   <g font-family="sans-serif">
-    <g transform="translate(72 210)"><rect width="170" height="120" rx="22" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="3"/><text x="24" y="48" fill="#4F4054" font-size="16" font-weight="700">INPUT</text><text x="24" y="83" fill="#1C1820" font-size="22" font-weight="700">用户问题</text></g>
-    <path d="M258 270 H326" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
-    <g transform="translate(344 190)"><rect width="190" height="160" rx="22" fill="#E7DDE9" stroke="#B9A7C1" stroke-width="3"/><text x="24" y="48" fill="#4F4054" font-size="16" font-weight="700">RISK</text><text x="24" y="84" fill="#1C1820" font-size="22" font-weight="700">风险分类</text><text x="24" y="116" fill="#4F4054" font-size="16">硬风险优先</text><text x="24" y="142" fill="#4F4054" font-size="16">R0–R3</text></g>
-    <path d="M550 270 H618" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
-    <g transform="translate(636 190)"><rect width="190" height="160" rx="22" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="3"/><text x="24" y="48" fill="#4F4054" font-size="16" font-weight="700">RESOLVE</text><text x="24" y="84" fill="#1C1820" font-size="22" font-weight="700">查询解析</text><text x="24" y="116" fill="#718C7B" font-size="16">多轮改写</text><text x="24" y="142" fill="#718C7B" font-size="16">原始查询留痕</text></g>
-    <path d="M842 270 H910" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
-    <g transform="translate(928 190)"><rect width="200" height="160" rx="22" fill="#DFE7DE" stroke="#718C7B" stroke-width="3"/><text x="24" y="48" fill="#4F4054" font-size="16" font-weight="700">RETRIEVE</text><text x="24" y="84" fill="#1C1820" font-size="22" font-weight="700">证据检索</text><text x="24" y="116" fill="#718C7B" font-size="16">多查询聚合</text><text x="24" y="142" fill="#718C7B" font-size="16">来源去重</text></g>
-    <path d="M1028 366 V420" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
-    <g transform="translate(666 438)"><rect width="462" height="120" rx="24" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="3"/><text x="28" y="43" fill="#4F4054" font-size="16" font-weight="700">DUAL SUPPORT GATE</text><text x="28" y="78" fill="#1C1820" font-size="22" font-weight="700">检索证据充分性 + 上下文支持</text><text x="28" y="104" fill="#718C7B" font-size="16">满足 → 有来源回答</text></g>
-    <path d="M650 498 H566" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
-    <g transform="translate(72 420)"><rect width="472" height="156" rx="24" fill="#E7DDE9" stroke="#B9A7C1" stroke-width="3"/><text x="28" y="46" fill="#4F4054" font-size="16" font-weight="700">FAIL-CLOSED</text><text x="28" y="84" fill="#1C1820" font-size="25" font-weight="700">人工接管</text><text x="28" y="116" fill="#4F4054" font-size="17">硬风险 · 证据不足 · 未支持问题</text><text x="28" y="142" fill="#4F4054" font-size="17">记录知识缺口，不猜测答案</text></g>
-    <path d="M438 350 V402" stroke="#4F4054" stroke-width="4" marker-end="url(#arrow)"/>
+    <!-- N01 输入 -->
+    <g transform="translate(72 130)">
+      <rect width="160" height="80" rx="16" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="2.5"/>
+      <text x="16" y="32" fill="#4F4054" font-size="14" font-weight="700">N01</text>
+      <text x="16" y="58" fill="#1C1820" font-size="17" font-weight="700">输入与 Stage 初始化</text>
+    </g>
+    <path d="M232 170 H280" stroke="#4F4054" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <!-- N02 意图识别 -->
+    <g transform="translate(296 130)">
+      <rect width="150" height="80" rx="16" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="2.5"/>
+      <text x="16" y="32" fill="#4F4054" font-size="14" font-weight="700">N02</text>
+      <text x="16" y="58" fill="#1C1820" font-size="17" font-weight="700">意图识别</text>
+    </g>
+    <path d="M446 170 H494" stroke="#4F4054" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <!-- N03 风险分级 -->
+    <g transform="translate(510 130)">
+      <rect width="160" height="80" rx="16" fill="#E7DDE9" stroke="#B9A7C1" stroke-width="2.5"/>
+      <text x="16" y="32" fill="#4F4054" font-size="14" font-weight="700">N03</text>
+      <text x="16" y="55" fill="#1C1820" font-size="16" font-weight="700">R0–R3 风险分级</text>
+      <text x="16" y="72" fill="#4F4054" font-size="13">硬风险优先</text>
+    </g>
+    <path d="M670 170 H718" stroke="#4F4054" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <!-- N03.5 查询改写 (辅助 Stage) -->
+    <g transform="translate(734 130)">
+      <rect width="150" height="80" rx="16" fill="#F0EBE0" stroke="#C4B89A" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="16" y="32" fill="#7A6B5A" font-size="13" font-weight="700">N03.5 · 辅助</text>
+      <text x="16" y="55" fill="#1C1820" font-size="16" font-weight="700">查询改写</text>
+      <text x="16" y="72" fill="#7A6B5A" font-size="12">多轮改写·留痕</text>
+    </g>
+    <path d="M884 170 H932" stroke="#4F4054" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <!-- N04 知识检索 -->
+    <g transform="translate(948 130)">
+      <rect width="150" height="80" rx="16" fill="#DFE7DE" stroke="#718C7B" stroke-width="2.5"/>
+      <text x="16" y="32" fill="#4F4054" font-size="14" font-weight="700">N04</text>
+      <text x="16" y="55" fill="#1C1820" font-size="16" font-weight="700">知识检索</text>
+      <text x="16" y="72" fill="#718C7B" font-size="13">多查询聚合</text>
+    </g>
+    <path d="M1023 210 V250" stroke="#4F4054" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <!-- N04.5 候选重排 (辅助 Stage) -->
+    <g transform="translate(948 260)">
+      <rect width="150" height="80" rx="16" fill="#F0EBE0" stroke="#C4B89A" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="16" y="32" fill="#7A6B5A" font-size="13" font-weight="700">N04.5 · 辅助</text>
+      <text x="16" y="55" fill="#1C1820" font-size="16" font-weight="700">候选重排</text>
+      <text x="16" y="72" fill="#7A6B5A" font-size="12">去重·上下文构建</text>
+    </g>
+    <path d="M948 300 H800" stroke="#4F4054" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <!-- N05 生成 -->
+    <g transform="translate(640 260)">
+      <rect width="150" height="80" rx="16" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="2.5"/>
+      <text x="16" y="32" fill="#4F4054" font-size="14" font-weight="700">N05</text>
+      <text x="16" y="55" fill="#1C1820" font-size="16" font-weight="700">回答生成</text>
+      <text x="16" y="72" fill="#4F4054" font-size="13">标准话术 / LLM</text>
+    </g>
+    <path d="M640 300 H528" stroke="#4F4054" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <!-- N06 质量检查 -->
+    <g transform="translate(370 260)">
+      <rect width="150" height="80" rx="16" fill="#FBF8F1" stroke="#D4CCC1" stroke-width="2.5"/>
+      <text x="16" y="32" fill="#4F4054" font-size="14" font-weight="700">N06</text>
+      <text x="16" y="55" fill="#1C1820" font-size="16" font-weight="700">质量检查</text>
+      <text x="16" y="72" fill="#4F4054" font-size="13">双 Gate</text>
+    </g>
+
+    <!-- N06 PASS -> N08 -->
+    <path d="M445 340 V470 H528" stroke="#718C7B" stroke-width="3" marker-end="url(#arrowGreen)"/>
+    <text x="455 430" fill="#718C7B" font-size="13" font-weight="700">PASS</text>
+
+    <!-- N06 首次失败 -> Aux-01 反思 (向上分支到 Aux-01) -->
+    <path d="M370 280 H248" stroke="#4F4054" stroke-width="2.5" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+    <text x="265 270" fill="#4F4054" font-size="12">首次失败</text>
+
+    <!-- Aux-01 单次反思 (辅助 Stage) -->
+    <g transform="translate(108 260)">
+      <rect width="140" height="80" rx="16" fill="#F0EBE0" stroke="#C4B89A" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="14" y="32" fill="#7A6B5A" font-size="13" font-weight="700">Aux-01 · 辅助</text>
+      <text x="14" y="55" fill="#1C1820" font-size="16" font-weight="700">单次反思</text>
+      <text x="14" y="72" fill="#7A6B5A" font-size="12">仅重试 N05 一次</text>
+    </g>
+    <!-- Aux-01 -> N05 (retry, 沿 y=240 绕过 N05 顶部进入) -->
+    <path d="M178 260 V240 H640 V260" stroke="#4F4054" stroke-width="2.5" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+    <text x="330 232" fill="#4F4054" font-size="12">重试 N05</text>
+
+    <!-- N06 重试失败 -> Aux-02 -> N07 -->
+    <path d="M370 340 V410 H260 V620" stroke="#B85450" stroke-width="3" marker-end="url(#arrowRed)"/>
+    <text x="270 400" fill="#B85450" font-size="12" font-weight="700">重试失败 / 高风险</text>
+
+    <!-- Aux-02 失败升级 (辅助 Stage) -->
+    <g transform="translate(108 620)">
+      <rect width="140" height="70" rx="16" fill="#F0EBE0" stroke="#C4B89A" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="14" y="28" fill="#7A6B5A" font-size="13" font-weight="700">Aux-02 · 辅助</text>
+      <text x="14" y="52" fill="#1C1820" font-size="16" font-weight="700">失败升级</text>
+    </g>
+    <path d="M248 655 H336" stroke="#B85450" stroke-width="3" marker-end="url(#arrowRed)"/>
+
+    <!-- N07 fail-closed 人工接管 -->
+    <g transform="translate(350 580)">
+      <rect width="190" height="100" rx="18" fill="#F4D9D7" stroke="#B85450" stroke-width="3.5"/>
+      <text x="20" y="34" fill="#B85450" font-size="15" font-weight="700">N07 · FAIL-CLOSED</text>
+      <text x="20" y="60" fill="#1C1820" font-size="18" font-weight="700">人工接管</text>
+      <text x="20" y="82" fill="#4F4054" font-size="13">高风险 · 证据不足</text>
+      <text x="20" y="96" fill="#4F4054" font-size="13">质量不合格 · 记录缺口</text>
+    </g>
+    <path d="M540 630 H640 V470" stroke="#4F4054" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <!-- N08 输出 -->
+    <g transform="translate(530 400)">
+      <rect width="210" height="100" rx="18" fill="#DFE7DE" stroke="#718C7B" stroke-width="3"/>
+      <text x="20" y="34" fill="#4F4054" font-size="15" font-weight="700">N08 · 输出与执行轨迹</text>
+      <text x="20" y="60" fill="#1C1820" font-size="16" font-weight="700">回答 · 来源</text>
+      <text x="20" y="82" fill="#718C7B" font-size="13">风险等级 · 关键 Stage</text>
+      <text x="20" y="96" fill="#718C7B" font-size="13">供前端展示与审计</text>
+    </g>
   </g>
-  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#4F4054"/></marker></defs>
 </svg>

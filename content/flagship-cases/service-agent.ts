@@ -92,7 +92,7 @@ export const serviceAgentCase: FlagshipCaseStudy = {
     architecture: [
       {
         title: "LangGraph 工作流",
-        detail: "输入经过意图与风险判断、查询解析、检索、生成、质量检查、人工接管与反馈回收。",
+        detail: "工程基线保持 8 个核心节点、11 条主边；公开产品视图额外展开 N03.5 查询改写、N04.5 候选重排和反思控制等辅助 Stage，不把展示 Stage 数量解释为实际节点数量。",
         evidenceRefs: ["E-SCS-SOURCE"],
       },
       {
@@ -108,9 +108,34 @@ export const serviceAgentCase: FlagshipCaseStudy = {
         evidenceRefs: ["E-SCS-SOURCE", "E-SCS-DEPLOY-039"],
       },
       {
-        title: "Multi-query retrieval",
+        title: "N04 Multi-query retrieval",
         detail: "将原问题、改写问题和关键词补全作为候选查询，聚合并去重检索结果。",
         evidenceRefs: ["E-SCS-SOURCE"],
+      },
+      {
+        title: "N04.5 候选重排与上下文构建",
+        detail: "聚合、去重和重排候选知识，形成用于生成和支持度检查的引用上下文。",
+        evidenceRefs: ["E-SCS-SOURCE", "E-SCS-DEPLOY-039"],
+      },
+      {
+        title: "证据充分性与 supported_by_context 双 Gate",
+        detail: "检索证据充分性代理信号与 supported_by_context 共同约束回答支持度，避免把非空检索误当成语义支持。",
+        evidenceRefs: ["E-SCS-DEPLOY-039"],
+      },
+      {
+        title: "N06 单次反思回路",
+        detail: "首次质量检查失败时生成受约束反思意见，并仅允许返回 N05 重试一次。",
+        evidenceRefs: ["E-SCS-SOURCE", "E-SCS-DEPLOY-039"],
+      },
+      {
+        title: "N07 fail-closed 人工接管",
+        detail: "高风险、证据不足、质量不合格或需要人工确认的问题统一转人工。",
+        evidenceRefs: ["E-SCS-SOURCE", "E-SCS-DEPLOY-039"],
+      },
+      {
+        title: "N08 回答、来源和关键 Stage 输出",
+        detail: "输出回答或接管结果，同时返回来源、风险等级和关键执行 Stage，供前端展示与审计。",
+        evidenceRefs: ["E-SCS-SOURCE", "E-SCS-DEPLOY-039"],
       },
       {
         title: "R0–R3 fail-closed policy",
@@ -165,7 +190,7 @@ export const serviceAgentCase: FlagshipCaseStudy = {
       productChange: "明确支持回答、人工接管和知识缺口三类结果。",
       technicalChange: "修复查询解析、双 Gate 和展示模式策略优先级。",
       result: "Phase G 已验证，后端保持在线。",
-      boundary: "安全为 provisional，前端切换和生产加固尚未完成。",
+      boundary: "该阶段完成后端 Phase G 闭合；公网前端切换随后由 Live Recovery 完成。生产可用性、延迟、知识覆盖与完整可观测性仍需加固。",
       evidenceRefs: ["E-SCS-DEPLOY-039"],
     },
     {
