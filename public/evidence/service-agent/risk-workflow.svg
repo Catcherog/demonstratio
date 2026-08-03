@@ -91,9 +91,9 @@
     <path d="M445 340 V470 H528" stroke="#718C7B" stroke-width="3" marker-end="url(#arrowGreen)"/>
     <text x="455 430" fill="#718C7B" font-size="13" font-weight="700">PASS</text>
 
-    <!-- N06 首次失败 -> Aux-01 反思 -> N05 -->
-    <path d="M370 300 H260 V300 H260 V260" stroke="#4F4054" stroke-width="2.5" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
-    <text x="265 285" fill="#4F4054" font-size="12">首次失败</text>
+    <!-- N06 首次失败 -> Aux-01 反思 (向上分支到 Aux-01) -->
+    <path d="M370 280 H248" stroke="#4F4054" stroke-width="2.5" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+    <text x="265 270" fill="#4F4054" font-size="12">首次失败</text>
 
     <!-- Aux-01 单次反思 (辅助 Stage) -->
     <g transform="translate(108 260)">
@@ -102,9 +102,9 @@
       <text x="14" y="55" fill="#1C1820" font-size="16" font-weight="700">单次反思</text>
       <text x="14" y="72" fill="#7A6B5A" font-size="12">仅重试 N05 一次</text>
     </g>
-    <!-- Aux-01 -> N05 (retry) -->
-    <path d="M248 280 H400 V260 H528" stroke="#4F4054" stroke-width="2.5" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
-    <text x="330 255" fill="#4F4054" font-size="12">重试</text>
+    <!-- Aux-01 -> N05 (retry, 沿 y=240 绕过 N05 顶部进入) -->
+    <path d="M178 260 V240 H640 V260" stroke="#4F4054" stroke-width="2.5" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+    <text x="330 232" fill="#4F4054" font-size="12">重试 N05</text>
 
     <!-- N06 重试失败 -> Aux-02 -> N07 -->
     <path d="M370 340 V410 H260 V620" stroke="#B85450" stroke-width="3" marker-end="url(#arrowRed)"/>
