@@ -194,13 +194,13 @@ export const projects: Project[] = [
       { slug: "service-agent", label: "Service Agent", detail: "知识与客户上下文由中台提供。" },
       { slug: "mini-program", label: "微信小程序", detail: "咨询和预约留资回写中台。" },
     ],
-    images: ["/evidence/data-platform/closed-loop.svg"],
+    images: ["/evidence/data-platform/cover-detailed.svg"],
     imageMode: "desktop",
     lastVerifiedAt: "2026-08-03T14:00:00+08:00",
     link: {
-      label: "体验飞书智能录入台",
-      href: "https://portal-seven-jade-47.vercel.app/",
-      note: "公开前端用于展示产品流程；正式业务 Base 写入仍未开放。",
+      label: "在线体验飞书录入台",
+      href: "/experience/feishu-intake-demo",
+      note: "Mock 演示页：展示 OCR → Candidate → SOP Gate → 写入前人工确认流程，不连接正式业务 Base。",
     },
   },
   {
@@ -358,7 +358,7 @@ export const projects: Project[] = [
       { slug: "lora-finetuning", label: "LoRA 微调", detail: "微调模型作为本地推理与云端 API 的备选后端。" },
       { slug: "data-platform", label: "数据中台", detail: "客户上下文和业务知识由统一数据底座支撑。" },
     ],
-    images: ["/evidence/service-agent/risk-workflow.svg"],
+    images: ["/evidence/service-agent/cover-detailed.svg"],
     imageMode: "desktop",
     link: { label: "打开公网实时 Demo", href: "https://zehuai-customer-demo.vercel.app/", note: "已接入真实 Service Agent 后端，支持知识检索、多轮追问、来源展示与安全转人工。高风险、低置信度及知识不足的问题不会强行回答。" },
     fallbackLink: { label: "打开 B1 / B2 / B3 备用演示", href: "https://zehuai-customer-demo.vercel.app/controlled", note: "若实时入口加载失败，可使用 B1 / B2 / B3 静态受控演示；该入口不代表实时生产能力。" },
@@ -420,9 +420,9 @@ export const projects: Project[] = [
     imageMode: "desktop",
     lastVerifiedAt: "2026-07-28T00:00:00Z",
     link: {
-      label: "访问光砚",
+      label: "在线体验光砚",
       href: "https://lumen-ink.vercel.app/",
-      note: "Live Demo；根页、健康接口与 Seedream 4.5 文生图/图生图已完成真实验证。液化、修复、消除等其他模式仍未验证。",
+      note: "Live Demo；真实 Provider 路径验证以 Seedream 4.5 文生图 / 图生图为准。",
     },
     fallbackLink: {
       label: "查看受限状态与证据",
