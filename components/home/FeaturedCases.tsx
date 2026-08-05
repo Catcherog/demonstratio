@@ -17,21 +17,32 @@ export function FeaturedCases({ projects }: Props) {
       <div className="flagship-grid">
         {projects.map((project, index) => {
           const isModelCapability = project.slug === "lora-finetuning";
+          const isDiagramCover = project.images[0]?.endsWith(".svg") ?? false;
+          const cardClassName = [
+            "flagship-card",
+            isModelCapability ? "flagship-card-model" : "",
+            isDiagramCover ? "flagship-card-diagram" : "",
+          ].filter(Boolean).join(" ");
+
           return (
           <article
-            className={isModelCapability ? "flagship-card flagship-card-model" : "flagship-card"}
+            className={cardClassName}
             data-project-tier={isModelCapability ? "model-capability" : "flagship-product"}
             key={project.slug}
           >
-            <a className="flagship-media" href={`/projects/${project.slug}`} aria-label={`查看 ${project.title} 案例`}>
+            <a
+              className={`flagship-media${isDiagramCover ? " flagship-media--diagram" : ""}`}
+              href={`/projects/${project.slug}`}
+              aria-label={`查看 ${project.title} 案例`}
+            >
               <Image src={project.images[0]} alt={`${project.title} 产品界面`} fill sizes="(max-width: 1050px) 100vw, 50vw" />
-              <span title={project.status}>{project.status}</span>
             </a>
             <div className="flagship-body">
               <div className="flagship-meta">
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <strong>{isModelCapability ? "MODEL CAPABILITY" : project.category}</strong>
               </div>
+              <p className="flagship-status-line" title={project.status}>{project.status}</p>
               <h3>{project.title}</h3>
               <p className="flagship-subtitle">{project.subtitle}</p>
               <p className="flagship-summary">{project.summary}</p>

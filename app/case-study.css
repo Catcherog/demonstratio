@@ -999,3 +999,36 @@
     justify-content: space-between;
   }
 }
+
+/* PORTFOLIO_LAYOUT_FIX_R3_START
+ * Keep the demo entry in normal flow below the hero tags.
+ */
+.case-hero-experience {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 28px;
+}
+
+.case-hero-experience .live-experience-badge {
+  position: relative;
+  inset: auto;
+  width: fit-content;
+  max-width: 100%;
+}
+
+@media (max-width: 900px) {
+  .case-hero-experience .live-experience-badge {
+    right: auto;
+    bottom: auto;
+    left: auto;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .case-hero-experience .live-experience-badge {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+/* PORTFOLIO_LAYOUT_FIX_R3_END */

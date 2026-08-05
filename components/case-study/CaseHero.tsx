@@ -33,6 +33,16 @@ export function CaseHero({ project, study }: { project: Project; study: Flagship
           <p className="case-subtitle">{project.subtitle}</p>
           <p className="case-summary">{study.overview.oneLine}</p>
           <div className="case-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+          {project.link ? (
+            <div className="case-hero-experience">
+              <LiveExperienceBadge
+                href={project.link.href}
+                label="在线体验"
+                caption={project.title}
+                external={project.link.href.startsWith("http")}
+              />
+            </div>
+          ) : null}
         </div>
         <aside className="flagship-status-card" aria-label="案例当前状态">
           <span>当前状态</span>
@@ -60,14 +70,6 @@ export function CaseHero({ project, study }: { project: Project; study: Flagship
         <div className="case-cover-frame">
           <img src={project.images[0]} alt={`${project.title} 封面`} />
         </div>
-        {project.link ? (
-          <LiveExperienceBadge
-            href={project.link.href}
-            label="在线体验"
-            caption={project.title}
-            external={project.link.href.startsWith("http")}
-          />
-        ) : null}
       </div>
     </header>
   );

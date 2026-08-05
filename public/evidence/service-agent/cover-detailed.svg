@@ -1,58 +1,101 @@
 <svg width="1600" height="920" viewBox="0 0 1600 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow-plum" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L10 5L0 10Z" fill="#5A4A67"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L10 5L0 10Z" fill="#6E9A81"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L10 5L0 10Z" fill="#C85E56"/>
+    </marker>
+  </defs>
+
   <rect width="1600" height="920" rx="36" fill="#F7F2E9"/>
   <rect x="40" y="40" width="1520" height="840" rx="32" fill="#FFFDF8" stroke="#DDD4C7" stroke-width="2"/>
-  <text x="80" y="110" fill="#211F28" font-size="48" font-weight="700" font-family="Inter, Arial">Service Agent · risk-first workflow</text>
-  <text x="80" y="148" fill="#6D6A74" font-size="24" font-family="Inter, Arial">工程基线 8 个核心节点、11 条主边；公开产品视图展开 N03.5 / N04.5 / Aux 辅助 Stage</text>
-  <rect x="84" y="208" width="210" height="102" rx="20" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
-  <rect x="336" y="208" width="190" height="102" rx="20" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
-  <rect x="572" y="208" width="218" height="102" rx="20" fill="#F4EEFF" stroke="#BAA8D8" stroke-width="2"/>
-  <rect x="838" y="208" width="218" height="102" rx="20" fill="#FFF9EF" stroke="#D8C9A4" stroke-width="2" stroke-dasharray="8 8"/>
-  <rect x="1108" y="208" width="206" height="102" rx="20" fill="#EAF5EF" stroke="#7AA58C" stroke-width="3"/>
-  <text x="112" y="248" fill="#4E4854" font-size="22" font-family="Inter, Arial">N01</text>
-  <text x="112" y="281" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">输入与 Stage 初始化</text>
-  <text x="364" y="248" fill="#4E4854" font-size="22" font-family="Inter, Arial">N02</text>
-  <text x="364" y="281" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">意图识别</text>
-  <text x="602" y="248" fill="#4E4854" font-size="22" font-family="Inter, Arial">N03</text>
-  <text x="602" y="281" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">R0–R3 风险分级</text>
-  <text x="868" y="248" fill="#4E4854" font-size="22" font-family="Inter, Arial">N03.5</text>
-  <text x="868" y="281" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">多轮查询改写</text>
-  <text x="868" y="308" fill="#7B746B" font-size="20" font-family="Inter, Arial">original / rewritten / 补全关键词</text>
-  <text x="1138" y="248" fill="#4E4854" font-size="22" font-family="Inter, Arial">N04</text>
-  <text x="1138" y="281" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">知识检索</text>
-  <text x="1138" y="308" fill="#5D8270" font-size="20" font-family="Inter, Arial">多查询召回</text>
-  <rect x="1080" y="410" width="220" height="108" rx="20" fill="#FFF9EF" stroke="#D8C9A4" stroke-width="2" stroke-dasharray="8 8"/>
-  <rect x="730" y="410" width="220" height="108" rx="20" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
-  <rect x="468" y="410" width="206" height="108" rx="20" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
-  <rect x="108" y="410" width="248" height="108" rx="20" fill="#FFF9EF" stroke="#D8C9A4" stroke-width="2" stroke-dasharray="8 8"/>
-  <text x="1110" y="452" fill="#4E4854" font-size="22" font-family="Inter, Arial">N04.5</text>
-  <text x="1110" y="488" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">候选重排</text>
-  <text x="1110" y="516" fill="#7B746B" font-size="20" font-family="Inter, Arial">证据 + 上下文构建</text>
-  <text x="760" y="452" fill="#4E4854" font-size="22" font-family="Inter, Arial">N05</text>
-  <text x="760" y="488" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">回答生成</text>
-  <text x="760" y="516" fill="#7B746B" font-size="20" font-family="Inter, Arial">标准话术 / LLM</text>
-  <text x="498" y="452" fill="#4E4854" font-size="22" font-family="Inter, Arial">N06</text>
-  <text x="498" y="488" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">质量检查</text>
-  <text x="498" y="516" fill="#7B746B" font-size="20" font-family="Inter, Arial">风险 Gate / 支持度检查</text>
-  <text x="138" y="452" fill="#4E4854" font-size="22" font-family="Inter, Arial">Aux-01</text>
-  <text x="138" y="488" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, Arial">单次反思</text>
-  <text x="138" y="516" fill="#7B746B" font-size="20" font-family="Inter, Arial">仅允许重试一次</text>
-  <rect x="690" y="590" width="290" height="126" rx="22" fill="#E8F2ED" stroke="#8EB09C" stroke-width="3"/>
-  <rect x="404" y="706" width="230" height="104" rx="20" fill="#FFF1F0" stroke="#D46D63" stroke-width="3"/>
-  <text x="722" y="632" fill="#4E4854" font-size="22" font-family="Inter, Arial">N08</text>
-  <text x="722" y="672" fill="#27242E" font-size="32" font-weight="700" font-family="Inter, Arial">输出与执行轨迹</text>
-  <text x="722" y="706" fill="#5D8270" font-size="22" font-family="Inter, Arial">回答 · 来源 · 风险等级 · 关键 Stage</text>
-  <text x="434" y="744" fill="#B4514B" font-size="22" font-family="Inter, Arial">N07 · FAIL-CLOSED</text>
-  <text x="434" y="782" fill="#6E2F2B" font-size="30" font-weight="700" font-family="Inter, Arial">人工接管</text>
-  <path d="M294 260H336" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M526 260H572" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M790 260H838" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M1056 260H1108" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M1080 464H950" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M730 464H674" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M468 464H356" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M556 518L480 706" stroke="#1E1C24" stroke-width="18"/>
-  <path d="M560 518L732 616" stroke="#1E1C24" stroke-width="18"/>
-  <path d="M822 518L822 590" stroke="#1E1C24" stroke-width="18"/>
-  <rect x="78" y="786" width="1440" height="60" rx="18" fill="#364F43"/>
-  <text x="112" y="825" fill="#FFFDF8" font-size="24" font-family="Inter, Arial">公网实时 Demo｜受控生产验证</text>
+
+  <text x="80" y="108" fill="#211F28" font-size="48" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">Service Agent · risk-first workflow</text>
+  <text x="80" y="148" fill="#6D6A74" font-size="23" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">工程基线 8 个核心节点、11 条主边；公开产品视图展开 N03.5 / N04.5 / Aux 辅助 Stage</text>
+
+  <!-- Main flow: left to right -->
+  <rect x="80" y="208" width="230" height="114" rx="20" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
+  <text x="106" y="247" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N01</text>
+  <text x="106" y="278" fill="#27242E" font-size="26" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">输入与 Stage</text>
+  <text x="106" y="307" fill="#27242E" font-size="26" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">初始化</text>
+
+  <rect x="360" y="208" width="210" height="114" rx="20" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
+  <text x="386" y="247" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N02</text>
+  <text x="386" y="289" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">意图识别</text>
+
+  <rect x="620" y="208" width="240" height="114" rx="20" fill="#F4EEFF" stroke="#BAA8D8" stroke-width="2"/>
+  <text x="646" y="247" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N03</text>
+  <text x="646" y="289" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">R0–R3 风险分级</text>
+
+  <rect x="910" y="208" width="240" height="114" rx="20" fill="#FFF9EF" stroke="#D8C9A4" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="936" y="247" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N03.5</text>
+  <text x="936" y="279" fill="#27242E" font-size="26" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">多轮查询改写</text>
+  <text x="936" y="307" fill="#7B746B" font-size="17" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">original / rewritten / 关键词补全</text>
+
+  <rect x="1200" y="208" width="240" height="114" rx="20" fill="#EAF5EF" stroke="#7AA58C" stroke-width="3"/>
+  <text x="1226" y="247" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N04</text>
+  <text x="1226" y="282" fill="#27242E" font-size="28" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">知识检索</text>
+  <text x="1226" y="308" fill="#5D8270" font-size="18" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">多查询召回</text>
+
+  <path d="M310 265H352" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow-plum)"/>
+  <path d="M570 265H612" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow-plum)"/>
+  <path d="M860 265H902" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow-plum)"/>
+  <path d="M1150 265H1192" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow-plum)"/>
+
+  <!-- Retrieval to generation: snake back from right to left -->
+  <rect x="940" y="404" width="250" height="112" rx="20" fill="#FFF9EF" stroke="#D8C9A4" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="966" y="442" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N04.5</text>
+  <text x="966" y="478" fill="#27242E" font-size="27" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">候选重排</text>
+  <text x="966" y="504" fill="#7B746B" font-size="17" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">证据 + 上下文构建</text>
+
+  <rect x="650" y="404" width="230" height="112" rx="20" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
+  <text x="676" y="442" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N05</text>
+  <text x="676" y="478" fill="#27242E" font-size="27" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">回答生成</text>
+  <text x="676" y="504" fill="#7B746B" font-size="17" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">标准话术 / LLM</text>
+
+  <rect x="360" y="404" width="230" height="112" rx="20" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
+  <text x="386" y="442" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N06</text>
+  <text x="386" y="478" fill="#27242E" font-size="27" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">质量检查</text>
+  <text x="386" y="504" fill="#7B746B" font-size="17" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">风险 Gate / 证据支持度</text>
+
+  <rect x="80" y="404" width="230" height="112" rx="20" fill="#FFF9EF" stroke="#D8C9A4" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="106" y="442" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">Aux-01</text>
+  <text x="106" y="478" fill="#27242E" font-size="27" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">单次反思</text>
+  <text x="106" y="504" fill="#7B746B" font-size="17" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">只允许重试一次</text>
+
+  <path d="M1320 322V358C1320 386 1298 404 1270 404H1198" stroke="#5A4A67" stroke-width="5" fill="none" marker-end="url(#arrow-plum)"/>
+  <path d="M940 460H888" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow-plum)"/>
+  <path d="M650 460H598" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow-plum)"/>
+  <path d="M360 460H318" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow-plum)"/>
+
+  <!-- One retry loop -->
+  <path d="M195 404V370C195 350 212 338 232 338H730C750 338 765 352 765 372V396" stroke="#B29B74" stroke-width="4" stroke-dasharray="8 8" fill="none" marker-end="url(#arrow-plum)"/>
+  <text x="420" y="362" fill="#8B7655" font-size="16" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">REFLECT → RETRY ONCE</text>
+
+  <!-- Quality branches -->
+  <rect x="330" y="570" width="290" height="62" rx="18" fill="#FFF9EF" stroke="#D8C9A4" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="356" y="608" fill="#8A6C47" font-size="21" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">Aux-02 · 失败升级</text>
+
+  <rect x="330" y="650" width="290" height="104" rx="20" fill="#FFF1F0" stroke="#D46D63" stroke-width="3"/>
+  <text x="356" y="690" fill="#B4514B" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N07 · FAIL-CLOSED</text>
+  <text x="356" y="730" fill="#6E2F2B" font-size="30" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">人工接管</text>
+
+  <rect x="780" y="604" width="500" height="138" rx="22" fill="#E8F2ED" stroke="#8EB09C" stroke-width="3"/>
+  <text x="810" y="646" fill="#4E4854" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">N08</text>
+  <text x="810" y="685" fill="#27242E" font-size="31" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">输出与执行轨迹</text>
+  <text x="810" y="717" fill="#5D8270" font-size="20" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">回答 · 来源 · 风险等级 · 关键 Stage</text>
+
+  <path d="M475 516V558C475 566 475 568 475 570" stroke="#C85E56" stroke-width="5" marker-end="url(#arrow-red)"/>
+  <path d="M475 632V642" stroke="#C85E56" stroke-width="5" marker-end="url(#arrow-red)"/>
+  <text x="494" y="548" fill="#B4514B" font-size="15" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">SECOND FAIL</text>
+
+  <path d="M590 474C692 474 692 673 770 673" stroke="#6E9A81" stroke-width="5" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="642" y="580" fill="#5D8270" font-size="15" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">PASS</text>
+
+  <rect x="80" y="790" width="1440" height="56" rx="18" fill="#364F43"/>
+  <text x="112" y="826" fill="#FFFDF8" font-size="23" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">公网实时 Demo｜受控生产验证</text>
 </svg>
