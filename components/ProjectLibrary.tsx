@@ -24,6 +24,12 @@ function getServerCompactViewport() {
   return true;
 }
 
+function getProjectTierLabel(project: Project) {
+  if (project.slug === "lora-finetuning") return "模型能力";
+  if (project.featured) return "旗舰案例";
+  return "更多案例";
+}
+
 function CompactLibraryCard({ project }: { project: Project }) {
   const metrics = project.metrics.slice(0, 2);
   const className = project.slug === "lora-finetuning"
@@ -71,7 +77,7 @@ function FullLibraryCard({ project }: { project: Project }) {
           sizes="(max-width: 760px) 100vw, 33vw"
         />
         <span className="library-status">{project.status}</span>
-        <span className="library-tier">{project.featured ? "旗舰案例" : "更多案例"}</span>
+        <span className="library-tier">{getProjectTierLabel(project)}</span>
       </div>
 
       <div className="library-body">
@@ -138,7 +144,7 @@ export function ProjectLibrary({ projects }: Props) {
 
       {isCompactViewport ? (
         <div className="library-mobile-jump">
-          <span>已查看三个旗舰案例</span>
+          <span>已查看 3 个旗舰案例 + 1 个模型能力项目</span>
           <button
             type="button"
             aria-expanded={showAllProjects}
@@ -147,7 +153,7 @@ export function ProjectLibrary({ projects }: Props) {
               setShowAllProjects((current) => !current);
             }}
           >
-            {showAllProjects ? "收起旗舰项目" : "查看全部九个项目"} <span aria-hidden="true">→</span>
+            {showAllProjects ? "收起重点项目" : `查看全部 ${projects.length} 个项目`} <span aria-hidden="true">→</span>
           </button>
         </div>
       ) : null}
@@ -157,8 +163,8 @@ export function ProjectLibrary({ projects }: Props) {
         <strong>{visible.length} 个案例</strong>
         <small>
           {isCompactViewport && !showAllProjects
-            ? "LoRA 微调置于扩展项目首位，其余项目以紧凑列表呈现。"
-            : "三个主案例继续承担核心叙事；其余案例保留独立详情与真实状态。"}
+            ? "上方已展示四项重点项目；这里继续呈现其余五个支持案例。"
+            : "三个旗舰产品案例与一个模型能力项目构成核心叙事；其余案例保留独立详情与真实状态。"}
         </small>
       </div>
 

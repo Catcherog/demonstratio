@@ -7,19 +7,31 @@ export function FeaturedCases({ projects }: Props) {
   return (
     <section className="section-shell section-block featured-section" id="featured">
       <div className="section-heading featured-heading">
-        <div><p className="eyebrow">THREE FLAGSHIP CASES</p><h2>三个主案例，验证三类核心能力。</h2></div>
-        <p>飞书 AI 业务数据平台、Service Agent 与光砚，分别展示业务系统设计、Agent 可靠性与多模态产品化能力；每个案例均公开当前证据与能力边界。</p>
+        <div>
+          <p className="eyebrow">3 FLAGSHIP PRODUCTS + 1 MODEL CAPABILITY</p>
+          <h2>三个旗舰产品案例，加一个模型能力项目。</h2>
+        </div>
+        <p>Service Agent、飞书 AI 业务数据平台与光砚，分别验证 Agent 可靠性、复杂业务系统设计与多模态产品化；LoRA 项目补充业务语料、微调训练和本地推理能力。</p>
       </div>
 
       <div className="flagship-grid">
-        {projects.map((project, index) => (
-          <article className="flagship-card" key={project.slug}>
+        {projects.map((project, index) => {
+          const isModelCapability = project.slug === "lora-finetuning";
+          return (
+          <article
+            className={isModelCapability ? "flagship-card flagship-card-model" : "flagship-card"}
+            data-project-tier={isModelCapability ? "model-capability" : "flagship-product"}
+            key={project.slug}
+          >
             <a className="flagship-media" href={`/projects/${project.slug}`} aria-label={`查看 ${project.title} 案例`}>
-              <Image src={project.images[0]} alt={`${project.title} 产品界面`} fill sizes="(max-width: 900px) 100vw, 33vw" />
+              <Image src={project.images[0]} alt={`${project.title} 产品界面`} fill sizes="(max-width: 1050px) 100vw, 50vw" />
               <span title={project.status}>{project.status}</span>
             </a>
             <div className="flagship-body">
-              <div className="flagship-meta"><span>{String(index + 1).padStart(2, "0")}</span><strong>{project.category}</strong></div>
+              <div className="flagship-meta">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{isModelCapability ? "MODEL CAPABILITY" : project.category}</strong>
+              </div>
               <h3>{project.title}</h3>
               <p className="flagship-subtitle">{project.subtitle}</p>
               <p className="flagship-summary">{project.summary}</p>
@@ -36,7 +48,8 @@ export function FeaturedCases({ projects }: Props) {
               <a className="editorial-link" href={`/projects/${project.slug}`}>阅读完整案例 <span aria-hidden="true">→</span></a>
             </div>
           </article>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

@@ -44,14 +44,14 @@ test("homepage keeps the approved section order and full guide", async () => {
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
 });
 
-test("three flagship cases stay data-driven and the shared resume entry exposes both languages", async () => {
+test("four highlighted projects stay data-driven and the shared resume entry exposes both languages", async () => {
   const projects = await read("content/projects.ts");
   const featured = await read("components/home/FeaturedCases.tsx");
   const hero = await read("components/home/Hero.tsx");
   const header = await read("components/Header.tsx");
   const resume = await read("app/resume/page.tsx");
 
-  assert.match(projects, /\["data-platform", "service-agent", "lumen-ink"\]/);
+  assert.match(projects, /\["service-agent", "data-platform", "lumen-ink", "lora-finetuning"\]/);
   assert.match(featured, /projects\.map/);
   assert.match(hero, /href="\/resume"/);
   assert.match(header, /href="\/resume"/);
@@ -69,14 +69,14 @@ test("homepage ranks LoRA fourth and numbers only visible cards", async () => {
     projectsSource.indexOf("export const projects"),
     projectsSource.indexOf("export const categories"),
   );
-  const slugs = [...projectRegistry.matchAll(/^    slug: "([^"]+)"/gm)].map((match) => match[1]);
   const featuredTrueCount = (projectRegistry.match(/^    featured: true,$/gm) ?? []).length;
   const loraStart = projectRegistry.indexOf('    slug: "lora-finetuning"');
   const loraEnd = projectRegistry.indexOf("\n  },", loraStart);
 
-  assert.equal(featuredTrueCount, 3);
-  assert.deepEqual(slugs.slice(0, 4), ["data-platform", "service-agent", "lumen-ink", "lora-finetuning"]);
-  assert.match(projectRegistry.slice(loraStart, loraEnd), /featured: false/);
+  assert.equal(featuredTrueCount, 4);
+  assert.match(projectsSource, /const homepagePriority = \["service-agent", "data-platform", "lumen-ink", "lora-finetuning"\] as const/);
+  assert.match(projectRegistry.slice(loraStart, loraEnd), /featured: true/);
+  assert.match(projectRegistry.slice(loraStart, loraEnd), /业务效果独立评测待补/);
   assert.match(page, /homepageProjects/);
   assert.match(library, /\.filter\(\(project\) => !project\.archived\)/);
   assert.match(library, /visible\.map\(\(project\)/);
@@ -172,9 +172,11 @@ test("public polish layer is loaded last and replaces large purple surfaces with
   assert.match(css, /\.hero-proof-strip div:nth-child\(2\),[\s\S]*transform:\s*none\s*!important/);
 });
 
-test("flagship cards use outward-facing capability language and compact content", async () => {
+test("highlighted cards separate flagship products from the LoRA model capability project", async () => {
   const featured = await read("components/home/FeaturedCases.tsx");
-  assert.match(featured, /三个主案例，验证三类核心能力。/);
+  assert.match(featured, /三个旗舰产品案例，加一个模型能力项目。/);
+  assert.match(featured, /data-project-tier/);
+  assert.match(featured, /MODEL CAPABILITY/);
   assert.doesNotMatch(featured, /同一优先级/);
   assert.doesNotMatch(featured, /project\.decisions\[0\]/);
   assert.match(featured, /project\.metrics\.slice\(0, 2\)/);
@@ -207,10 +209,11 @@ test("homepage and flagship details share the exact R1.3 status contract", async
     "Portfolio Pilot｜真实测试 Base E2E 已验证，生产 V2 Schema 表级匹配通过（10/10），正式业务 Pilot 待启用",
     "公网实时 Demo｜受控生产验证",
     "Live Demo｜真实 Provider 编辑已验证",
+    "训练与本地验证完成｜业务效果独立评测待补",
   ];
   for (const status of statuses) assert.ok(projects.includes(status), `missing status: ${status}`);
   assert.match(featured, /projects\.map/);
-  for (const status of statuses) assert.equal(featured.includes(status), false, "FeaturedCases must not duplicate status copy");
+  for (const status of statuses) assert.equal(featured.includes(status), false, "FeaturedCases must stay data-driven");
 });
 
 test("public source trees contain no superseded flagship claims", async () => {

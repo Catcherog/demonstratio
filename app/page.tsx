@@ -18,7 +18,7 @@ export default function Home() {
     url: "https://www.jaelchen.com",
     jobTitle: "AI / Agent 产品经理",
     sameAs: ["https://github.com/Catcherog"],
-    knowsAbout: ["AI 产品", "Agent 工作流", "RAG", "数据治理", "人机协作", "多模态产品"],
+    knowsAbout: ["AI 产品", "Agent 工作流", "RAG", "数据治理", "人机协作", "多模态产品", "LoRA 微调"],
   };
   const workSchema = {
     "@context": "https://schema.org",
@@ -44,8 +44,14 @@ export default function Home() {
       <section className="system-section" id="system">
         <div className="section-shell">
           <div className="section-heading system-heading">
-            <div><p className="eyebrow">CROSS-PROJECT ARCHITECTURE</p><h2>3 个主案例 + 飞书子系统，组成一套五层 AI 产品系统。</h2></div>
-            <p>客户触点负责体验与留资，智能服务处理咨询和数据摄入，数据中台统一业务流转，增长引擎反哺内容，模型层提供本地训练与推理。</p>
+            <div>
+              <p className="eyebrow">CROSS-PROJECT ARCHITECTURE</p>
+              <h2>3 个旗舰产品案例 + 1 个模型能力项目，组成一套五层 AI 产品系统。</h2>
+            </div>
+            <p>
+              客户触点负责体验与留资，智能服务处理咨询和数据摄入，数据中台统一业务流转，
+              增长引擎反哺内容，LoRA 项目验证业务语料训练与本地推理。
+            </p>
           </div>
           <SystemMap />
         </div>
@@ -57,7 +63,7 @@ export default function Home() {
       <section className="section-shell section-block project-library-section" id="projects">
         <div className="section-heading split-heading">
           <div><p className="eyebrow">ALL PROJECTS</p><h2>完整项目库</h2></div>
-          <p>三个主案例继续承担核心叙事；另外六个案例保留独立详情、当前状态和能力边界，可按 Agent、数据、多模态、用户产品、增长与模型训练筛选。</p>
+          <p>前三个旗舰产品案例承担核心产品叙事，LoRA 作为第四项模型能力证明；其余五个案例保留独立详情、当前状态和能力边界。</p>
         </div>
         <ProjectLibrary projects={homepageProjects} />
       </section>

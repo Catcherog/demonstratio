@@ -105,7 +105,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "data-platform",
-    index: "01",
+    index: "02",
     category: "Data / Automation",
     categoryLabel: "FEISHU AI DATA PLATFORM · MOBILE OPS",
     title: "飞书 AI 业务数据平台",
@@ -205,7 +205,7 @@ export const projects: Project[] = [
   },
   {
     slug: "service-agent",
-    index: "02",
+    index: "01",
     category: "Agent / RAG",
     categoryLabel: "RAG · AGENT · AI SERVICE",
     title: "Studio Customer Service",
@@ -439,11 +439,11 @@ export const projects: Project[] = [
     subtitle: "从业务语料、QLoRA 训练到 OpenAI 兼容本地推理",
     summary:
       "将 30+ 篇业务文档清洗为单轮与多轮 SFT 数据，在 16GB 单卡上完成 Qwen 1.5B / 7B 双基座 QLoRA，并封装本地 RAG 与推理服务。",
-    status: "训练与本地验证完成",
+    status: "训练与本地验证完成｜业务效果独立评测待补",
     role: "产品验证 / 数据准备 / 训练与推理工程",
     team: "个人主导",
     period: "2026.06 - 2026.07",
-    featured: false,
+    featured: true,
     metrics: [
       { value: "2", label: "个微调基座" },
       { value: "4bit", label: "QLoRA 量化" },
@@ -803,14 +803,30 @@ export const categories: (ProjectCategory | "全部")[] = [
   "Model Training",
 ];
 
-export const homepageProjects = projects.filter((project) => !project.archived);
+const homepagePriority = ["service-agent", "data-platform", "lumen-ink", "lora-finetuning"] as const;
+const flagshipSlugs = ["service-agent", "data-platform", "lumen-ink"] as const;
 
-export const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
-  .map((slug) => projects.find((project) => project.slug === slug))
-  .filter((project): project is Project => Boolean(project))
-  .filter((project) => !project.archived);
+function resolveProjects(slugs: readonly string[]) {
+  return slugs
+    .map((slug) => projects.find((project) => project.slug === slug))
+    .filter((project): project is Project => Boolean(project))
+    .filter((project) => !project.archived);
+}
 
-export const publicProjects = featuredProjects;
+const homepagePrioritySet = new Set<string>(homepagePriority);
+
+export const homepageProjects = [
+  ...resolveProjects(homepagePriority),
+  ...projects.filter(
+    (project) => !project.archived && !homepagePrioritySet.has(project.slug),
+  ),
+];
+
+export const featuredProjects = resolveProjects(homepagePriority);
+
+// publicProjects 保持为三项正式旗舰案例，避免将 LoRA 的模型能力项目
+// 误识别为已经具备独立旗舰案例内容合同。
+export const publicProjects = resolveProjects(flagshipSlugs);
 
 export const capabilities = [
   {
@@ -826,7 +842,7 @@ export const capabilities = [
   {
     title: "端到端交付",
     body: "能完成需求、原型、开发验证、上线协同、评估设计与数据回流。",
-    evidence: "3 个主案例 · 测试 Base 历史证据 · Web / 小程序 / APP",
+    evidence: "3 个旗舰产品案例 + 1 个模型能力项目 · Web / 小程序 / APP",
   },
 ];
 
