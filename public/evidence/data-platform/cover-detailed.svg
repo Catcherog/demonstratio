@@ -1,31 +1,46 @@
 <svg width="1600" height="920" viewBox="0 0 1600 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L10 5L0 10Z" fill="#5A4A67"/>
+    </marker>
+  </defs>
+
   <rect width="1600" height="920" rx="36" fill="#F7F2E9"/>
   <rect x="40" y="40" width="1520" height="840" rx="32" fill="#FFFDF8" stroke="#DDD4C7" stroke-width="2"/>
-  <text x="80" y="110" fill="#211F28" font-size="48" font-weight="700" font-family="Inter, Arial">Data platform · controlled evidence loop</text>
-  <text x="80" y="148" fill="#6D6A74" font-size="24" font-family="Inter, Arial">原始输入不是业务事实；通过治理门后才进入运营视图</text>
-  <rect x="82" y="248" width="286" height="138" rx="24" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
-  <rect x="504" y="236" width="286" height="150" rx="24" fill="#F4EEFF" stroke="#BAA8D8" stroke-width="3"/>
-  <rect x="928" y="238" width="294" height="148" rx="24" fill="#EAF5EF" stroke="#7AA58C" stroke-width="3"/>
-  <rect x="1328" y="474" width="196" height="128" rx="22" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
-  <text x="112" y="302" fill="#4E4854" font-size="24" font-family="Inter, Arial">01 · SOURCES</text>
-  <text x="112" y="350" fill="#27242E" font-size="40" font-weight="700" font-family="Inter, Arial">截图 / 文本 / 表单</text>
-  <text x="112" y="386" fill="#6F7B70" font-size="24" font-family="Inter, Arial">保留来源上下文</text>
-  <text x="536" y="292" fill="#4E4854" font-size="24" font-family="Inter, Arial">02 · INGEST</text>
-  <text x="536" y="344" fill="#27242E" font-size="40" font-weight="700" font-family="Inter, Arial">候选数据</text>
-  <text x="536" y="380" fill="#6F7B70" font-size="24" font-family="Inter, Arial">识别结果待确认</text>
-  <text x="962" y="292" fill="#4E4854" font-size="24" font-family="Inter, Arial">03 · GOVERN</text>
-  <text x="962" y="344" fill="#27242E" font-size="40" font-weight="700" font-family="Inter, Arial">SOP Gate</text>
-  <text x="962" y="380" fill="#6F7B70" font-size="24" font-family="Inter, Arial">幂等 · 审计 · 清理</text>
-  <text x="1360" y="530" fill="#4E4854" font-size="24" font-family="Inter, Arial">OPS VIEWS</text>
-  <text x="1360" y="576" fill="#27242E" font-size="34" font-weight="700" font-family="Inter, Arial">角色化运营视图</text>
-  <path d="M368 314H504" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M790 314H928" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M1222 314H1328" stroke="#5A4A67" stroke-width="5"/>
-  <path d="M1426 386V474" stroke="#5A4A67" stroke-width="5"/>
-  <rect x="84" y="512" width="1180" height="160" rx="24" fill="#FFFDF8" stroke="#D8CFC1" stroke-width="2" stroke-dasharray="10 10"/>
-  <text x="112" y="584" fill="#4E4854" font-size="22" font-family="Inter, Arial" font-weight="700">PRODUCTION BOUNDARY</text>
-  <text x="112" y="636" fill="#27242E" font-size="42" font-weight="700" font-family="Inter, Arial">Schema 只读检查已完成表级匹配</text>
-  <text x="112" y="674" fill="#6F7B70" font-size="24" font-family="Inter, Arial">字段级差异与正式写入仍保持 fail-closed</text>
-  <rect x="84" y="736" width="1440" height="64" rx="18" fill="#364F43"/>
-  <text x="116" y="778" fill="#FFFDF8" font-size="24" font-family="Inter, Arial">Portfolio Pilot｜真实测试 Base E2E 已验证，生产 V2 Schema 表级匹配通过（10/10），正式业务 Pilot 待启用</text>
+
+  <text x="80" y="108" fill="#211F28" font-size="48" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">Data platform · controlled evidence loop</text>
+  <text x="80" y="148" fill="#6D6A74" font-size="23" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">原始输入不是业务事实；通过治理门后才进入运营视图</text>
+
+  <rect x="80" y="226" width="310" height="150" rx="24" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
+  <text x="110" y="274" fill="#4E4854" font-size="22" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">01 · SOURCES</text>
+  <text x="110" y="322" fill="#27242E" font-size="32" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">截图 / 文本 / 表单</text>
+  <text x="110" y="356" fill="#6F7B70" font-size="21" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">保留来源上下文</text>
+
+  <rect x="500" y="226" width="300" height="150" rx="24" fill="#F4EEFF" stroke="#BAA8D8" stroke-width="3"/>
+  <text x="532" y="274" fill="#4E4854" font-size="22" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">02 · INGEST</text>
+  <text x="532" y="322" fill="#27242E" font-size="34" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">候选数据</text>
+  <text x="532" y="356" fill="#6F7B70" font-size="21" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">识别结果待确认</text>
+
+  <rect x="910" y="226" width="300" height="150" rx="24" fill="#EAF5EF" stroke="#7AA58C" stroke-width="3"/>
+  <text x="942" y="274" fill="#4E4854" font-size="22" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">03 · GOVERN</text>
+  <text x="942" y="322" fill="#27242E" font-size="34" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">SOP Gate</text>
+  <text x="942" y="356" fill="#6F7B70" font-size="21" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">幂等 · 审计 · 清理</text>
+
+  <path d="M390 301H492" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M800 301H902" stroke="#5A4A67" stroke-width="5" marker-end="url(#arrow)"/>
+
+  <rect x="1270" y="454" width="250" height="152" rx="22" fill="#FBFAF6" stroke="#D7CCBE" stroke-width="2"/>
+  <text x="1300" y="500" fill="#4E4854" font-size="21" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">OPS VIEWS</text>
+  <text x="1300" y="546" fill="#27242E" font-size="30" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">角色化</text>
+  <text x="1300" y="582" fill="#27242E" font-size="30" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">运营视图</text>
+
+  <path d="M1210 301H1360C1379 301 1395 317 1395 336V446" stroke="#5A4A67" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="486" width="1130" height="194" rx="24" fill="#FFFDF8" stroke="#D8CFC1" stroke-width="2" stroke-dasharray="10 10"/>
+  <text x="112" y="540" fill="#4E4854" font-size="21" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif" font-weight="700">PRODUCTION BOUNDARY</text>
+  <text x="112" y="596" fill="#27242E" font-size="39" font-weight="700" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">Schema 只读检查已完成表级匹配</text>
+  <text x="112" y="638" fill="#6F7B70" font-size="22" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">字段级差异与正式写入仍保持 fail-closed</text>
+
+  <rect x="80" y="738" width="1440" height="72" rx="18" fill="#364F43"/>
+  <text x="112" y="782" fill="#FFFDF8" font-size="21" font-family="Inter, 'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif">Portfolio Pilot｜真实测试 Base E2E 已验证，生产 V2 Schema 表级匹配通过（10/10），正式业务 Pilot 待启用</text>
 </svg>
