@@ -35,7 +35,7 @@ test("AI guide has one reusable full conversation window and a mobile Sheet entr
   assert.match(css, /\.guide-message > p[\s\S]*font-size:\s*14px/);
 });
 
-test("mobile project library conditionally renders six supporting projects without CSS-only hiding", async () => {
+test("mobile project library conditionally renders five supporting projects without CSS-only hiding", async () => {
   const library = await read("components/ProjectLibrary.tsx");
   const css = await read("app/portfolio-polish.css");
 
@@ -43,7 +43,7 @@ test("mobile project library conditionally renders six supporting projects witho
   assert.match(library, /!project\.featured/);
   assert.match(library, /project\.index/);
   assert.match(library, /library-card-compact/);
-  assert.match(library, /已查看三个旗舰案例/);
+  assert.match(library, /已查看 3 个旗舰案例 \+ 1 个模型能力项目/);
   assert.match(library, /aria-expanded/);
   assert.doesNotMatch(css, /\.library-card-featured\s*\{\s*display:\s*none/);
 });

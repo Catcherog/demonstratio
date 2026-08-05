@@ -1,5 +1,6 @@
 import type { Project } from "@/content/projects";
 import type { FlagshipCaseStudy } from "@/content/flagship-cases";
+import { LiveExperienceBadge } from "./LiveExperienceBadge";
 
 const SERVICE_AGENT_DECISION_CHAIN = [
   { index: "01", label: "理解问题", detail: "识别意图与风险" },
@@ -53,6 +54,20 @@ export function CaseHero({ project, study }: { project: Project; study: Flagship
             <div><dt>周期</dt><dd>{project.period}</dd></div>
           </dl>
         </aside>
+      </div>
+
+      <div className="case-hero-cover">
+        <div className="case-cover-frame">
+          <img src={project.images[0]} alt={`${project.title} 封面`} />
+        </div>
+        {project.link ? (
+          <LiveExperienceBadge
+            href={project.link.href}
+            label="在线体验"
+            caption={project.title}
+            external={project.link.href.startsWith("http")}
+          />
+        ) : null}
       </div>
     </header>
   );

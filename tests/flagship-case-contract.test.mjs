@@ -148,11 +148,11 @@ test("evidence catalog uses exact states and keeps planned items non-interactive
     "lumen-live-entry",
     "lumen-walkthrough",
   ]) assert.ok(source.includes(`id: "${id}"`), `missing evidence ${id}`);
-  for (const plannedId of ["data-platform-walkthrough", "lumen-walkthrough"]) {
-    const start = source.indexOf(`id: "${plannedId}"`);
-    const next = source.indexOf("\n  buildEvidence(", start + 1);
-    const block = source.slice(start, next < 0 ? source.length : next);
-    assert.match(block, /state: "planned"/);
+  // data-platform-walkthrough / lumen-walkthrough are now available
+  // validation-boundary cards, replacing the old "待补素材" planned stubs.
+  // Keep guarding ANY remaining planned evidence so it never exposes a live control.
+  for (const block of source.split("\n  buildEvidence(").slice(1)) {
+    if (!/state: "planned"/.test(block)) continue;
     assert.doesNotMatch(block, /\bhref:/);
     assert.doesNotMatch(block, /\bassetUrl:/);
   }

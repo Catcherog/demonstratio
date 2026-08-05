@@ -105,7 +105,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "data-platform",
-    index: "01",
+    index: "02",
     category: "Data / Automation",
     categoryLabel: "FEISHU AI DATA PLATFORM · MOBILE OPS",
     title: "飞书 AI 业务数据平台",
@@ -194,18 +194,18 @@ export const projects: Project[] = [
       { slug: "service-agent", label: "Service Agent", detail: "知识与客户上下文由中台提供。" },
       { slug: "mini-program", label: "微信小程序", detail: "咨询和预约留资回写中台。" },
     ],
-    images: ["/evidence/data-platform/closed-loop.svg"],
+    images: ["/evidence/data-platform/cover-detailed.svg"],
     imageMode: "desktop",
     lastVerifiedAt: "2026-08-03T14:00:00+08:00",
     link: {
-      label: "体验飞书智能录入台",
-      href: "https://portal-seven-jade-47.vercel.app/",
-      note: "公开前端用于展示产品流程；正式业务 Base 写入仍未开放。",
+      label: "在线体验飞书录入台",
+      href: "/experience/feishu-intake-demo",
+      note: "Mock 演示页：展示 OCR → Candidate → SOP Gate → 写入前人工确认流程，不连接正式业务 Base。",
     },
   },
   {
     slug: "service-agent",
-    index: "02",
+    index: "01",
     category: "Agent / RAG",
     categoryLabel: "RAG · AGENT · AI SERVICE",
     title: "Studio Customer Service",
@@ -358,7 +358,7 @@ export const projects: Project[] = [
       { slug: "lora-finetuning", label: "LoRA 微调", detail: "微调模型作为本地推理与云端 API 的备选后端。" },
       { slug: "data-platform", label: "数据中台", detail: "客户上下文和业务知识由统一数据底座支撑。" },
     ],
-    images: ["/evidence/service-agent/risk-workflow.svg"],
+    images: ["/evidence/service-agent/cover-detailed.svg"],
     imageMode: "desktop",
     link: { label: "打开公网实时 Demo", href: "https://zehuai-customer-demo.vercel.app/", note: "已接入真实 Service Agent 后端，支持知识检索、多轮追问、来源展示与安全转人工。高风险、低置信度及知识不足的问题不会强行回答。" },
     fallbackLink: { label: "打开 B1 / B2 / B3 备用演示", href: "https://zehuai-customer-demo.vercel.app/controlled", note: "若实时入口加载失败，可使用 B1 / B2 / B3 静态受控演示；该入口不代表实时生产能力。" },
@@ -420,9 +420,9 @@ export const projects: Project[] = [
     imageMode: "desktop",
     lastVerifiedAt: "2026-07-28T00:00:00Z",
     link: {
-      label: "访问光砚",
+      label: "在线体验光砚",
       href: "https://lumen-ink.vercel.app/",
-      note: "Live Demo；根页、健康接口与 Seedream 4.5 文生图/图生图已完成真实验证。液化、修复、消除等其他模式仍未验证。",
+      note: "Live Demo；真实 Provider 路径验证以 Seedream 4.5 文生图 / 图生图为准。",
     },
     fallbackLink: {
       label: "查看受限状态与证据",
@@ -439,11 +439,11 @@ export const projects: Project[] = [
     subtitle: "从业务语料、QLoRA 训练到 OpenAI 兼容本地推理",
     summary:
       "将 30+ 篇业务文档清洗为单轮与多轮 SFT 数据，在 16GB 单卡上完成 Qwen 1.5B / 7B 双基座 QLoRA，并封装本地 RAG 与推理服务。",
-    status: "训练与本地验证完成",
+    status: "训练与本地验证完成｜业务效果独立评测待补",
     role: "产品验证 / 数据准备 / 训练与推理工程",
     team: "个人主导",
     period: "2026.06 - 2026.07",
-    featured: false,
+    featured: true,
     metrics: [
       { value: "2", label: "个微调基座" },
       { value: "4bit", label: "QLoRA 量化" },
@@ -803,14 +803,30 @@ export const categories: (ProjectCategory | "全部")[] = [
   "Model Training",
 ];
 
-export const homepageProjects = projects.filter((project) => !project.archived);
+const homepagePriority = ["service-agent", "data-platform", "lumen-ink", "lora-finetuning"] as const;
+const flagshipSlugs = ["service-agent", "data-platform", "lumen-ink"] as const;
 
-export const featuredProjects = ["data-platform", "service-agent", "lumen-ink"]
-  .map((slug) => projects.find((project) => project.slug === slug))
-  .filter((project): project is Project => Boolean(project))
-  .filter((project) => !project.archived);
+function resolveProjects(slugs: readonly string[]) {
+  return slugs
+    .map((slug) => projects.find((project) => project.slug === slug))
+    .filter((project): project is Project => Boolean(project))
+    .filter((project) => !project.archived);
+}
 
-export const publicProjects = featuredProjects;
+const homepagePrioritySet = new Set<string>(homepagePriority);
+
+export const homepageProjects = [
+  ...resolveProjects(homepagePriority),
+  ...projects.filter(
+    (project) => !project.archived && !homepagePrioritySet.has(project.slug),
+  ),
+];
+
+export const featuredProjects = resolveProjects(homepagePriority);
+
+// publicProjects 保持为三项正式旗舰案例，避免将 LoRA 的模型能力项目
+// 误识别为已经具备独立旗舰案例内容合同。
+export const publicProjects = resolveProjects(flagshipSlugs);
 
 export const capabilities = [
   {
@@ -826,7 +842,7 @@ export const capabilities = [
   {
     title: "端到端交付",
     body: "能完成需求、原型、开发验证、上线协同、评估设计与数据回流。",
-    evidence: "3 个主案例 · 测试 Base 历史证据 · Web / 小程序 / APP",
+    evidence: "3 个旗舰产品案例 + 1 个模型能力项目 · Web / 小程序 / APP",
   },
 ];
 
