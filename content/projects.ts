@@ -27,7 +27,7 @@ const boundPublicClaims = publicClaimData as PublicMetricRecord[];
 
 export function getPublicMetrics(surface: PublicMetricSurface): BoundPublicMetric[] {
   return boundPublicClaims
-    .filter((claim) => claim.surface === surface)
+    .filter((claim) => claim.surface === surface && claim.claimId !== "SCS-DEPLOYED-SHA")
     .map(({ surface: _surface, ...metric }) => metric);
 }
 

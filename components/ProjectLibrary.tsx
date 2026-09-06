@@ -3,10 +3,15 @@
 import Image from "next/image";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import { categories, type Project, type ProjectCategory } from "@/content/projects";
+import { getPublicProjectStatus } from "@/content/portfolio-status";
 
 type Props = { projects: Project[] };
 
 const MOBILE_QUERY = "(max-width: 720px)";
+
+function displayStatus(project: Project) {
+  return getPublicProjectStatus(project.slug)?.label ?? project.status;
+}
 
 function subscribeToViewport(callback: () => void) {
   if (typeof window === "undefined") return () => undefined;
@@ -36,7 +41,7 @@ function CompactLibraryCard({ project }: { project: Project }) {
       <div className="library-compact-body">
         <div className="library-compact-meta">
           <span>{project.category}</span>
-          <span>{project.status}</span>
+          <span>{displayStatus(project)}</span>
         </div>
         <h3>{project.title}</h3>
         <p>{project.subtitle}</p>
@@ -70,7 +75,7 @@ function FullLibraryCard({ project }: { project: Project }) {
           fill
           sizes="(max-width: 760px) 100vw, 33vw"
         />
-        <span className="library-status">{project.status}</span>
+        <span className="library-status">{displayStatus(project)}</span>
         <span className="library-tier">{project.featured ? "旗舰案例" : "更多案例"}</span>
       </div>
 

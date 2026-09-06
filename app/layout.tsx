@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./v5.css";
 import "./editorial-responsive.css";
@@ -31,6 +31,12 @@ export const metadata: Metadata = {
     description: "3 个主案例与 6 个扩展案例：覆盖飞书数据平台、Service Agent、光砚及完整 AI 产品能力版图。",
     images: ["/og.jpg"],
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

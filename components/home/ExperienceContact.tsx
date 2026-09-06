@@ -1,9 +1,11 @@
+import { portfolioStory } from "@/content/portfolio-story";
+
 export function ExperienceContact() {
   return (
     <>
       <section className="experience-section" id="experience">
         <div className="section-shell experience-layout">
-          <div><p className="eyebrow">EXPERIENCE</p><h2>从复杂项目交付，到 AI 产品创业。</h2></div>
+          <div><p className="eyebrow">EXPERIENCE</p><h2>{portfolioStory.experienceLine}</h2></div>
           <div className="timeline">
             <article>
               <time>2026.02 — 至今</time>

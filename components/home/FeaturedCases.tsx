@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Project } from "@/content/projects";
+import { getPublicProjectStatus } from "@/content/portfolio-status";
 
 type Props = { projects: Project[] };
 
@@ -12,31 +13,35 @@ export function FeaturedCases({ projects }: Props) {
       </div>
 
       <div className="flagship-grid">
-        {projects.map((project, index) => (
-          <article className="flagship-card" key={project.slug}>
-            <a className="flagship-media" href={`/projects/${project.slug}`} aria-label={`查看 ${project.title} 案例`}>
-              <Image src={project.images[0]} alt={`${project.title} 产品界面`} fill sizes="(max-width: 900px) 100vw, 33vw" />
-              <span title={project.status}>{project.status}</span>
-            </a>
-            <div className="flagship-body">
-              <div className="flagship-meta"><span>{String(index + 1).padStart(2, "0")}</span><strong>{project.category}</strong></div>
-              <h3>{project.title}</h3>
-              <p className="flagship-subtitle">{project.subtitle}</p>
-              <p className="flagship-summary">{project.summary}</p>
-              <dl>
-                <div><dt>我的角色</dt><dd>{project.role}</dd></div>
-              </dl>
-              <div className="flagship-metrics">
-                {project.metrics.slice(0, 2).map((metric) => (
-                  <div key={metric.label} data-claim-id={metric.claimId} data-evidence-ref={metric.evidenceRef}>
-                    <strong>{metric.value}</strong><span>{metric.label}{metric.note ? ` · ${metric.note}` : ""}</span>
-                  </div>
-                ))}
+        {projects.map((project, index) => {
+          const publicStatus = getPublicProjectStatus(project.slug);
+          return (
+            <article className="flagship-card" key={project.slug}>
+              <a className="flagship-media" href={`/projects/${project.slug}`} aria-label={`查看 ${project.title} 案例`}>
+                <Image src={project.images[0]} alt={`${project.title} 产品界面`} fill priority={index === 0} sizes="(max-width: 900px) 100vw, 33vw" />
+                <span title={publicStatus?.label ?? project.status}>{publicStatus?.label ?? project.status}</span>
+              </a>
+              <div className="flagship-body">
+                <div className="flagship-meta"><span>{String(index + 1).padStart(2, "0")}</span><strong>{project.category}</strong></div>
+                <h3>{project.title}</h3>
+                <p className="flagship-subtitle">{project.subtitle}</p>
+                <p className="flagship-summary">{project.summary}</p>
+                <dl>
+                  <div><dt>我的角色</dt><dd>{project.role}</dd></div>
+                </dl>
+                {publicStatus && <p className="flagship-status-note"><strong>证据边界</strong>{publicStatus.boundary}</p>}
+                <div className="flagship-metrics">
+                  {project.metrics.slice(0, 2).map((metric) => (
+                    <div key={metric.label} data-claim-id={metric.claimId} data-evidence-ref={metric.evidenceRef}>
+                      <strong>{metric.value}</strong><span>{metric.label}{metric.note ? ` · ${metric.note}` : ""}</span>
+                    </div>
+                  ))}
+                </div>
+                <a className="editorial-link" href={`/projects/${project.slug}`}>阅读完整案例 <span aria-hidden="true">→</span></a>
               </div>
-              <a className="editorial-link" href={`/projects/${project.slug}`}>阅读完整案例 <span aria-hidden="true">→</span></a>
-            </div>
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
     </section>
   );

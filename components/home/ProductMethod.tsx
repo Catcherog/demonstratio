@@ -1,4 +1,5 @@
 import { DataFlywheel } from "@/components/DataFlywheel";
+import { portfolioStory } from "@/content/portfolio-story";
 
 const principles = [
   ["01", "业务链路先于模型", "先识别角色、关键节点、异常路径和可量化结果。"],
@@ -13,7 +14,7 @@ export function ProductMethod() {
       <div className="section-shell method-layout">
         <div className="method-copy">
           <p className="eyebrow">RELIABILITY BY DESIGN</p>
-          <h2>AI 产品的核心不是“自动化更多”，而是错误可控。</h2>
+          <h2>{portfolioStory.reliabilityHeadline}</h2>
           <p className="method-lead">先定义业务边界和失败成本，再设计模型、工具调用、人工接管与数据反馈。</p>
           <div className="method-principles">
             {principles.map(([index, title, body]) => (

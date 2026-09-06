@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-09-06",
+  "base": "http://localhost:3004",
+  "browser": "Microsoft Edge via Playwright",
+  "routes": [
+    "/",
+    "/interview",
+    "/projects/data-platform",
+    "/projects/service-agent",
+    "/projects/lumen-ink",
+    "/resume"
+  ],
+  "viewports": [
+    { "name": "desktop", "width": 1440, "height": 900 },
+    { "name": "laptop", "width": 1024, "height": 900 },
+    { "name": "tablet", "width": 768, "height": 1024 },
+    { "name": "phone", "width": 390, "height": 844 }
+  ],
+  "checkedPages": 24,
+  "result": "PASS",
+  "assertions": {
+    "http200": true,
+    "internalLinks200": true,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "brokenImages": 0,
+    "missingAlt": 0,
+    "horizontalOverflow": false,
+    "keyboardFocus": "3px solid outline observed",
+    "phoneClientWidth": 390,
+    "phoneScrollWidth": 390,
+    "mobileMenu": "nav nav-open after keyboard/click check",
+    "reducedMotion": "matchMedia true; scrollBehavior auto"
+  },
+  "demoAssertions": {
+    "serviceAgentPrimaryEvidence": "service-agent-live-demo-01",
+    "serviceAgentDemoStatus": "fallback",
+    "lumenStatus": "Controlled Demo｜Seedream 4.5 两项编辑已验证"
+  },
+  "notes": [
+    "No cookies, headers, tokens, credentials, or external write traffic were saved.",
+    "The local dev server was used only for read-only browser verification."
+  ]
+}

@@ -1,5 +1,6 @@
 import type { Project } from "@/content/projects";
 import type { FlagshipCaseStudy } from "@/content/flagship-cases";
+import { getPublicProjectStatus } from "@/content/portfolio-status";
 
 const SERVICE_AGENT_DECISION_CHAIN = [
   { index: "01", label: "理解问题", detail: "识别意图与风险" },
@@ -10,6 +11,7 @@ const SERVICE_AGENT_DECISION_CHAIN = [
 
 export function CaseHero({ project, study }: { project: Project; study: FlagshipCaseStudy }) {
   const isServiceAgent = project.slug === "service-agent";
+  const publicStatus = getPublicProjectStatus(project.slug);
 
   return (
     <header className={`flagship-hero section-shell${isServiceAgent ? " flagship-hero--editorial-flow" : ""}`}>
@@ -35,8 +37,9 @@ export function CaseHero({ project, study }: { project: Project; study: Flagship
         </div>
         <aside className="flagship-status-card" aria-label="案例当前状态">
           <span>当前状态</span>
-          <strong>{study.overview.status}</strong>
-          <p>{study.overview.boundary}</p>
+          <strong>{publicStatus?.label ?? study.overview.status}</strong>
+          <p>{publicStatus?.boundary ?? study.overview.boundary}</p>
+          {publicStatus && <small className="public-status-mode">{publicStatus.secondaryLabel}</small>}
           {isServiceAgent && (
             <ol className="case-decision-chain" aria-label="Service Agent 决策链">
               {SERVICE_AGENT_DECISION_CHAIN.map((step) => (

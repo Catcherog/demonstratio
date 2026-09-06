@@ -1,5 +1,6 @@
 import type { Project } from "./projects";
 import { getProject } from "./projects";
+import { getPublicProjectStatus } from "./portfolio-status";
 
 export type EvidenceKind = "image" | "video" | "interactive" | "architecture" | "test" | "document";
 export type EvidenceState = "available" | "planned" | "unavailable";
@@ -15,6 +16,7 @@ export interface PortfolioEvidence {
   publicSafe: boolean;
   evidenceRefs: string[];
   status: string;
+  publicStatus?: string;
   scope: string;
   boundary: string;
   assetUrl?: string;
@@ -65,6 +67,7 @@ export function buildEvidence(
     ...item,
     projectSlug: project.slug,
     status: project.status,
+    publicStatus: getPublicProjectStatus(project.slug)?.label,
     verifiedAt: item.verifiedAt ?? project.lastVerifiedAt,
   };
 }
@@ -181,7 +184,7 @@ export const portfolioEvidence: PortfolioEvidence[] = [
     publicSafe: true,
     evidenceRefs: ["E-SCS-PRODUCTION"],
     scope: "公开前端的静态受控体验（备用模式）",
-    boundary: "Live 模式已启用，静态降级仅在 NEXT_PUBLIC_DEMO_STATUS≠live 时显示。",
+    boundary: "录屏优先；受控静态演示作为备用入口，实时上游不稳定时不阻塞讲解。",
     href: "https://zehuai-customer-demo.vercel.app/controlled",
     tags: ["agent", "demo", "b1", "b2", "b3", "体验"],
     roleWeights: { recruiter: 6, "product-lead": 5, technical: 4 },
@@ -189,13 +192,13 @@ export const portfolioEvidence: PortfolioEvidence[] = [
   buildEvidence(serviceAgent, {
     id: "service-agent-live-frontend",
     kind: "interactive",
-    title: "公网实时 Demo（已接入真实后端）",
-    summary: "公开前端已切换到 CloudBase Deploy 039 后端，支持知识检索、多轮追问、来源展示与安全转人工。",
+    title: "公网实时入口（次级验证路径）",
+    summary: "公开前端可补充查看 CloudBase Deploy 039 的接口形态；当前不作为首要演示路径。",
     state: "available",
     publicSafe: true,
     evidenceRefs: ["E-SCS-PRODUCTION", "E-SCS-DEPLOY-039"],
     scope: "公开前端到 Deploy 039 的实时 API",
-    boundary: "安全仍为 provisional；高风险、低置信度及知识不足的问题 fail-closed 转人工。",
+    boundary: "当前 upstream/chat E2E 与 deployment source SHA 尚未在本轮复核；不作为主入口或当前部署 provenance 证明。",
     href: "https://zehuai-customer-demo.vercel.app/",
     tags: ["agent", "frontend", "cloudbase", "live", "rag", "handoff"],
     roleWeights: { recruiter: 9, "product-lead": 8, technical: 9 },

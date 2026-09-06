@@ -1,7 +1,9 @@
 import type { Project } from "@/content/projects";
 import type { FlagshipCaseStudy } from "@/content/flagship-cases";
+import { getPublicProjectStatus } from "@/content/portfolio-status";
 
 export function CaseOverview({ id, project, study }: { id: string; project: Project; study: FlagshipCaseStudy }) {
+  const publicStatus = getPublicProjectStatus(project.slug);
   return (
     <section id={id} className="flagship-section section-shell" aria-labelledby={`${id}-heading`}>
       <div className="flagship-section-heading">
@@ -21,6 +23,12 @@ export function CaseOverview({ id, project, study }: { id: string; project: Proj
           <p>{study.overview.boundary}</p>
         </article>
       </div>
+      {publicStatus && (
+        <aside className="case-public-status-strip" data-demo-mode={publicStatus.mode}>
+          <div><span>当前公开呈现</span><strong>{publicStatus.label}</strong></div>
+          <p>{publicStatus.boundary}</p>
+        </aside>
+      )}
       <div className="flagship-metrics" aria-label="权威绑定指标">
         {project.metrics.map((metric) => (
           <article key={metric.claimId} data-claim-id={metric.claimId} data-evidence-ref={metric.evidenceRef}>

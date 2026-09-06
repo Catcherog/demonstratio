@@ -1,5 +1,6 @@
 import { flagshipCaseStudies, type FlagshipCaseStudy, type NarrativePoint } from "@/content/flagship-cases";
 import { portfolioEvidence } from "@/content/portfolio-evidence";
+import { getPublicProjectStatus } from "@/content/portfolio-status";
 import { getProject, projects, type Project } from "@/content/projects";
 
 export type GuideRole = "recruiter" | "product-lead" | "technical";
@@ -93,6 +94,10 @@ function compact(items: Array<string | undefined | null>): string[] {
   return items.filter((item): item is string => Boolean(item?.trim()));
 }
 
+function displayStatus(project: Project) {
+  return getPublicProjectStatus(project.slug)?.label ?? project.status;
+}
+
 function createDocument(
   project: Project,
   sectionId: string,
@@ -104,7 +109,7 @@ function createDocument(
     project.title,
     project.subtitle,
     project.summary,
-    project.status,
+    displayStatus(project),
     project.role,
     project.team,
     project.period,
@@ -118,7 +123,7 @@ function createDocument(
     evidenceIds,
     projectSlug: project.slug,
     title: project.title,
-    status: project.status,
+    status: displayStatus(project),
     href: `/projects/${project.slug}`,
     section,
     excerpt: content.slice(0, 320),
@@ -134,7 +139,7 @@ function flattenSupportingProject(project: Project): PortfolioDocument[] {
       `项目：${project.title}`,
       `定位：${project.subtitle}`,
       `摘要：${project.summary}`,
-      `当前状态：${project.status}`,
+      `当前状态：${displayStatus(project)}`,
       `我的角色：${project.role}`,
       `团队：${project.team}`,
       `周期：${project.period}`,
@@ -201,7 +206,7 @@ function flagshipDocuments(study: FlagshipCaseStudy): PortfolioDocument[] {
       `项目：${project.title}`,
       `一句话：${study.overview.oneLine}`,
       `责任：${study.overview.responsibility}`,
-      `当前状态：${project.status}`,
+      `当前状态：${displayStatus(project)}`,
       `证据边界：${study.overview.boundary}`,
       `公开指标绑定：${study.overview.claimIds.join("、")}`,
     ]).join("\n")),
@@ -451,7 +456,7 @@ export function retrievePortfolioSources(
         evidenceId: overview?.evidenceId ?? `${project.slug}:overview`,
         projectSlug: project.slug,
         title: project.title,
-        status: project.status,
+        status: displayStatus(project),
         href: `/projects/${project.slug}`,
         section: "项目概览",
         excerpt: overview?.excerpt ?? project.summary,
@@ -532,7 +537,7 @@ export function retrievePortfolioSources(
       evidenceId: `${project.slug}:overview`,
       projectSlug: project.slug,
       title: project.title,
-      status: project.status,
+      status: displayStatus(project),
       href: `/projects/${project.slug}`,
       section: "项目概览",
       excerpt: project.summary,

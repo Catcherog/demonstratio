@@ -42,6 +42,7 @@ export function Header() {
       </button>
 
       <nav className={open ? "nav nav-open" : "nav"} aria-label="主导航">
+        <a href="/interview" onClick={close}>面试模式</a>
         <a href="/#featured" onClick={close}>旗舰案例</a>
         <a href="/#system" onClick={close}>产品架构</a>
         <a href="/#method" onClick={close}>产品方法</a>

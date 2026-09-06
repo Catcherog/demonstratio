@@ -1,11 +1,13 @@
 import { ExperienceContact } from "@/components/home/ExperienceContact";
 import { FeaturedCases } from "@/components/home/FeaturedCases";
 import { Hero } from "@/components/home/Hero";
+import { BusinessOsOverview } from "@/components/home/BusinessOsOverview";
 import { ProductMethod } from "@/components/home/ProductMethod";
 import { Header } from "@/components/Header";
 import { PortfolioGuide } from "@/components/PortfolioGuide";
 import { ProjectLibrary } from "@/components/ProjectLibrary";
 import { SystemMap } from "@/components/SystemMap";
+import { portfolioStory } from "@/content/portfolio-story";
 import { featuredProjects, getPublicMetrics, homepageProjects } from "@/content/projects";
 
 const heroMetrics = getPublicMetrics("hero");
@@ -29,27 +31,30 @@ export default function Home() {
       "@type": "CreativeWork",
       position: index + 1,
       name: project.title,
-      description: project.summary,
+    description: project.summary,
       url: `https://www.jaelchen.com/projects/${project.slug}`,
       creator: { "@type": "Person", name: "陈嘉伟" },
     })),
+    about: portfolioStory.buildLoop,
   };
 
   return (
     <main id="top">
       <Header />
       <Hero metrics={heroMetrics} />
-      <FeaturedCases projects={featuredProjects} />
+      <BusinessOsOverview />
 
       <section className="system-section" id="system">
         <div className="section-shell">
           <div className="section-heading system-heading">
-            <div><p className="eyebrow">CROSS-PROJECT ARCHITECTURE</p><h2>3 个主案例 + 飞书子系统，组成一套五层 AI 产品系统。</h2></div>
-            <p>客户触点负责体验与留资，智能服务处理咨询和数据摄入，数据中台统一业务流转，增长引擎反哺内容，模型层提供本地训练与推理。</p>
+            <div><p className="eyebrow">CROSS-PROJECT ARCHITECTURE</p><h2>{portfolioStory.headline}</h2></div>
+            <p>{portfolioStory.systemDescription}</p>
           </div>
           <SystemMap />
         </div>
       </section>
+
+      <FeaturedCases projects={featuredProjects} />
 
       <ProductMethod />
       <PortfolioGuide />

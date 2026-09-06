@@ -27,14 +27,16 @@ export function CaseEvidenceGallery({
   demoStatus?: DemoStatus;
 }) {
   const safeItems = items.filter((item) => item.publicSafe);
-  const interactiveItems = demoStatus ? safeItems.filter((item) => item.kind === "interactive") : [];
-  const preferredInteractiveId = demoStatus === "live"
-    ? "service-agent-live-frontend"
-    : "service-agent-controlled-demo";
-  const primaryInteractive = interactiveItems.find((item) => item.id === preferredInteractiveId) ?? interactiveItems[0];
-  const backupInteractive = interactiveItems.find((item) => item.id !== primaryInteractive?.id);
-  const evidenceItems = demoStatus && primaryInteractive
-    ? safeItems.filter((item) => item.kind !== "interactive")
+  const demoItems = demoStatus
+    ? safeItems.filter((item) => item.kind === "video" || item.kind === "interactive")
+    : [];
+  const preferredDemoId = demoStatus === "fallback"
+    ? "service-agent-live-demo-01"
+    : "service-agent-live-frontend";
+  const primaryDemo = demoItems.find((item) => item.id === preferredDemoId) ?? demoItems[0];
+  const secondaryDemos = demoItems.filter((item) => item.id !== primaryDemo?.id);
+  const evidenceItems = demoStatus && primaryDemo
+    ? safeItems.filter((item) => item.id !== primaryDemo.id)
     : safeItems;
 
   return (
@@ -44,34 +46,38 @@ export function CaseEvidenceGallery({
         <h2 id={`${id}-heading`}>项目展示</h2>
         <p>集中展示已核验的产品界面、操作视频、体验入口与验证摘要；不可用素材会如实标注状态。</p>
       </div>
-      {primaryInteractive && (
-        <article className="case-demo-entry case-evidence-card evidence-available" data-demo-status={demoStatus}>
+      {primaryDemo && (
+        <article className="case-demo-entry case-evidence-card evidence-available" data-demo-status={demoStatus} data-primary-evidence-id={primaryDemo.id}>
           <div className="case-evidence-meta">
-            <span>体验入口</span>
-            <strong>{demoStatus === "live" ? "实时主入口" : "受控备用入口"}</strong>
+            <span>{primaryDemo.kind === "video" ? "操作视频" : "体验入口"}</span>
+            <strong>{demoStatus === "fallback" ? "录屏主路径" : "实时补充路径"}</strong>
           </div>
-          <EvidenceMedia item={primaryInteractive} />
+          <EvidenceMedia item={primaryDemo} />
           <div className="case-evidence-copy">
-            <h3>{primaryInteractive.title}</h3>
-            <p>{primaryInteractive.summary}</p>
-            {backupInteractive && (
+            <h3>{primaryDemo.title}</h3>
+            <p>{primaryDemo.summary}</p>
+            {secondaryDemos.length > 0 && (
               <aside className="case-demo-fallback-note" role="note">
-                <strong>备用模式</strong>
-                <p>{backupInteractive.title}：{backupInteractive.summary} 当前仅作为备用模式说明，不作为主入口展示。</p>
-                {demoStatus === "live" && backupInteractive.id === "service-agent-controlled-demo" && backupInteractive.href && (
-                  <a className="button button-ghost" href={backupInteractive.href} target="_blank" rel="noreferrer">
-                    打开 B1 / B2 / B3 备用演示 <span aria-hidden="true">↗</span>
-                  </a>
-                )}
+                <strong>次级路径</strong>
+                {secondaryDemos.map((item) => (
+                  <div className="case-demo-secondary" key={item.id}>
+                    <p>{item.title}：{item.summary}</p>
+                    {item.href && (
+                      <a className="button button-ghost" href={item.href} target="_blank" rel="noreferrer">
+                        打开补充入口 <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                  </div>
+                ))}
               </aside>
             )}
             <dl>
-              <div><dt>状态</dt><dd>{STATE_LABELS[primaryInteractive.state]}</dd></div>
-              <div><dt>验证时间</dt><dd>{primaryInteractive.verifiedAt ?? "待补素材"}</dd></div>
-              <div><dt>范围</dt><dd>{primaryInteractive.scope}</dd></div>
-              <div><dt>边界</dt><dd>{primaryInteractive.boundary}</dd></div>
+              <div><dt>状态</dt><dd>{STATE_LABELS[primaryDemo.state]}</dd></div>
+              <div><dt>验证时间</dt><dd>{primaryDemo.verifiedAt ?? "待补素材"}</dd></div>
+              <div><dt>范围</dt><dd>{primaryDemo.scope}</dd></div>
+              <div><dt>边界</dt><dd>{primaryDemo.boundary}</dd></div>
             </dl>
-            <small>证据：{primaryInteractive.evidenceRefs.join(" · ")}</small>
+            <small>证据：{primaryDemo.evidenceRefs.join(" · ")}</small>
           </div>
         </article>
       )}
