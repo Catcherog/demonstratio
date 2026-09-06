@@ -180,7 +180,7 @@ export function PortfolioGuide() {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [streamingAnswer, setStreamingAnswer] = useState("");
   const [streamingSources, setStreamingSources] = useState<SourceItem[]>([]);
-  const [streamingMeta, setStreamingMeta] = useState<MetaState>({ mode: "live" });
+  const [streamingMeta, setStreamingMeta] = useState<MetaState>({ mode: "guided" });
   const [loading, setLoading] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [error, setError] = useState("");
@@ -361,7 +361,7 @@ export function PortfolioGuide() {
     setError("");
     setStreamingAnswer("");
     setStreamingSources([]);
-    setStreamingMeta({ mode: "live" });
+    setStreamingMeta({ mode: "guided" });
     abortRef.current?.abort();
 
     const controller = new AbortController();
@@ -374,7 +374,7 @@ export function PortfolioGuide() {
 
     let answer = "";
     let sources: SourceItem[] = [];
-    let meta: MetaState = { mode: "live" };
+    let meta: MetaState = { mode: "guided" };
     let streamError = "";
 
     try {
@@ -480,7 +480,7 @@ export function PortfolioGuide() {
     <section className="guide-section" id="portfolio-guide">
       <div className="section-shell guide-layout">
         <div className="guide-intro">
-          <p className="eyebrow">LIVE AI PORTFOLIO GUIDE</p>
+          <p className="eyebrow">AI PORTFOLIO GUIDE</p>
           <h2>把面试官最想问的问题，交给 AI 先回答。</h2>
           <p>
             选择招聘官、产品负责人或技术面试官视角。AI 会先检索项目证据，再解释我做了什么、为什么这样设计、如何实现，以及哪些能力仍有边界。
@@ -541,7 +541,7 @@ export function PortfolioGuide() {
               <div className="guide-window-head-actions">
                 <span className="guide-online">
                   <i aria-hidden="true" />
-                  在线 · 可连续追问
+                  只读 · 证据导览
                 </span>
                 <button className="guide-sheet-close" type="button" ref={closeButtonRef} onClick={() => closeSheet()}>
                   关闭

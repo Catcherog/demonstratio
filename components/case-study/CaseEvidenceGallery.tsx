@@ -20,23 +20,41 @@ const KIND_LABELS: Record<PortfolioEvidence["kind"], string> = {
 export function CaseEvidenceGallery({
   id,
   items,
+  projectSlug,
   demoStatus,
+  primaryEvidenceId,
 }: {
   id: string;
   items: PortfolioEvidence[];
+  projectSlug: string;
   demoStatus?: DemoStatus;
+  primaryEvidenceId?: string;
 }) {
   const safeItems = items.filter((item) => item.publicSafe);
   const demoItems = demoStatus
     ? safeItems.filter((item) => item.kind === "video" || item.kind === "interactive")
     : [];
-  const preferredDemoId = demoStatus === "fallback"
-    ? "service-agent-live-demo-01"
-    : "service-agent-live-frontend";
-  const primaryDemo = demoItems.find((item) => item.id === preferredDemoId) ?? demoItems[0];
-  const secondaryDemos = demoItems.filter((item) => item.id !== primaryDemo?.id);
-  const evidenceItems = demoStatus && primaryDemo
-    ? safeItems.filter((item) => item.id !== primaryDemo.id)
+  const registryPrimary = primaryEvidenceId
+    ? safeItems.find(
+        (item) =>
+          item.id === primaryEvidenceId &&
+          item.projectSlug === projectSlug &&
+          item.state === "available",
+      )
+    : undefined;
+  const safeFallbackPrimary = demoStatus === "fallback"
+    ? demoItems.find((item) => item.id === "service-agent-live-demo-01" && item.projectSlug === projectSlug)
+    : undefined;
+  const configuredDemoPrimary = demoStatus
+    ? demoItems.find((item) => item.id === "service-agent-live-frontend" && item.projectSlug === projectSlug)
+    : undefined;
+  const primaryEvidence = registryPrimary ?? safeFallbackPrimary ?? configuredDemoPrimary;
+  const secondaryDemoLinks = primaryEvidence
+    ? demoItems.filter((item) => item.id !== primaryEvidence.id && item.kind === "interactive")
+    : [];
+  const secondaryDemoIds = new Set(secondaryDemoLinks.map((item) => item.id));
+  const evidenceItems = primaryEvidence
+    ? safeItems.filter((item) => item.id !== primaryEvidence.id && !secondaryDemoIds.has(item.id))
     : safeItems;
 
   return (
@@ -46,20 +64,20 @@ export function CaseEvidenceGallery({
         <h2 id={`${id}-heading`}>项目展示</h2>
         <p>集中展示已核验的产品界面、操作视频、体验入口与验证摘要；不可用素材会如实标注状态。</p>
       </div>
-      {primaryDemo && (
-        <article className="case-demo-entry case-evidence-card evidence-available" data-demo-status={demoStatus} data-primary-evidence-id={primaryDemo.id}>
+      {primaryEvidence && (
+        <article className="case-demo-entry case-evidence-card evidence-available" data-demo-status={demoStatus} data-primary-evidence-id={primaryEvidence.id}>
           <div className="case-evidence-meta">
-            <span>{primaryDemo.kind === "video" ? "操作视频" : "体验入口"}</span>
-            <strong>{demoStatus === "fallback" ? "录屏主路径" : "实时补充路径"}</strong>
+            <span>{KIND_LABELS[primaryEvidence.kind]}</span>
+            <strong>{demoStatus === "fallback" ? "录屏主路径" : "首要证据路径"}</strong>
           </div>
-          <EvidenceMedia item={primaryDemo} />
+          <EvidenceMedia item={primaryEvidence} />
           <div className="case-evidence-copy">
-            <h3>{primaryDemo.title}</h3>
-            <p>{primaryDemo.summary}</p>
-            {secondaryDemos.length > 0 && (
+            <h3>{primaryEvidence.title}</h3>
+            <p>{primaryEvidence.summary}</p>
+            {secondaryDemoLinks.length > 0 && (
               <aside className="case-demo-fallback-note" role="note">
                 <strong>次级路径</strong>
-                {secondaryDemos.map((item) => (
+                {secondaryDemoLinks.map((item) => (
                   <div className="case-demo-secondary" key={item.id}>
                     <p>{item.title}：{item.summary}</p>
                     {item.href && (
@@ -72,12 +90,12 @@ export function CaseEvidenceGallery({
               </aside>
             )}
             <dl>
-              <div><dt>状态</dt><dd>{STATE_LABELS[primaryDemo.state]}</dd></div>
-              <div><dt>验证时间</dt><dd>{primaryDemo.verifiedAt ?? "待补素材"}</dd></div>
-              <div><dt>范围</dt><dd>{primaryDemo.scope}</dd></div>
-              <div><dt>边界</dt><dd>{primaryDemo.boundary}</dd></div>
+              <div><dt>状态</dt><dd>{STATE_LABELS[primaryEvidence.state]}</dd></div>
+              <div><dt>验证时间</dt><dd>{primaryEvidence.verifiedAt ?? "待补素材"}</dd></div>
+              <div><dt>范围</dt><dd>{primaryEvidence.scope}</dd></div>
+              <div><dt>边界</dt><dd>{primaryEvidence.boundary}</dd></div>
             </dl>
-            <small>证据：{primaryDemo.evidenceRefs.join(" · ")}</small>
+            <small>证据：{primaryEvidence.evidenceRefs.join(" · ")}</small>
           </div>
         </article>
       )}

@@ -75,3 +75,24 @@ test("service evidence gallery makes recording primary in fallback mode", async 
   assert.match(source, /录屏|recording|操作视频/);
   assert.match(source, /secondary|次要|备用/);
 });
+
+test("public fallback wins over runtime demo overrides and registry evidence drives the gallery", async () => {
+  const page = await read("components/case-study/FlagshipCasePage.tsx");
+  const gallery = await read("components/case-study/CaseEvidenceGallery.tsx");
+  assert.match(page, /publicStatus\?\.mode\s*===\s*"fallback"[\s\S]*?"fallback"/);
+  assert.match(page, /primaryEvidenceId=\{publicStatus\?\.primaryEvidenceId\}/);
+  assert.match(gallery, /primaryEvidenceId\?:\s*string/);
+  assert.match(gallery, /projectSlug:\s*string/);
+  assert.match(gallery, /item\.projectSlug\s*===\s*projectSlug/);
+  assert.match(gallery, /secondaryDemoLinks/);
+  assert.doesNotMatch(gallery, /secondaryDemos\.map/);
+});
+
+test("guide chrome stays mode-neutral until the response reports a mode", async () => {
+  const source = await read("components/PortfolioGuide.tsx");
+  assert.doesNotMatch(source, /LIVE AI PORTFOLIO GUIDE/);
+  assert.doesNotMatch(source, /在线 · 可连续追问/);
+  assert.match(source, /只读 · 证据导览/);
+  assert.match(source, /useState<MetaState>\(\{ mode: "guided" \}\)/);
+  assert.match(source, /let meta: MetaState = \{ mode: "guided" \}/);
+});

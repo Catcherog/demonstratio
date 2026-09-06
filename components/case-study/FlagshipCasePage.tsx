@@ -3,6 +3,7 @@ import type { Project } from "@/content/projects";
 import type { FlagshipCaseStudy } from "@/content/flagship-cases";
 import type { PortfolioEvidence } from "@/content/portfolio-evidence";
 import { resolveDemoStatus } from "@/content/flagship-cases/types";
+import { getPublicProjectStatus } from "@/content/portfolio-status";
 import { BusinessContext } from "./BusinessContext";
 import { CaseEvidenceGallery } from "./CaseEvidenceGallery";
 import { CaseHero } from "./CaseHero";
@@ -13,7 +14,9 @@ import { ProductDesign } from "./ProductDesign";
 import { TechnicalImplementation } from "./TechnicalImplementation";
 
 export function FlagshipCasePage({ project, study, evidence }: { project: Project; study: FlagshipCaseStudy; evidence: PortfolioEvidence[] }) {
-  const demoStatus = study.demoStatus ? resolveDemoStatus(study.demoStatus) : undefined;
+  const publicStatus = getPublicProjectStatus(project.slug);
+  const configuredDemoStatus = study.demoStatus ? resolveDemoStatus(study.demoStatus) : undefined;
+  const demoStatus = publicStatus?.mode === "fallback" ? "fallback" : configuredDemoStatus;
 
   return (
     <main id="top" className="case-page flagship-case">
@@ -24,7 +27,11 @@ export function FlagshipCasePage({ project, study, evidence }: { project: Projec
           <CaseSectionNav items={CASE_SECTIONS} />
           <div className="flagship-case-sections">
             <CaseOverview id="overview" project={project} study={study} />
-            <CaseEvidenceGallery id="evidence" items={evidence} demoStatus={demoStatus} />
+            <CaseEvidenceGallery id="evidence" items={evidence}
+              projectSlug={project.slug}
+              demoStatus={demoStatus}
+              primaryEvidenceId={publicStatus?.primaryEvidenceId}
+            />
             <BusinessContext id="business" study={study} />
             <ProductDesign id="product" study={study} />
             <TechnicalImplementation id="technical" study={study} />

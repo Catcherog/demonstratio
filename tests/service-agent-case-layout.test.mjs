@@ -6,7 +6,7 @@ async function read(relativePath) {
   return readFile(new URL("../" + relativePath, import.meta.url), "utf8");
 }
 
-test("Service Agent uses a live data default and collapses duplicate interactive entries", async () => {
+test("Service Agent uses a fallback default and keeps the recording-first gallery contract", async () => {
   const caseSource = await read("content/flagship-cases/service-agent.ts");
   const types = await read("content/flagship-cases/types.ts");
   const gallery = await read("components/case-study/CaseEvidenceGallery.tsx");
@@ -14,18 +14,18 @@ test("Service Agent uses a live data default and collapses duplicate interactive
   for (const id of ["overview", "evidence", "business", "product", "technical", "iterations"]) {
     assert.match(page, new RegExp(`id=\\"${id}\\"`));
   }
-  assert.match(caseSource, /demoStatus:\s*"live"/);
+  assert.match(caseSource, /demoStatus:\s*"fallback"/);
   assert.match(types, /DemoStatus\s*=\s*"live"\s*\|\s*"fallback"/);
   assert.match(types, /override === "live" \|\| override === "fallback"/);
   assert.match(types, /:\s*defaultStatus;/);
+  assert.match(page, /getPublicProjectStatus/);
+  assert.match(page, /publicStatus\?\.mode\s*===\s*"fallback"/);
   assert.match(page, /resolveDemoStatus/);
   assert.match(page, /demoStatus=/);
-  assert.match(gallery, /primaryInteractive/);
-  assert.match(gallery, /backupInteractive/);
-  assert.match(gallery, /备用模式/);
-  assert.match(gallery, /当前仅作为备用模式说明，不作为主入口展示/);
-  assert.doesNotMatch(gallery, /实时入口异常时由 Demo 自身降级处理/);
-  assert.match(gallery, /kind !== "interactive"/);
+  assert.match(gallery, /primaryEvidenceId/);
+  assert.match(gallery, /录屏主路径/);
+  assert.match(gallery, /次级路径/);
+  assert.doesNotMatch(gallery, /primaryInteractive|backupInteractive/);
 });
 
 test("Service Agent keeps the live entry and B1/B2/B3 fallback entry distinct", async () => {
@@ -45,9 +45,10 @@ test("Service Agent keeps the live entry and B1/B2/B3 fallback entry distinct", 
     projects,
     /link:\s*\{[\s\S]*?href: "https:\/\/zehuai-customer-demo\.vercel\.app\/"[\s\S]*?fallbackLink:\s*\{\s*label: "打开 B1 \/ B2 \/ B3 备用演示",\s*href: "https:\/\/zehuai-customer-demo\.vercel\.app\/controlled"/,
   );
-  assert.match(gallery, /href=\{backupInteractive\.href\}/);
+  assert.match(gallery, /secondaryDemoLinks/);
+  assert.match(gallery, /href=\{item\.href\}/);
   assert.match(gallery, /target="_blank" rel="noreferrer"/);
-  assert.match(gallery, /打开 B1 \/ B2 \/ B3 备用演示/);
+  assert.match(gallery, /打开补充入口/);
 });
 
 test("technical implementation keeps the seven-point grid and wide final card", async () => {
