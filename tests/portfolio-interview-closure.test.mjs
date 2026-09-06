@@ -69,6 +69,16 @@ test("public-safe status overlay is fallback-first without changing the raw auth
   assert.ok(claims.some((claim) => claim.claimId === "SCS-DEPLOYED-SHA"));
 });
 
+test("Lumen story names the server-only RunningHub boundary without claiming browser LIVE", async () => {
+  const caseSource = await read("content/flagship-cases/lumen-ink.ts");
+  const evidence = await read("content/portfolio-evidence.ts");
+  assert.match(caseSource, /RunningHub/);
+  assert.match(caseSource, /server-only|服务端|服务器/);
+  assert.match(caseSource, /adapter|适配器/);
+  assert.match(caseSource, /未验证|BLOCKED|不.*LIVE/);
+  assert.match(evidence, /RunningHub/);
+});
+
 test("service evidence gallery makes recording primary in fallback mode", async () => {
   const source = await read("components/case-study/CaseEvidenceGallery.tsx");
   assert.match(source, /service-agent-live-demo-01/);

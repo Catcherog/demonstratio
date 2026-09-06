@@ -6,7 +6,7 @@ export const lumenInkCase: FlagshipCaseStudy = {
     oneLine: "把一次性图像生成收敛为有任务状态、Provider 边界、结果复核和历史回看的专业工作台。",
     responsibility: "负责产品定义、交互设计、Provider 抽象、任务与持久化边界、全栈 MVP 和真实编辑验证。",
     status: "Live Demo｜真实 Provider 编辑已验证",
-    boundary: "仅 Seedream 4.5 文生图与图生图两项操作完成真实验证；液化、修复、消除及其他模式仍未验证。公开工作台与健康接口当前可访问，但登录链路仍可能因 auth throttle 或 CloudBase 可达性 fail-closed 返回 503，因此不能表述为全面可用。",
+    boundary: "仅 Seedream 4.5 文生图与图生图两项操作完成真实验证；液化、修复、消除及其他模式仍未验证。AI BUSINESS OS 的 RunningHub connected path 需要服务端凭证与 workflow config；本页只说明 adapter 边界，不把 Demo、Seedream 证据或 Preview 页面说成 RunningHub LIVE。公开工作台与健康接口当前可访问，但登录链路仍可能因 auth throttle 或 CloudBase 可达性 fail-closed 返回 503，因此不能表述为全面可用。",
     claimIds: [
       "LUMEN-PROVIDER-COUNT",
       "LUMEN-TOOL-COUNT",
@@ -96,6 +96,11 @@ export const lumenInkCase: FlagshipCaseStudy = {
         title: "Provider adapter → Result/history",
         detail: "统一适配鉴权、请求、错误和结果，成功输出进入可回看的任务历史。",
         evidenceRefs: ["E-LUMEN-SOURCE", "E-LUMEN-EDIT"],
+      },
+      {
+        title: "Lumen UI → RunningHub adapter",
+        detail: "工作台只承载任务、参数与结果复核；在 AI BUSINESS OS 的 Creative 集成层，服务端专用 RunningHub adapter 将能力契约映射到 workflow engine。浏览器不接触 RunningHub endpoint、鉴权或 node graph；缺少配置时 connected path 保持 BLOCKED。",
+        evidenceRefs: ["E-LUMEN-SOURCE"],
       },
     ],
     mechanisms: [
