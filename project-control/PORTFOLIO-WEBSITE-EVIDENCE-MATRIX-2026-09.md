@@ -35,7 +35,7 @@
 
 | 类型 | 结果 | 说明 |
 | --- | --- | --- |
-| Contract/unit tests | `46/46 PASS` | 包含原有 suite 与 interview closure tests。 |
+| Contract/unit tests | `57/57 PASS` | 包含原有 suite、interview closure tests 与 Service Agent case layout suite。 |
 | TypeScript | `npm run lint` exit 0 | 仓库脚本实际执行 `tsc --noEmit`。 |
 | Consistency | `npm run check:portfolio` exit 0 | 21 structured claims、22 authority IDs、16 public evidence records。 |
 | Authority cases | `22/22 PASS` | 使用 `PORTFOLIO_AUTHORITY_DIR` 指向 job-ready-r1.3 handoff。 |

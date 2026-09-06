@@ -14,6 +14,7 @@
 - Base：`6302e2bb7f05989c24724b3cc360ea8dc3b05b82`（`origin/feat/portfolio-ai-guide-knowledge-sync-r2` 的本地 tracking state）。
 - Docs commits：`2affe92`、`1d8ceee`。
 - Implementation commit：`32b0152` — `feat(portfolio): close interview-ready AI product storytelling`。
+- Review-fix commit：`cccbb25` — `fix(portfolio): enforce public evidence boundaries`。
 - Branch：`codex/portfolio-interview-full-closure-20260906`。
 - Worktree：`D:\360Downloads\Trae 项目\portfolio-interview-full-closure-20260906`。
 - Protected workspace：`D:\360Downloads\Trae 项目\AI Business OS` 未编辑、未 reset、未 stash、未 clean。
@@ -32,7 +33,7 @@
 
 | Gate | Result |
 | --- | --- |
-| `npm test` | `46/46 PASS` |
+| `npm test` | `57/57 PASS` |
 | `npm run lint` | exit 0；`tsc --noEmit` |
 | `npm run check:portfolio` | PASS；21 structured claims、22 authority IDs、16 public evidence records |
 | `PORTFOLIO_AUTHORITY_DIR=... npm run test:cases` | `22/22 PASS` |
@@ -41,6 +42,8 @@
 | 独立 Edge QA | `24` pages/pass；1440、1024、768、390 |
 | Browser assertions | HTTP/internal links 200；0 console/page errors；0 broken/missing images；无横向溢出；focus、mobile menu、reduced motion 通过 |
 | Diff/secret checks | `git diff --check` PASS；staged secret-pattern counts 0 |
+
+Code review result：0 Critical、4 Important、1 Minor；所有反馈已在 `cccbb25` 修复并由定向/全量验证覆盖。
 
 详细矩阵：`PORTFOLIO-WEBSITE-EVIDENCE-MATRIX-2026-09.md`。浏览器原始摘要：`PORTFOLIO-WEBSITE-BROWSER-QA-2026-09.json`。
 

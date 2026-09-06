@@ -40,13 +40,17 @@
 
 ## Evidence recorded
 
-- `npm test`: 46/46 pass。
+- `npm test`: 57/57 pass。
 - `npm run lint`: exit 0 (`tsc --noEmit`)。
 - `npm run check:portfolio`: pass，21 claims / 22 authority IDs / 16 public evidence records。
 - `PORTFOLIO_AUTHORITY_DIR=... npm run test:cases`: 22/22 pass。
 - `npm run build`: exit 0，Next 16.2.10，17/17 static pages，包含 `/interview`。
 - `npm run test:case-browser`: 8/8 pass。
 - `PORTFOLIO-WEBSITE-BROWSER-QA-2026-09.json`: 24 pages pass，保存 sanitized browser assertions。
+
+## Review follow-up
+
+外部只读 reviewer 给出 0 Critical、4 Important、1 Minor。已在 `cccbb25` 修复并复核：public fallback 优先于 runtime override；Service Agent layout suite 纳入 `npm test`；Guide 初始 chrome 改为 mode-neutral；primary evidence 改由 registry 且校验 project/public/state；secondary interactive evidence 不再重复进入一般 grid。修复后的定向测试、全量测试、authority suite、build 和 browser QA 均通过。
 
 ## Owner decision
 
