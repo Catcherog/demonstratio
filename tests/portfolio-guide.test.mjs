@@ -150,6 +150,14 @@ test("evidence module derives current statuses and uses valid flagship slugs", a
   assert.match(source, /status:\s*project\.status/);
 });
 
+test("public guide status does not imply an unverified production release", async () => {
+  const source = await readFile(new URL("../lib/portfolio-guide.ts", import.meta.url), "utf8");
+  assert.doesNotMatch(source, /Production｜证据约束型实时导览/);
+  assert.doesNotMatch(source, /Production 发布完成/);
+  assert.match(source, /证据约束型只读导览/);
+  assert.match(source, /受控交付/);
+});
+
 test("flagship guide documents derive all six sections from the narrative registry", async () => {
   const source = await readFile(new URL("../lib/portfolio-guide.ts", import.meta.url), "utf8");
   assert.match(source, /flagshipCaseStudies/);

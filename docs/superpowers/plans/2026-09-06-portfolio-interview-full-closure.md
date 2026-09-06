@@ -23,70 +23,71 @@
 
 ## Task 1: Record source authority and pre-implementation audit
 
-- [ ] Create `project-control/PORTFOLIO-WEBSITE-AUTHORITY-2026-09.md`.
+- [x] Create `project-control/PORTFOLIO-WEBSITE-AUTHORITY-2026-09.md`.
   - Record the selected source checkout, remote, branch, base SHA, Vercel project ID/domain, dirty-state boundary, candidate repos considered, and why `demonstratio` is the sole implementation authority.
-  - Record that upstream refresh, GitHub CLI auth, and Vercel CLI auth are unavailable in this environment without credentials; local tracking metadata is not current deployment-SHA proof.
+  - Record the initial remote-auth limitation and the later destination-authorized GitHub/Vercel verification; local tracking metadata is not current deployment-SHA proof.
   - Record the explicit non-authorities: the AI Business OS root, historical `ZeH image` clones, the Feishu portal, Lumen app, and unrelated brand site.
-- [ ] Create `project-control/PORTFOLIO-WEBSITE-PRE-IMPLEMENTATION-AUDIT-2026-09.md`.
+- [x] Create `project-control/PORTFOLIO-WEBSITE-PRE-IMPLEMENTATION-AUDIT-2026-09.md`.
   - Capture the current live-page audit, route/HTTP results, public claim risks, mobile viewport failure, visual hierarchy, evidence-boundary issues, and a 0–3 score per requested acceptance dimension.
   - Distinguish current public observations from local source facts and from historical authority facts.
-- [ ] Add the required design/implementation pointers and explicit non-goals to the audit.
-- [ ] Run `git diff --check`, the placeholder/secret scan used by the repository, and commit the authority/audit/plan documentation as one scoped docs commit.
+- [x] Add the required design/implementation pointers and explicit non-goals to the audit.
+- [x] Run `git diff --check`, the placeholder/secret scan used by the repository, and commit the authority/audit/plan documentation as one scoped docs commit.
 
 ## Task 2: Add red tests for the closure contract
 
-- [ ] Add `tests/portfolio-interview-closure.test.mjs` before changing production code.
+- [x] Add `tests/portfolio-interview-closure.test.mjs` before changing production code.
   - Assert `app/layout.tsx` exports a real mobile viewport contract.
   - Assert the homepage consumes an umbrella AI BUSINESS OS story and places architecture before the detailed case/library sections.
   - Assert the story registry defines four ordered layers: operations/human review, agent/automation, business data/memory, and adapters/APIs/models.
   - Assert `/interview` exists and links to the three flagship cases plus the resume selector.
   - Assert current display status is fallback-first for Service Agent and controlled for Lumen, while the raw 21-binding R1.3 manifest remains untouched.
   - Assert the deployment-SHA claim is not rendered through the public metric helper and the fallback evidence entry is recording-first.
-- [ ] Run only the new test and capture the expected red failures before implementing the contract.
+- [x] Run only the new test and capture the expected red failures before implementing the contract.
 
 ## Task 3: Implement the umbrella story and truthful evidence surfaces
 
-- [ ] Add `content/portfolio-story.ts` with typed, reusable data for:
+- [x] Add `content/portfolio-story.ts` with typed, reusable data for:
   - the AI BUSINESS OS positioning statement;
   - the four-layer system map and layer-to-case relationships;
   - the build loop `业务问题 → 数据/知识 → Agent/模型 → 人工复核 → 评估回流`;
   - interview prompts and three flagship case summaries;
   - current public-safe display statuses and demo mode notes.
-- [ ] Add a public-status helper/overlay used by cards, case overview, metadata and demo presentation. Keep the historical `project.status` and external authority package unchanged for consistency-gate parity, and explain the overlay in the authority/audit docs.
-- [ ] Update Service Agent display copy and case evidence to make recording/controlled verification the primary path, live URLs secondary, and upstream/chat intermittency explicit.
-- [ ] Update Lumen display copy to say controlled demo and name only the two verified Seedream operations; preserve the existing unsupported-mode/auth boundaries.
-- [ ] Update the public metric helper so the superseded `SCS-DEPLOYED-SHA` binding remains in the raw manifest for authority parity but is excluded from rendered public metrics, with a test covering the exclusion.
-- [ ] Keep all displayed metrics and evidence references sourced from the central registries; do not add literal metric copies to components.
+- [x] Add a public-status helper/overlay used by cards, case overview, metadata and demo presentation. Keep the historical `project.status` and external authority package unchanged for consistency-gate parity, and explain the overlay in the authority/audit docs.
+- [x] Update Service Agent display copy and case evidence to make recording/controlled verification the primary path, live URLs secondary, and upstream/chat intermittency explicit.
+- [x] Update Lumen display copy to say controlled demo and name only the two verified Seedream operations; preserve the existing unsupported-mode/auth boundaries.
+- [x] Document the Lumen AI BUSINESS OS RunningHub adapter boundary as server-only/blocked without upgrading it to a verified public LIVE claim.
+- [x] Update the public metric helper so the superseded `SCS-DEPLOYED-SHA` binding remains in the raw manifest for authority parity but is excluded from rendered public metrics, with a test covering the exclusion.
+- [x] Keep all displayed metrics and evidence references sourced from the central registries; do not add literal metric copies to components.
 
 ## Task 4: Implement the interview-first information architecture
 
-- [ ] Update `app/page.tsx` and home components so the first scroll communicates:
+- [x] Update `app/page.tsx` and home components so the first scroll communicates:
   1. who/positioning;
   2. AI BUSINESS OS umbrella and four layers;
   3. the three flagship cases with role, technical depth, evidence boundary, and demo path;
   4. the product-building method and reliability loop;
   5. optional guide/library and experience/contact.
-- [ ] Update `components/SystemMap.tsx` to consume the four-layer story registry while preserving deep links to the case studies and supporting subsystem cases.
-- [ ] Update `components/home/Hero.tsx`, `FeaturedCases.tsx`, `ProductMethod.tsx`, and `ExperienceContact.tsx` to use the shared story/status data and to remove collection-like or unsupported status language from the primary path.
-- [ ] Add `app/interview/page.tsx` and a focused `components/InterviewMode.tsx` page with a concise talk track, evidence boundaries, flagship links, resume CTA, and fallback demo order.
-- [ ] Add responsive/accessibility styles in the existing portfolio CSS: valid viewport behavior, readable 390px layout, visible focus states, reduced-motion handling, non-overflowing grids, and explicit media dimensions/prioritization.
+- [x] Update `components/SystemMap.tsx` to consume the four-layer story registry while preserving deep links to the case studies and supporting subsystem cases.
+- [x] Update `components/home/Hero.tsx`, `FeaturedCases.tsx`, `ProductMethod.tsx`, and `ExperienceContact.tsx` to use the shared story/status data and to remove collection-like or unsupported status language from the primary path.
+- [x] Add `app/interview/page.tsx` and a focused `components/InterviewMode.tsx` page with a concise talk track, evidence boundaries, flagship links, resume CTA, fallback demo order, and explicit ownership-to-Preview delivery loop.
+- [x] Add responsive/accessibility styles in the existing portfolio CSS: valid viewport behavior, readable 390px layout, visible focus states, reduced-motion handling, non-overflowing grids, and explicit media dimensions/prioritization.
 
 ## Task 5: Make case pages interview-safe
 
-- [ ] Update `components/case-study/CaseOverview.tsx` and related case headings to use the public-safe display status and boundary copy.
-- [ ] Update `components/case-study/CaseEvidenceGallery.tsx` so fallback mode selects the recording/controlled evidence first, labels live interactive links as secondary, and never presents an unverified live path as the default.
-- [ ] Preserve the six-section flagship structure and the legacy renderer for the six supporting projects.
-- [ ] Add one deterministic fallback/demo script per flagship case under `project-control/demo-scripts/` covering a 60–90 second walkthrough, expected evidence, failure handling, and claims that must not be spoken.
-- [ ] Add/update contract tests for status overlays, recording-first selection, four-layer ordering, interview route, and the unchanged authority manifest.
+- [x] Update `components/case-study/CaseOverview.tsx` and related case headings to use the public-safe display status and boundary copy.
+- [x] Update `components/case-study/CaseEvidenceGallery.tsx` so fallback mode selects the recording/controlled evidence first, labels live interactive links as secondary, and never presents an unverified live path as the default.
+- [x] Preserve the six-section flagship structure and the legacy renderer for the six supporting projects.
+- [x] Add one deterministic fallback/demo script per flagship case under `project-control/demo-scripts/` covering a 60–90 second walkthrough, expected evidence, failure handling, and claims that must not be spoken.
+- [x] Add/update contract tests for status overlays, recording-first selection, four-layer ordering, interview route, guide status, and the unchanged authority manifest.
 
 ## Task 6: Run local verification and audit the diff
 
-- [ ] Run the targeted closure tests until green.
-- [ ] Run `npm test`, `npm run lint`, `npm run check:portfolio`, `PORTFOLIO_AUTHORITY_DIR=... npm run test:cases`, and `npm run build` from the isolated worktree.
-- [ ] Run the Playwright browser suite and a direct Edge audit at 1440, 1024, 768, and 390 widths for `/`, `/interview`, all three flagship cases, `/resume`, and all homepage internal links.
-- [ ] Verify HTTP 200 for internal routes, zero page/console errors, no missing/zero-size images, no horizontal overflow, correct `clientWidth` at mobile, keyboard-visible focus, reduced-motion behavior, and correct primary/secondary demo labels.
-- [ ] Run `git diff --check`, tracked secret scan, and a final public-claims scan for unsupported LIVE/production/accuracy/deployment-SHA language.
-- [ ] Save sanitized browser results under `project-control/` if the repository’s existing evidence convention supports it; do not save cookies, headers, tokens, or private URLs.
+- [x] Run the targeted closure tests until green.
+- [x] Run `npm test`, `npm run lint`, `npm run check:portfolio`, `PORTFOLIO_AUTHORITY_DIR=... npm run test:cases`, and `npm run build` from the isolated worktree.
+- [x] Run the Playwright browser suite and a direct Edge audit at 1440, 1024, 768, and 390 widths for `/`, `/interview`, all three flagship cases, `/resume`, and all homepage internal links.
+- [x] Verify HTTP 200 for internal routes, zero page/console errors, no missing/zero-size images, no horizontal overflow, correct `clientWidth` at mobile, keyboard-visible focus, reduced-motion behavior, and correct primary/secondary demo labels.
+- [x] Run `git diff --check`, tracked secret scan, and a final public-claims scan for unsupported LIVE/production/accuracy/deployment-SHA language.
+- [x] Save sanitized browser results under `project-control/` if the repository’s existing evidence convention supports it; do not save cookies, headers, tokens, or private URLs.
 
 ## Task 7: PR and Preview handoff
 

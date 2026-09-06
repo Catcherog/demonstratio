@@ -259,7 +259,7 @@ const PORTFOLIO_GUIDE_SOURCE_IDS = [
 
 function portfolioGuideDocuments(): PortfolioDocument[] {
   const title = "作品集 AI 导览";
-  const status = "Production｜证据约束型实时导览";
+  const status = "Guided｜证据约束型只读导览";
 
   const sections: Array<{
     id: string;
@@ -314,7 +314,7 @@ function portfolioGuideDocuments(): PortfolioDocument[] {
         "导览知识与官网公开事实共用同一套 TypeScript 内容源。",
         "项目状态、证据、工作流或能力边界发生变化时，需要同时更新官网事实文件、检索别名和合同测试。",
         "当前没有独立向量索引，因此更新资料后不需要执行文档切分、Embedding 或向量库重建。",
-        "知识更新通过代码审查、自动测试、Preview 问答回归和 Production 发布完成。",
+        "知识更新通过代码审查、自动测试、Preview 问答回归和受控交付完成。",
       ].join("\n"),
     },
   ];
