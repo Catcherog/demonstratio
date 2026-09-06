@@ -8,7 +8,7 @@
 
 **Tech Stack:** Next.js 16, React 19, TypeScript, CSS modules/global CSS already used by the repository, Node `node:test`, Playwright with the installed Microsoft Edge executable, npm scripts, and the existing portfolio authority/evidence tooling.
 
-> **Closure status (2026-09-06):** Tasks 1–6 are complete in the isolated worktree. Task 7 is locally complete with PR push and Vercel Preview separately recorded as pending environment authorization; see `project-control/PORTFOLIO-WEBSITE-CLOSURE-2026-09.md`.
+> **Closure status (2026-09-06):** Tasks 1–7 are complete in the isolated worktree. The authorized branch is pushed, PR #13 is OPEN (not merged), and a non-production Vercel Preview has been source-verified and browser-checked; see `project-control/PORTFOLIO-WEBSITE-CLOSURE-2026-09.md`.
 
 ## Global Constraints
 
@@ -91,17 +91,17 @@
 ## Task 7: PR and Preview handoff
 
 - [ ] Commit implementation in reviewable scoped commits and verify the worktree contains only intended changes.
-- [ ] Attempt a branch push and PR creation with title `[Portfolio] Rebuild website for interview-ready AI product storytelling`; do not merge.
-- [ ] Attempt a Vercel Preview deployment using the linked project without touching production. Record Preview URL, deployment ID, source SHA/ref, or the exact credential/network blocker.
-- [ ] If GitHub/Vercel credentials remain unavailable, retain the complete local result and document PR/Preview as not executed rather than weakening evidence claims.
-- [ ] Create `project-control/PORTFOLIO-WEBSITE-OWNER-REVIEW-2026-09.md`, `PORTFOLIO-WEBSITE-INTERVIEW-RUNBOOK-2026-09.md`, and `PORTFOLIO-WEBSITE-CLOSURE-2026-09.md` with acceptance verdict, verification commands/results, limitations, PR/Preview state, production unchanged statement, and the next explicit human action.
+- [x] Push the exact branch and create/reuse PR #13 with title `[Portfolio] Rebuild website for interview-ready AI product storytelling`; do not merge.
+- [x] Create a Vercel Preview using the linked project without touching production. Record Preview URL, deployment ID, source SHA/ref and environment.
+- [x] Re-read the remote PR/Preview state and run desktop/mobile browser QA against the Preview.
+- [x] Update `project-control/PORTFOLIO-WEBSITE-OWNER-REVIEW-2026-09.md`, `PORTFOLIO-WEBSITE-INTERVIEW-RUNBOOK-2026-09.md`, and `PORTFOLIO-WEBSITE-CLOSURE-2026-09.md` with acceptance verdict, verification commands/results, limitations, PR/Preview state, production unchanged statement, and the next explicit human action.
 - [ ] Use verification-before-completion and requesting-code-review before the final response; use finishing-a-development-branch to present integration options without merging or releasing.
 
 ## Acceptance Criteria
 
-- [ ] Three-minute visitor can identify candidate, umbrella system, ownership, three flagship cases, technical depth, evidence boundaries, and demo fallback without reading every project card.
-- [ ] `/interview` provides a usable presenter path and does not introduce unsupported claims.
-- [ ] Service Agent recording/controlled evidence is primary; Lumen has a controlled two-operation demo boundary; Feishu boundaries remain explicit.
-- [ ] Mobile width is real and usable at 390px; desktop remains calm, readable, and non-overflowing.
-- [ ] Existing tests, consistency gate, case tests, build, browser checks, diff/secret scans pass, or every exception is documented with a precise cause.
-- [ ] No production/DNS/data mutation occurs. Any PR or Preview attempt is clearly separated from local readiness and source-authority proof.
+- [x] Three-minute visitor can identify candidate, umbrella system, ownership, three flagship cases, technical depth, evidence boundaries, and demo fallback without reading every project card.
+- [x] `/interview` provides a usable presenter path and does not introduce unsupported claims.
+- [x] Service Agent recording/controlled evidence is primary; Lumen has a controlled two-operation demo boundary; Feishu boundaries remain explicit.
+- [x] Mobile width is real and usable at 390px; desktop remains calm, readable, and non-overflowing.
+- [x] Existing tests, consistency gate, case tests, build, browser checks, diff/secret scans pass; known upstream limitations are explicitly documented.
+- [x] No production/DNS/data mutation occurs. PR and Preview are separated from production and source-authority claims.

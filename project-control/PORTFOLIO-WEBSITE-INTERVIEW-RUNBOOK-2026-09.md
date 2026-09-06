@@ -58,7 +58,7 @@ npm run test:case-browser
 | Service Agent upstream/chat E2E 不稳定 | 停止刷新和真实请求，回到录屏、架构图、受控场景。 |
 | Lumen 登录或 CloudBase 返回 503 | 回到已核验图片和 Provider 边界，不把在线工作台说成全面可用。 |
 | Feishu Portal 不可达 | 用闭环证据、架构图和 read-only Schema 结果继续，不进行外部写入。 |
-| Preview 不可用 | 继续使用本地已验证 `/interview` 和录屏；在交付记录中标记 Preview 未证明。 |
+| Preview 受保护或暂时不可用 | 继续使用已验证的 `/interview` 结构、录屏和受控证据；不要把访问失败升级为生产能力，也不要把 RunningHub/Service Agent 上游说成稳定 Live。 |
 
 ## 绝不口述
 

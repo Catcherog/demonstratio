@@ -2,11 +2,11 @@
 
 更新时间：2026-09-06（Asia/Shanghai）
 
-## Final local verdict
+## Final Preview verdict
 
-`PORTFOLIO_VERDICT=LOCAL_INTERVIEW_READY_PENDING_PR_PREVIEW`
+`PORTFOLIO_VERDICT=PREVIEW_INTERVIEW_READY`
 
-本地 source、面试路径、证据边界、production build 和浏览器 QA 已形成可审计闭环。这个 verdict 不等价于 Preview ready、production ready、current deployment source-SHA authority 或 backend/chat E2E 通过。
+本地 source、远端分支、GitHub PR、Vercel Preview source provenance 和 Preview 浏览器 QA 已形成可审计面试闭环。这个 verdict 仍不等价于 production ready、稳定 backend/chat E2E 或生产部署 source-SHA authority。
 
 ## Source and commits
 
@@ -15,6 +15,8 @@
 - Docs commits：`2affe92`、`1d8ceee`。
 - Implementation commit：`32b0152` — `feat(portfolio): close interview-ready AI product storytelling`。
 - Review-fix commit：`cccbb25` — `fix(portfolio): enforce public evidence boundaries`。
+- RunningHub boundary commit：`9979c22` — `fix(portfolio): document RunningHub adapter boundary`。
+- Interview ownership commit：`c3e28f1` — `feat(portfolio): surface interview delivery ownership`。
 - Branch：`codex/portfolio-interview-full-closure-20260906`。
 - Worktree：`D:\360Downloads\Trae 项目\portfolio-interview-full-closure-20260906`。
 - Protected workspace：`D:\360Downloads\Trae 项目\AI Business OS` 未编辑、未 reset、未 stash、未 clean。
@@ -26,6 +28,8 @@
 - Service Agent 页面将 `service-agent-live-demo-01` 录屏与受控演示作为 primary，公网实时入口降为 secondary。
 - Feishu data platform 明确 Test Base E2E 与生产 Schema 只读边界。
 - Lumen 明确为 controlled demo，只命名 Seedream 4.5 文生图与图生图两项验证。
+- Lumen 进一步说明 AI BUSINESS OS Creative 集成层的服务端专用 RunningHub adapter；缺少凭证/config 时 connected path 为 `BLOCKED`，不把 Demo 说成 RunningHub LIVE。
+- `/interview` 首屏明确 ownership 闭环：需求定义 → 产品架构 → 工程实现 → 评估验证 → Preview 交付。
 - 保留 raw R1.3 21-binding authority manifest；公共 metrics 排除 `SCS-DEPLOYED-SHA`，不把历史绑定渲染为当前部署 provenance。
 - 新增 Evidence Matrix、Interview Runbook、Owner Review、四个 demo scripts 和 sanitized browser QA evidence。
 
@@ -33,7 +37,7 @@
 
 | Gate | Result |
 | --- | --- |
-| `npm test` | `57/57 PASS` |
+| `npm test` | `59/59 PASS`；含 RunningHub 与 Interview ownership 回归断言 |
 | `npm run lint` | exit 0；`tsc --noEmit` |
 | `npm run check:portfolio` | PASS；21 structured claims、22 authority IDs、16 public evidence records |
 | `PORTFOLIO_AUTHORITY_DIR=... npm run test:cases` | `22/22 PASS` |
@@ -41,6 +45,7 @@
 | `npm run test:case-browser` | `8/8 PASS` |
 | 独立 Edge QA | `24` pages/pass；1440、1024、768、390 |
 | Browser assertions | HTTP/internal links 200；0 console/page errors；0 broken/missing images；无横向溢出；focus、mobile menu、reduced motion 通过 |
+| Remote Preview QA | Preview `https://jaelchen-portfolio-vercel-extracted-git-codex-p-a9430d-catcher1.vercel.app`；首页、`/interview`、Service Agent、Feishu、Lumen 在 1440×1000 与 390×844 通过；0 broken images、0 console/errors、无横向溢出；Lumen RunningHub boundary 可见 |
 | Diff/secret checks | `git diff --check` PASS；staged secret-pattern counts 0 |
 
 Code review result：0 Critical、4 Important、1 Minor；所有反馈已在 `cccbb25` 修复并由定向/全量验证覆盖。
@@ -51,16 +56,16 @@ Code review result：0 Critical、4 Important、1 Minor；所有反馈已在 `cc
 
 | Item | State | Evidence / blocker |
 | --- | --- | --- |
-| GitHub branch push | `NOT_CREATED` | `git push -u origin codex/portfolio-interview-full-closure-20260906` was rejected by the environment safety approval because it exports the feature branch contents to the GitHub remote without an explicit destination-specific approval. No force-push occurred. |
-| Pull Request | `NOT_CREATED` | Cannot create a PR until the branch exists on the remote. Intended title: `[Portfolio] Rebuild website for interview-ready AI product storytelling`。 |
-| Vercel Preview | `NOT_CREATED` | `vercel deploy --yes` exited before deployment: CLI could not create `C:\Users\Catcher\AppData\Roaming\xdg.data\com.vercel.cli` / cache directories (`EPERM`). No token was supplied; no production command was run. |
+| GitHub branch push | `PASS` | `Catcherog/demonstratio` branch `codex/portfolio-interview-full-closure-20260906` was pushed without force; final source SHA is recorded in the final report. |
+| Pull Request | `PASS` | PR #13: `https://github.com/Catcherog/demonstratio/pull/13`; base `main`; state `OPEN`; merge was not attempted. |
+| Vercel Preview | `PASS` | Preview deployment `dpl_ChQJi6WKdYPvTcaineT3EK9B8mJm`, state `READY`, environment `preview`; metadata ref is the authorized branch and metadata SHA is `c3e28f1e2aba6b9d7de4bf989c3aec9edaea083f`. |
 
 ## Deliberately not attempted
 
 - No production deploy, alias promotion, rollback, DNS change, database write, real chat POST, credential request, or secret handling.
-- No merge to `main` and no cleanup of the isolated worktree; the branch remains available for review iteration.
-- No claim of current Vercel deployment source SHA/ref. The local Vercel project metadata remains context only.
+- No merge to `main`, production deploy, alias promotion, rollback, DNS change, database write, real chat POST, or credential rotation.
+- The Preview is non-production and has deployment metadata proving its branch/ref/SHA. This proof is not reused as production proof.
 
 ## Next explicit human action
 
-From an environment authorized to export this repository to the known remote, push `codex/portfolio-interview-full-closure-20260906` and open the intended PR without merging. Then run a non-production linked Vercel Preview from an authenticated environment, record its URL/deployment ID/source SHA/ref, and repeat the same browser QA against that Preview. Until those two records exist, use the local `/interview` route and recording-first demo runbook for interviews.
+Use the Preview URL above and start from `/interview`. Present Service Agent recording/controlled evidence first; treat live upstream, Feishu formal write, and RunningHub connected execution as bounded secondary or blocked paths.

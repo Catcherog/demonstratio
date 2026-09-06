@@ -1,8 +1,8 @@
 # Portfolio Website Evidence Matrix — 2026-09
 
 更新时间：2026-09-06（Asia/Shanghai）
-范围：`codex/portfolio-interview-full-closure-20260906` 的本地面试闭环
-证据原则：公开页面只引用可定位的公共证据；本地通过不等于 Preview、生产或当前部署 source-SHA 通过。
+范围：`codex/portfolio-interview-full-closure-20260906` 的本地与远端 Preview 面试闭环
+证据原则：公开页面只引用可定位的公共证据；本地通过、Preview 通过、生产状态和当前部署 source-SHA 仍分别记录。
 
 ## Umbrella narrative
 
@@ -12,7 +12,7 @@
 | 运营与人工复核 | `content/portfolio-story.ts`, `SystemMap` | 风险 Gate、人工接管、评估回流 | 只说明设计与已有案例证据，不说全自动或零人工。 |
 | Agent 与自动化 | Service Agent case | `service-agent-live-demo-01`, `service-agent-controlled-demo` | 录屏/受控演示优先；不说所有问题自动回答或准确率。 |
 | 业务数据与记忆 | Feishu data-platform case | `data-platform-e2e-verification`, `data-platform-schema-verification` | Test Base E2E 与生产 Schema 只读边界分开；不说生产业务 Pilot。 |
-| 适配器、API 与模型 | Lumen case | `lumen-provider-boundary`, `lumen-edit-verification` | 只把 Provider 抽象和两项 Seedream 验证作为当前可说范围。 |
+| 适配器、API 与模型 | Lumen case | `lumen-provider-boundary`, `lumen-edit-verification` | 只把 Provider 抽象和两项 Seedream 验证作为当前可说范围；RunningHub 为服务端专用 adapter，缺少配置时 connected path 为 BLOCKED。 |
 
 ## Flagship evidence
 
@@ -35,15 +35,16 @@
 
 | 类型 | 结果 | 说明 |
 | --- | --- | --- |
-| Contract/unit tests | `57/57 PASS` | 包含原有 suite、interview closure tests 与 Service Agent case layout suite。 |
+| Contract/unit tests | `59/59 PASS` | 包含原有 suite、Interview ownership 与 RunningHub boundary 回归测试、Service Agent case layout suite。 |
 | TypeScript | `npm run lint` exit 0 | 仓库脚本实际执行 `tsc --noEmit`。 |
 | Consistency | `npm run check:portfolio` exit 0 | 21 structured claims、22 authority IDs、16 public evidence records。 |
 | Authority cases | `22/22 PASS` | 使用 `PORTFOLIO_AUTHORITY_DIR` 指向 job-ready-r1.3 handoff。 |
 | Production build | `npm run build` exit 0 | Next 16.2.10；17/17 static pages；包含 `/interview`。 |
 | Browser | Playwright `8/8 PASS`；Edge QA `24` pages | 1440/1024/768/390；HTTP 200、无 console/page error、无 broken image、无横向溢出、focus/reduced-motion/mobile nav 通过。 |
+| Remote Preview | PASS | Preview URL、首页、`/interview`、Service Agent、Feishu、Lumen 在 1440×1000 与 390×844 通过；source ref/SHA 从 Vercel metadata 读取，environment 为 preview。 |
 
 ## Authority boundary
 
 - 本矩阵证明的是隔离 worktree 的本地 source、测试和浏览器结果。
-- `git ls-remote`、GitHub CLI auth、Vercel CLI auth 在本轮环境中不可用；因此 PR、Preview 和当前 deployment source-SHA 必须单独记录，不从本地结果推断。
+- PR #13 与 Vercel Preview 的远端记录已取得；其 source ref/SHA 与本地 HEAD 的对应关系单独核验，不从 READY 状态或本地结果推断。
 - 没有执行生产部署、alias promotion、DNS、外部数据库写入、真实聊天 POST 或凭证处理。

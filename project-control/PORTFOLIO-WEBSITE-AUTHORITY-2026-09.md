@@ -39,16 +39,17 @@ No second source authority remains unresolved. The historical clones share the r
 - The selected source checkout had only a pre-existing untracked `test-results/` directory. It was not edited directly; the implementation uses the isolated worktree above.
 - The failed dependency install directory was moved aside as a recoverable setup artifact: `D:\360Downloads\Trae 项目\_portfolio-node-modules-install-failed-20260906`. The isolated worktree uses a local copy of the already available dependency tree; no dependency lockfile or source authority was changed.
 
-## Verification limits
+## Verification limits and current remote proof
 
-The local `git ls-remote origin` refresh failed with Windows Schannel `SEC_E_NO_CREDENTIALS (0x8009030e)`. GitHub CLI auth and Vercel CLI auth were also unavailable because their user credential/config directories were inaccessible in this environment. No credential was requested, printed, or added.
+The initial local remote refresh was blocked by Windows credential-store access, which caused the earlier closure record to stop at local readiness. With the user's destination-specific authorization, the current run used authenticated GitHub/Vercel CLI sessions without reading or printing credential values.
 
-Therefore:
+The current remote proof is:
 
-- local branch/upstream tracking metadata is repository context, not current remote proof;
-- the Vercel project ID/domain are source metadata, not deployment source-SHA proof;
-- a READY alias, HTTP 200, or a recording cannot be upgraded to current production/source-SHA authority;
-- PR push and Vercel Preview are attempted separately and reported as blocked if credentials remain unavailable.
+- `Catcherog/demonstratio` branch `codex/portfolio-interview-full-closure-20260906` resolves to the final local HEAD recorded in the final report;
+- `origin/main` was re-read as `9de96e1d9d7797c09e9fd477bc9841438a66c3cb` before remote delivery;
+- PR #13 is OPEN against `main`; merge was not attempted;
+- Vercel deployment metadata provides the exact branch/ref/SHA and `environment=preview`; a READY alias, HTTP 200, or a recording is not used as production/source-SHA proof;
+- remote Preview browser QA was run separately from local tests.
 
 ## Evidence policy
 
