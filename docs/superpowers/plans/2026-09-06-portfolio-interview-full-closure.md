@@ -8,6 +8,8 @@
 
 **Tech Stack:** Next.js 16, React 19, TypeScript, CSS modules/global CSS already used by the repository, Node `node:test`, Playwright with the installed Microsoft Edge executable, npm scripts, and the existing portfolio authority/evidence tooling.
 
+> **Closure status (2026-09-06):** Tasks 1–6 are complete in the isolated worktree. Task 7 is locally complete with PR push and Vercel Preview separately recorded as pending environment authorization; see `project-control/PORTFOLIO-WEBSITE-CLOSURE-2026-09.md`.
+
 ## Global Constraints
 
 - Never edit the dirty AI Business OS workspace at `D:\360Downloads\Trae 项目\AI Business OS`.
