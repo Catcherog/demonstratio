@@ -17,6 +17,7 @@
 - Review-fix commit：`cccbb25` — `fix(portfolio): enforce public evidence boundaries`。
 - RunningHub boundary commit：`9979c22` — `fix(portfolio): document RunningHub adapter boundary`。
 - Interview ownership commit：`c3e28f1` — `feat(portfolio): surface interview delivery ownership`。
+- Guide boundary fix commit：`6703ba0` — `fix(portfolio): keep guide status evidence-only`。
 - Branch：`codex/portfolio-interview-full-closure-20260906`。
 - Worktree：`D:\360Downloads\Trae 项目\portfolio-interview-full-closure-20260906`。
 - Protected workspace：`D:\360Downloads\Trae 项目\AI Business OS` 未编辑、未 reset、未 stash、未 clean。
@@ -37,7 +38,7 @@
 
 | Gate | Result |
 | --- | --- |
-| `npm test` | `59/59 PASS`；含 RunningHub 与 Interview ownership 回归断言 |
+| `npm test` | `60/60 PASS`；含 RunningHub、Interview ownership 与 guide status 回归断言 |
 | `npm run lint` | exit 0；`tsc --noEmit` |
 | `npm run check:portfolio` | PASS；21 structured claims、22 authority IDs、16 public evidence records |
 | `PORTFOLIO_AUTHORITY_DIR=... npm run test:cases` | `22/22 PASS` |
@@ -45,10 +46,10 @@
 | `npm run test:case-browser` | `8/8 PASS` |
 | 独立 Edge QA | `24` pages/pass；1440、1024、768、390 |
 | Browser assertions | HTTP/internal links 200；0 console/page errors；0 broken/missing images；无横向溢出；focus、mobile menu、reduced motion 通过 |
-| Remote Preview QA | Preview `https://jaelchen-portfolio-vercel-extracted-git-codex-p-a9430d-catcher1.vercel.app`；首页、`/interview`、Service Agent、Feishu、Lumen 在 1440×1000 与 390×844 通过；0 broken images、0 console/errors、无横向溢出；Lumen RunningHub boundary 可见 |
+| Remote Preview QA | Preview `https://jaelchen-portfolio-vercel-extracted-git-codex-p-a9430d-catcher1.vercel.app`；首页、`/interview`、Service Agent、Feishu、Lumen 在 1440×1000 与 390×844 通过；0 broken images、0 console/errors、无横向溢出；Lumen RunningHub boundary 可见；最终 deployment metadata 以本报告最终记录为准 |
 | Diff/secret checks | `git diff --check` PASS；staged secret-pattern counts 0 |
 
-Code review result：0 Critical、4 Important、1 Minor；所有反馈已在 `cccbb25` 修复并由定向/全量验证覆盖。
+Code review result：0 Critical；重要反馈已闭环：最终 Preview provenance 重新核对，RunningHub 保持 server-only/BLOCKED 叙事边界，公开 AI 导览移除未验证的 Production 发布暗示；计划勾选和 60/60 回归测试已同步。远端 QA 结果记录为脱敏摘要，不保存 header/token。
 
 详细矩阵：`PORTFOLIO-WEBSITE-EVIDENCE-MATRIX-2026-09.md`。浏览器原始摘要：`PORTFOLIO-WEBSITE-BROWSER-QA-2026-09.json`。
 
@@ -58,7 +59,7 @@ Code review result：0 Critical、4 Important、1 Minor；所有反馈已在 `cc
 | --- | --- | --- |
 | GitHub branch push | `PASS` | `Catcherog/demonstratio` branch `codex/portfolio-interview-full-closure-20260906` was pushed without force; final source SHA is recorded in the final report. |
 | Pull Request | `PASS` | PR #13: `https://github.com/Catcherog/demonstratio/pull/13`; base `main`; state `OPEN`; merge was not attempted. |
-| Vercel Preview | `PASS` | Preview deployment `dpl_ChQJi6WKdYPvTcaineT3EK9B8mJm`, state `READY`, environment `preview`; metadata ref is the authorized branch and metadata SHA is `c3e28f1e2aba6b9d7de4bf989c3aec9edaea083f`. |
+| Vercel Preview | `PASS` | 最终 Preview 为非生产环境，state `READY`；deployment ID、deployment-specific URL、source ref/SHA 和 PR linkage 已从 Vercel metadata 读取，并以最终报告字段为准。 |
 
 ## Deliberately not attempted
 

@@ -35,13 +35,13 @@
 
 | 类型 | 结果 | 说明 |
 | --- | --- | --- |
-| Contract/unit tests | `59/59 PASS` | 包含原有 suite、Interview ownership 与 RunningHub boundary 回归测试、Service Agent case layout suite。 |
+| Contract/unit tests | `60/60 PASS` | 包含原有 suite、Interview ownership、RunningHub boundary 与 guide status 回归测试、Service Agent case layout suite。 |
 | TypeScript | `npm run lint` exit 0 | 仓库脚本实际执行 `tsc --noEmit`。 |
 | Consistency | `npm run check:portfolio` exit 0 | 21 structured claims、22 authority IDs、16 public evidence records。 |
 | Authority cases | `22/22 PASS` | 使用 `PORTFOLIO_AUTHORITY_DIR` 指向 job-ready-r1.3 handoff。 |
 | Production build | `npm run build` exit 0 | Next 16.2.10；17/17 static pages；包含 `/interview`。 |
 | Browser | Playwright `8/8 PASS`；Edge QA `24` pages | 1440/1024/768/390；HTTP 200、无 console/page error、无 broken image、无横向溢出、focus/reduced-motion/mobile nav 通过。 |
-| Remote Preview | PASS | Preview URL、首页、`/interview`、Service Agent、Feishu、Lumen 在 1440×1000 与 390×844 通过；source ref/SHA 从 Vercel metadata 读取，environment 为 preview。 |
+| Remote Preview | PASS | Preview URL、首页、`/interview`、Service Agent、Feishu、Lumen 在 1440×1000 与 390×844 通过；source ref/SHA 从最终 Vercel metadata 读取，environment 为 preview；最终 deployment 字段见最终报告。 |
 
 ## Authority boundary
 
