@@ -1641,6 +1641,27 @@ body {
   line-height: 1.8;
 }
 
+.interview-ownership {
+  max-width: 70ch;
+  margin: 16px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--portfolio-sage);
+  color: var(--portfolio-forest);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.interview-ownership strong {
+  font-weight: 700;
+}
+
+.interview-ownership span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .interview-actions {
   margin-top: 32px;
   display: flex;

@@ -57,6 +57,12 @@ test("interview mode has a concise presenter route and flagship links", async ()
   assert.match(component, /60|90/);
 });
 
+test("interview mode makes personal ownership and the engineering delivery loop explicit", async () => {
+  const component = await read("components/InterviewMode.tsx");
+  assert.match(component, /interview-ownership/);
+  assert.match(component, /需求定义[\s\S]*产品架构[\s\S]*工程实现[\s\S]*评估验证[\s\S]*Preview 交付/);
+});
+
 test("public-safe status overlay is fallback-first without changing the raw authority manifest", async () => {
   const status = await read("content/portfolio-status.ts");
   const projects = await read("content/projects.ts");

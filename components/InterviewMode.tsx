@@ -8,6 +8,7 @@ export function InterviewMode() {
         <p className="eyebrow">{portfolioStory.eyebrow} · 03 MINUTE PATH</p>
         <h1 id="interview-heading">用三分钟看懂我如何把复杂业务做成 AI 产品。</h1>
         <p className="interview-lead">{portfolioStory.positioning} 下面按系统、案例、证据和边界给出一条可直接讲解的路径。</p>
+        <p className="interview-ownership"><strong>我的 ownership：</strong>把需求定义、产品架构、工程实现、评估验证和 Preview 交付串成闭环。<span>具体负责范围以三个案例页的角色、证据和边界为准。</span></p>
         <div className="interview-actions">
           <a className="button button-primary" href="#interview-cases">从三个旗舰案例开始 <span aria-hidden="true">↓</span></a>
           <a className="button button-secondary" href="/resume">查看中英文简历 <span aria-hidden="true">→</span></a>
